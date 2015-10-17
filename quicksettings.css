@@ -34,7 +34,12 @@
 
 .msettings_checkbox {
 	margin-left: 5px;
-	vertical-align: middle;
+}
+
+.msettings_checkbox_label {
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
 }
 
 .msettings_label {
@@ -42,5 +47,9 @@
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: default;
+}
+
+.msettings_button {
+	font-size: 10px;
 }
 

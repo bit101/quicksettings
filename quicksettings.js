@@ -240,7 +240,7 @@
 			var container = this.createContainer();
 
 			var label = document.createElement("span");
-			label.className = "msettings_label";
+			label.className = "msettings_checkbox_label";
 			label.textContent = title;
 
 			var checkbox = document.createElement("input");
@@ -249,8 +249,8 @@
 			checkbox.checked = value;
 			checkbox.className = "msettings_checkbox";
 
-			container.appendChild(label);
 			container.appendChild(checkbox);
+			container.appendChild(label);
 			this._content.appendChild(container);
 			this._controls[title] = checkbox;
 
@@ -277,7 +277,8 @@
 			var button = document.createElement("input");
 			button.type = "button";
 			button.id = title;
-			button.value = title
+			button.value = title;
+			button.className = "msettings_button";
 
 			container.appendChild(button);
 			this._content.appendChild(container);

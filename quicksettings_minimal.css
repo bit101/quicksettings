@@ -2,7 +2,7 @@
 	background-color: #dddddd;
 	position: absolute;
 	width: 150px;
-	font: 8px sans-serif;
+	font: 9px sans-serif;
 	box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.35);
 }
 
@@ -114,8 +114,13 @@
 }
 
 .msettings_checkbox {
-	margin-left: 3px;
-	vertical-align: middle;
+	margin-left: 2px;
+}
+
+.msettings_checkbox_label {
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
 }
 
 .msettings_label {
@@ -127,7 +132,11 @@
 
 .msettings_color {
 	width: 40px;
-	font: 8px sans-serif;
+	font: 9px sans-serif;
 	margin: 0px;
+}
+
+.msettings_button {
+	font-size: 9px;
 }
 
