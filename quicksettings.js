@@ -16,44 +16,45 @@
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
-			obj.init(x, y, title);
+			obj._init(x, y, title);
 			return obj;
 		},
 
-		init: function(x, y, title) {this.bindHandlers();
-			this.createPanel(x, y);
-			this.createTitleBar(title || "QuickSettings");
-			this.createContent();
+		_init: function(x, y, title) {
+			this._bindHandlers();
+			this._createPanel(x, y);
+			this._createTitleBar(title || "QuickSettings");
+			this._createContent();
 
 			document.body.appendChild(this._panel);
 		},
 
-		bindHandlers: function() {
-			this.startDrag = this.startDrag.bind(this);
-			this.drag = this.drag.bind(this);
-			this.endDrag = this.endDrag.bind(this);
-			this.doubleClickTitle = this.doubleClickTitle.bind(this);
-			this.onKeyUp = this.onKeyUp.bind(this);
+		_bindHandlers: function() {
+			this._startDrag = this._startDrag.bind(this);
+			this._drag = this._drag.bind(this);
+			this._endDrag = this._endDrag.bind(this);
+			this._doubleClickTitle = this._doubleClickTitle.bind(this);
+			this._onKeyUp = this._onKeyUp.bind(this);
 		},
 
-		createPanel: function(x, y) {
+		_createPanel: function(x, y) {
 			this._panel = document.createElement("div");
 			this._panel.className = "msettings_main";
 			this.setPosition(x || 0, y || 0);
 		},
 
-		createTitleBar: function(text) {
+		_createTitleBar: function(text) {
 			this._titleBar = document.createElement("div");
 			this._titleBar.textContent = text;
 			this._titleBar.className = "msettings_title_bar";
 
-			this._titleBar.addEventListener("mousedown", this.startDrag);
-			this._titleBar.addEventListener("dblclick", this.doubleClickTitle);
+			this._titleBar.addEventListener("mousedown", this._startDrag);
+			this._titleBar.addEventListener("dblclick", this._doubleClickTitle);
 
 			this._panel.appendChild(this._titleBar);
 		},
 
-		createContent: function() {
+		_createContent: function() {
 			this._content = document.createElement("div");
 			this._content.className = "msettings_content";
 			this._panel.appendChild(this._content);
@@ -90,18 +91,18 @@
 			}
 		},
 
-		startDrag: function(event) {
+		_startDrag: function(event) {
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			if(this._draggable) {
-				document.body.addEventListener("mousemove", this.drag);
-				document.body.addEventListener("mouseup", this.endDrag);
+				document.body.addEventListener("mousemove", this._drag);
+				document.body.addEventListener("mouseup", this._endDrag);
 				this._startX = event.clientX;
 				this.startY = event.clientY;
 			}
 			event.preventDefault();
 		},
 
-		drag: function(event) {
+		_drag: function(event) {
 			var x = parseInt(this._panel.style.left),
 				y = parseInt(this._panel.style.top),
 				mouseX = event.clientX,
@@ -113,13 +114,13 @@
 			event.preventDefault();
 		},
 
-		endDrag: function(event) {
-			document.body.removeEventListener("mousemove", this.drag);
-			document.body.removeEventListener("mouseup", this.endDrag);
+		_endDrag: function(event) {
+			document.body.removeEventListener("mousemove", this._drag);
+			document.body.removeEventListener("mouseup", this._endDrag);
 			event.preventDefault();
 		},
 
-		doubleClickTitle: function() {
+		_doubleClickTitle: function() {
 			if(this._collapsible) {
 				this.toggleCollapsed();
 			}
@@ -154,17 +155,13 @@
 			this._hidden = false;
 		},
 
-		setChangeHandler: function(handler) {
-			this.changeHandler = handler;
-		},
-
-		createContainer: function() {
+		_createContainer: function() {
 			var container = document.createElement("div");
 			container.className = "msettings_container";
 			return container;
 		},
 
-		createLabel: function(title) {
+		_createLabel: function(title) {
 			var label = document.createElement("div");
 			label.innerHTML = title;
 			label.className = "msettings_label";
@@ -176,7 +173,7 @@
 			document.body.addEventListener("keyup", this.onKeyUp);
 		},
 
-		onKeyUp: function(event) {
+		_onKeyUp: function(event) {
 			if(event.keyCode === this._keyCode) {
 				this.toggleVisibility();
 			}
@@ -192,7 +189,7 @@
 		},
 
 		addRange: function(title, min, max, value, step, callback) {
-			var container = this.createContainer();
+			var container = this._createContainer();
 
 			var range = document.createElement("input");
 			range.type = "range";
@@ -203,7 +200,7 @@
 			range.value = value || 0;
 			range.className = "msettings_range";
 
-			var label = this.createLabel("<b>" + title + ":</b> " + range.value);
+			var label = this._createLabel("<b>" + title + ":</b> " + range.value);
 
 			container.appendChild(label);
 			container.appendChild(range);
@@ -211,7 +208,7 @@
 			this._controls[title] = range;
 
 			var eventName = "input";
-			if(this.isIE()) {
+			if(this._isIE()) {
 				eventName = "change";
 			}
 			range.addEventListener(eventName, function() {
@@ -222,7 +219,7 @@
 			});
 		}, 
 
-		isIE: function() {
+		_isIE: function() {
 			if(navigator.userAgent.indexOf("rv:11") != -1) {
 				return true;
 			}
@@ -237,7 +234,7 @@
 		},
 
 		addBoolean: function(title, value, callback) {
-			var container = this.createContainer();
+			var container = this._createContainer();
 
 			var label = document.createElement("span");
 			label.className = "msettings_checkbox_label";
@@ -272,7 +269,7 @@
 		},
 
 		addButton: function(title, callback) {
-			var container = this.createContainer();
+			var container = this._createContainer();
 
 			var button = document.createElement("input");
 			button.type = "button";
@@ -292,8 +289,8 @@
 		},
 
 		addColor: function(title, color, callback) {
-			var container = this.createContainer();
-			var label = this.createLabel("<b>" + title + ":</b> " + color);
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + ":</b> " + color);
 
 			var colorInput = document.createElement("input");
 			try {
@@ -324,8 +321,8 @@
 		},
 
 		addText: function(title, text, callback) {
-			var container = this.createContainer();
-			var label = this.createLabel("<b>" + title + "</b>");
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>");
 
 			var textInput = document.createElement("input");
 			textInput.type = "text";
@@ -349,7 +346,7 @@
 		},
 
 		addInfo: function(title, info) {
-			var container = this.createContainer();
+			var container = this._createContainer();
 			container.innerHTML = info;
 			this._content.appendChild(container);
 		}
