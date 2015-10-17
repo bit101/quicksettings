@@ -303,6 +303,7 @@
 			}
 			colorInput.id = title;
 			colorInput.value = color || "#ff0000";
+			colorInput.className = "msettings_color";
 
 			container.appendChild(label);
 			container.appendChild(colorInput);
