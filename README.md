@@ -21,8 +21,8 @@ For range, color, boolean and text, the callback will pass the current value of 
 You can also query the value of controls at any time with:
 
     settings.getRangeValue(title);
-    settings.getBooleanValue(title);
-    settings.getColorValue(title);
+    settings.getBoolean(title);
+    settings.getColor(title);
     settings.getText(title);
 
 The panel is draggable and collapsible/expandable by a double click on the title bar by default. The following methods affect this behavior:
