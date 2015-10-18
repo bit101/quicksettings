@@ -248,6 +248,13 @@
 			}
 		},
 
+		setRangeParameters: function(title, min, max, step) {
+			var control = this._controls[title];
+			control.range.min = min;
+			control.range.max = max;
+			control.range.step = step;
+		},
+
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
