@@ -9,7 +9,7 @@
 		_startY: 0,
 		_hidden: false,
 		_collapsed: false,
-		_controls: {},
+		_controls: null,
 		_keyCode: -1,
 		_draggable: true,
 		_collapsible: true,
@@ -41,6 +41,7 @@
 			this._panel = document.createElement("div");
 			this._panel.className = "msettings_main";
 			this.setPosition(x || 0, y || 0);
+			this._controls = {};
 		},
 
 		_createTitleBar: function(text) {
@@ -205,7 +206,12 @@
 			container.appendChild(label);
 			container.appendChild(range);
 			this._content.appendChild(container);
-			this._controls[title] = range;
+			this._controls[title] = {
+				container: container,
+				range: range,
+				label: label,
+				callback: callback
+			};
 
 			var eventName = "input";
 			if(this._isIE()) {
@@ -230,7 +236,16 @@
 		},
 
 		getRangeValue: function(title) {
-			return this._controls[title].value;
+			return this._controls[title].range.value;
+		},
+
+		setRangeValue: function(title, value) {
+			var control = this._controls[title];
+			control.range.value = value;
+			control.label.innerHTML = "<b>" + title + ":</b> " + control.range.value;
+			if(control.callback) {
+				control.callback(control.range.value);
+			}
 		},
 
 		addBoolean: function(title, value, callback) {
@@ -249,7 +264,11 @@
 			container.appendChild(checkbox);
 			container.appendChild(label);
 			this._content.appendChild(container);
-			this._controls[title] = checkbox;
+			this._controls[title] = {
+				container: container,
+				checkbox: checkbox,
+				callback: callback
+			};
 
 			checkbox.addEventListener("change", function() {
 				if(callback) {
@@ -265,7 +284,14 @@
 		},
 
 		getBoolean: function(title) {
-			return this._controls[title].checked;
+			return this._controls[title].checkbox.checked;
+		},
+
+		setBoolean: function(title, value) {
+			this._controls[title].checkbox.checked = value;
+			if(control.callback) {
+				this._controls[title].callback(value);
+			}
 		},
 
 		addButton: function(title, callback) {
@@ -279,7 +305,10 @@
 
 			container.appendChild(button);
 			this._content.appendChild(container);
-			this._controls[title] = button;
+			this._controls[title] = {
+				container: container,
+				button: button
+			}
 
 			button.addEventListener("click", function() {
 				if(callback) {
@@ -306,7 +335,12 @@
 			container.appendChild(label);
 			container.appendChild(colorInput);
 			this._content.appendChild(container);
-			this._controls[title] = colorInput;
+			this._controls[title] = {
+				container: container,
+				colorInput: colorInput,
+				label: label,
+				callback: callback
+			};
 
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
@@ -317,7 +351,16 @@
 		},
 
 		getColor: function(title) {
-			return this._controls[title].value;
+			return this._controls[title].colorInput.value;
+		},
+
+		setColor: function(title, value) {
+			var control = this._controls[title];
+			control.colorInput.value = value;
+			control.label.innerHTML = "<b>" + title + ":</b> " + control.colorInput.value;
+			if(control.callback) {
+				control.callback(control.colorInput.value);
+			}
 		},
 
 		addText: function(title, text, callback) {
@@ -332,7 +375,12 @@
 			container.appendChild(label);
 			container.appendChild(textInput);
 			this._content.appendChild(container);
-			this._controls[title] = textInput;
+			this._controls[title] = {
+				container: container,
+				textInput: textInput,
+				label: label,
+				callback: callback
+			}
 
 			textInput.addEventListener("input", function() {
 				if(callback) {
@@ -342,13 +390,40 @@
 		}, 
 
 		getText: function(title) {
-			return this._controls[title].value;
+			return this._controls[title].textInput.value;
+		},
+
+		setText: function(title, text) {
+			var control = this._controls[title];
+			control.textInput.value = text;
+			if(control.callback) {
+				control.callback(text);
+			}
 		},
 
 		addInfo: function(title, info) {
 			var container = this._createContainer();
 			container.innerHTML = info;
+			this._controls[title] = {
+				container: container
+			};
 			this._content.appendChild(container);
+		},
+
+		getInfo: function(title) {
+			return this._controls[title].container.innerHTML;
+		},
+
+		setInfo: function(title, info) {
+			this._controls[title].container.innerHTML = info;
+		},
+
+		removeControl: function(title) {
+			var container = this._controls[title].container;
+			if(container.parentElement) {
+				container.parentElement.removeChild(container);
+			}
+			this._controls[title] = null;
 		}
 	};
 

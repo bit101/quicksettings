@@ -65,6 +65,8 @@ window.onload = function() {
 	settings.addButton("Clear", function() {
 		context.clearRect(0, 0, width, height);
 	});
+	settings.addText("Random Text", "hello world");
+	settings.addInfo("info", "Turn it off and back on again");
 	settings.setKey("s");
 
 
