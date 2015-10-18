@@ -34,6 +34,10 @@ And set values of controls with:
     settings.setText(title, text);
     settings.setInfo(title, text);
     
+If, for some reason, you need to change the min, max or step of a range input, use:
+
+    settings.setRangeParameters(title, min, max, step);
+    
 And remove any control with:
 
     settings.removeControl(title);
