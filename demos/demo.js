@@ -69,5 +69,9 @@ window.onload = function() {
 	settings.addInfo("info", "Turn it off and back on again");
 	settings.setKey("s");
 
+	settings.addDropDown("Choices", ["foo", "bar", "baz"], function(value) {
+		alert("you chose index " + value.index + ": " + value.value);
+	});
+
 
 }

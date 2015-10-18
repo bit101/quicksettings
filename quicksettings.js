@@ -417,6 +417,62 @@
 			this._content.appendChild(container);
 		},
 
+		addDropDown: function(title, items, callback) {
+			var container = this._createContainer();
+
+			var label = this._createLabel("<b>" + title + "<b>");
+			var select = document.createElement("select");
+			for(var i = 0; i < items.length; i++) {
+				var option = document.createElement("option");
+				option.label = items[i];
+				select.add(option);
+			};
+			select.addEventListener("change", function() {
+				var index = select.selectedIndex,
+					options = select.options;
+
+				if(callback) {
+					callback({
+						index: index,
+						value: options[index].label
+					});
+				}
+			});
+			container.appendChild(label);
+			container.appendChild(select);
+			this._content.appendChild(container);
+
+			this._controls[title] = {
+				container: container,
+				select: select,
+				label: label,
+				callback: callback
+			};
+		},
+
+		getDropDownValue: function(title) {
+			var control = this._controls[title],
+				select = control.select,
+				index = select.selectedIndex,
+				options = select.options;
+			return {
+				index: index,
+				value: options[index].label
+			}
+		},
+
+		setDropDownIndex: function(title, index) {
+			var control = this._controls[title],
+				options = control.select.options;
+			control.select.selectedIndex = index;
+			if(control.callback) {
+				control.callback({
+					index: index,
+					value: options[index].label
+				});
+			}
+		},
+
 		getInfo: function(title) {
 			return this._controls[title].container.innerHTML;
 		},
