@@ -378,6 +378,7 @@
 			textInput.type = "text";
 			textInput.id = title;
 			textInput.value = text || "";
+			textInput.className = "msettings_text_input";
 
 			container.appendChild(label);
 			container.appendChild(textInput);
@@ -438,6 +439,8 @@
 					});
 				}
 			});
+			select.className = "msettings_select";
+
 			container.appendChild(label);
 			container.appendChild(select);
 			this._content.appendChild(container);
