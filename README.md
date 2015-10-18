@@ -24,6 +24,19 @@ You can also query the value of controls at any time with:
     settings.getBoolean(title);
     settings.getColor(title);
     settings.getText(title);
+    settings.getInfo(title);
+    
+And set values of controls with:
+
+    settings.setRangeValue(title, value);
+    settings.setBoolean(title, value);
+    settings.setColor(title, color);
+    settings.setText(title, text);
+    settings.setInfo(title, text);
+    
+And remove any control with:
+
+    settings.removeControl(title);
 
 The panel is draggable and collapsible/expandable by a double click on the title bar by default. The following methods affect this behavior:
 
