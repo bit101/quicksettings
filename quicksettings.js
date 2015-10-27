@@ -95,10 +95,10 @@
 		_startDrag: function(event) {
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			if(this._draggable) {
-				document.body.addEventListener("mousemove", this._drag);
-				document.body.addEventListener("mouseup", this._endDrag);
+				document.addEventListener("mousemove", this._drag);
+				document.addEventListener("mouseup", this._endDrag);
 				this._startX = event.clientX;
-				this.startY = event.clientY;
+				this._startY = event.clientY;
 			}
 			event.preventDefault();
 		},
@@ -109,15 +109,15 @@
 				mouseX = event.clientX,
 				mouseY = event.clientY;
 
-			this.setPosition(x + mouseX - this._startX, y + mouseY - this.startY);
+			this.setPosition(x + mouseX - this._startX, y + mouseY - this._startY);
 			this._startX = mouseX;
-			this.startY = mouseY;
+			this._startY = mouseY;
 			event.preventDefault();
 		},
 
 		_endDrag: function(event) {
-			document.body.removeEventListener("mousemove", this._drag);
-			document.body.removeEventListener("mouseup", this._endDrag);
+			document.removeEventListener("mousemove", this._drag);
+			document.removeEventListener("mouseup", this._endDrag);
 			event.preventDefault();
 		},
 
