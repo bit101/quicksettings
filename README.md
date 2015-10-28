@@ -81,11 +81,13 @@ Styles are in quicksettings.css which must be included. Alternate styling can be
 
 1. Global change handler:
 
+
     settings.setGlobalChangeHandler(callback);
     
 This callback will be called whenever any change is made to any control in this panel.
 
 2. Bind functions:
+
 
     settings.bindRange(title, min, max, value, step, object);
     settings.bindColor(title, color, object);
