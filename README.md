@@ -77,17 +77,15 @@ Styles are in quicksettings.css which must be included. Alternate styling can be
 
 ![Minimal Style](images/chrome_pc_minimal.png)
 
-*New as of October 28, 2015
+## New as of October 28, 2015
 
-1. Global change handler:
-
+Global change handler:
 
     settings.setGlobalChangeHandler(callback);
     
 This callback will be called whenever any change is made to any control in this panel.
 
-2. Bind functions:
-
+Bind functions:
 
     settings.bindRange(title, min, max, value, step, object);
     settings.bindColor(title, color, object);
