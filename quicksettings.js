@@ -197,7 +197,7 @@
 			range.id = title;
 			range.min = min || 0;
 			range.max = max || 100;
-			// range.step = step || 1;
+			range.step = step || 1;
 			range.value = value || 0;
 			range.className = "msettings_range";
 
