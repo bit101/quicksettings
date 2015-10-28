@@ -76,3 +76,34 @@ Add the library in a script tag, or via require.js.
 Styles are in quicksettings.css which must be included. Alternate styling can be done through this. I've included a minimal style sheet which makes everything a bit more compact and does some advanced styling on the sliders to make them look more the same across browsers.
 
 ![Minimal Style](images/chrome_pc_minimal.png)
+
+## New as of October 28, 2015
+
+Global change handler:
+
+    settings.setGlobalChangeHandler(callback);
+    
+This callback will be called whenever any change is made to any control in this panel.
+
+Bind functions:
+
+    settings.bindRange(title, min, max, value, step, object);
+    settings.bindColor(title, color, object);
+    settings.bindBoolean(title, value, object);
+    settings.bindText(title, text, object);
+    settings.bindDropDown(title, [items], object);
+    
+These function the same as their "add" counterparts, but instead of a callback, you pass in an object. When the control's value is changed, it will assign the new value to the property of that object that matches the title. For example:
+
+    settings.bindBoolean("visible", true, model);
+    
+When the checkbox is clicked, it will set `model.visible` to true or false.
+
+These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
+
+
+## Demos
+
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
