@@ -100,3 +100,10 @@ These function the same as their "add" counterparts, but instead of a callback, 
 When the checkbox is clicked, it will set `model.visible` to true or false.
 
 These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
+
+
+## Demos
+
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
+http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
