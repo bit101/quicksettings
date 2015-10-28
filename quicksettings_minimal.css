@@ -4,6 +4,8 @@
 	width: 150px;
 	font: 9px sans-serif;
 	box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.35);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .msettings_content {
