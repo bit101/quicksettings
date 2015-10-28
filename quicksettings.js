@@ -13,6 +13,7 @@
 		_keyCode: -1,
 		_draggable: true,
 		_collapsible: true,
+		_globalChangeHandler: null,
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
@@ -127,6 +128,10 @@
 			}
 		},
 
+		setGlobalChangeHandler: function(handler) {
+			this._globalChangeHandler = handler;
+		},
+
 		toggleCollapsed: function() {
 			if(this._collapsed) {
 				this.expand();
@@ -189,6 +194,12 @@
 			}
 		},
 
+		bindRange: function(title, min, max, value, step, object) {
+			this.addRange(title, min, max, value, step, function(value) {
+				object[title] = value;
+			});
+		},
+
 		addRange: function(title, min, max, value, step, callback) {
 			var container = this._createContainer();
 
@@ -217,10 +228,14 @@
 			if(this._isIE()) {
 				eventName = "change";
 			}
+			var gch = this._globalChangeHandler;
 			range.addEventListener(eventName, function() {
 				label.innerHTML = "<b>" + title + ":</b> " + range.value;
 				if(callback) {
 					callback(parseFloat(range.value));
+				}
+				if(gch) {
+					gch();
 				}
 			});
 		}, 
@@ -246,6 +261,9 @@
 			if(control.callback) {
 				control.callback(control.range.value);
 			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
+			}
 		},
 
 		setRangeParameters: function(title, min, max, step) {
@@ -253,6 +271,12 @@
 			control.range.min = min;
 			control.range.max = max;
 			control.range.step = step;
+		},
+
+		bindBoolean: function(title, value, object) {
+			this.addBoolean(title, value, function(value) {
+				object[title] = value;
+			});
 		},
 
 		addBoolean: function(title, value, callback) {
@@ -277,15 +301,22 @@
 				callback: callback
 			};
 
+			var gch = this._globalChangeHandler;
 			checkbox.addEventListener("change", function() {
 				if(callback) {
 					callback(checkbox.checked);
+				}
+				if(gch) {
+					gch();
 				}
 			});
 			label.addEventListener("click", function() {
 				checkbox.checked = !checkbox.checked;
 				if(callback) {
 					callback(checkbox.checked);
+				}
+				if(gch) {
+					gch();
 				}
 			});
 		},
@@ -298,6 +329,9 @@
 			this._controls[title].checkbox.checked = value;
 			if(control.callback) {
 				this._controls[title].callback(value);
+			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
 			}
 		},
 
@@ -317,10 +351,20 @@
 				button: button
 			}
 
+			var gch = this._globalChangeHandler;
 			button.addEventListener("click", function() {
 				if(callback) {
 					callback(button);
 				}
+				if(gch) {
+					gch();
+				}
+			});
+		},
+
+		bindColor: function(title, color, object) {
+			this.addColor(title, color, function(value) {
+				object[title] = value;
 			});
 		},
 
@@ -349,10 +393,14 @@
 				callback: callback
 			};
 
+			var gch = this._globalChangeHandler;
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
 				if(callback) {
 					callback(colorInput.value);
+				}
+				if(gch) {
+					gch();
 				}
 			});
 		},
@@ -368,6 +416,15 @@
 			if(control.callback) {
 				control.callback(control.colorInput.value);
 			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
+			}
+		},
+
+		bindText: function(title, text, object) {
+			this.addText(title, text, function(value) {
+				object[title] = value;
+			});
 		},
 
 		addText: function(title, text, callback) {
@@ -390,9 +447,13 @@
 				callback: callback
 			}
 
+			var gch = this._globalChangeHandler;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
+				}
+				if(gch) {
+					gch();
 				}
 			});
 		}, 
@@ -407,6 +468,9 @@
 			if(control.callback) {
 				control.callback(text);
 			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
+			}
 		},
 
 		addInfo: function(title, info) {
@@ -416,6 +480,12 @@
 				container: container
 			};
 			this._content.appendChild(container);
+		},
+
+		bindDropDown: function(title, items, object) {
+			this.addDropDown(title, items, function(value) {
+				object[title] = value.value;
+			});
 		},
 
 		addDropDown: function(title, items, callback) {
@@ -428,6 +498,7 @@
 				option.label = items[i];
 				select.add(option);
 			};
+			var gch = this._globalChangeHandler;
 			select.addEventListener("change", function() {
 				var index = select.selectedIndex,
 					options = select.options;
@@ -437,6 +508,9 @@
 						index: index,
 						value: options[index].label
 					});
+				}
+				if(gch) {
+					gch();
 				}
 			});
 			select.className = "msettings_select";
@@ -473,6 +547,9 @@
 					index: index,
 					value: options[index].label
 				});
+			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
 			}
 		},
 
