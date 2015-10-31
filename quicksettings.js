@@ -583,6 +583,20 @@
 			this._controls[title].image.src = imageURL;
 		},
 
+		addElement: function(title, element) {
+			var container = this._createContainer(),
+				label = this._createLabel("<b>" + title + "<b>");
+
+			container.appendChild(label);
+			container.appendChild(element);
+			this._content.appendChild(container);
+
+			this._controls[title] = {
+				container: container,
+				label: label
+			};
+		},
+
 		removeControl: function(title) {
 			var container = this._controls[title].container;
 			if(container.parentElement) {
