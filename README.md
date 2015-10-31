@@ -74,9 +74,11 @@ By default, the panel will be 200px wide and grow in height to fit its content. 
 
     settings.setSize(w, h);
 
-Or, perhaps more useful, you can set only the width and let the height continue to grow as normal.
+Or, perhaps more useful, you can set only the width and let the height continue to grow as normal:
 
     settings.setWidth(w);
+    
+You can also, of course, set the width in the CSS if you want. But this allows for dynamic width setting, or having multiple panels with different widths.
 
 Add the library in a script tag, or via require.js.
 
