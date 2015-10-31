@@ -561,6 +561,28 @@
 			this._controls[title].container.innerHTML = info;
 		},
 
+		addImage: function(title, imageURL) {
+			var container = this._createContainer(),
+				label = this._createLabel("<b>" + title + "<b>");
+				img = document.createElement("img");
+			img.className = "msettings_image";
+			img.src = imageURL;
+
+			container.appendChild(label);
+			container.appendChild(img);
+			this._content.appendChild(container);
+
+			this._controls[title] = {
+				container: container,
+				image: img,
+				label: label
+			};
+		},
+
+		setImageURL: function(title, imageURL) {
+			this._controls[title].image.src = imageURL;
+		},
+
 		removeControl: function(title) {
 			var container = this._controls[title].container;
 			if(container.parentElement) {

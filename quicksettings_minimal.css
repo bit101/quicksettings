@@ -150,3 +150,7 @@
 .msettings_select {
   font-size: 9px;
 }
+
+.msettings_image {
+  width: 100%;
+}

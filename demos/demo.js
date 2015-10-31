@@ -33,7 +33,7 @@ window.onload = function() {
 	}
 
 
-	var settings = QuickSettings.create(0, 0, "Settings");
+	var settings = QuickSettings.create(20, 20, "Settings");
 	settings.addRange("CicleCount", 3, 30, numCircles, 1, function(value) {
 		numCircles = value;
 		draw();
@@ -65,13 +65,23 @@ window.onload = function() {
 	settings.addButton("Clear", function() {
 		context.clearRect(0, 0, width, height);
 	});
-	settings.addText("Random Text", "hello world");
-	settings.addInfo("info", "Turn it off and back on again");
-	settings.setKey("s");
 
-	settings.addDropDown("Choices", ["foo", "bar", "baz"], function(value) {
-		alert("you chose index " + value.index + ": " + value.value);
+	var settings2 = QuickSettings.create(width - 250, 20, "Other Stuff");
+
+	settings2.addText("Random Text", "hello world");
+	settings2.addInfo("info", "Turn it off and back on again");
+	settings2.setKey("s");
+
+	settings2.addDropDown("Choices", ["Cat", "Dog", "Iguana"], function(value) {
+		var images = [
+		"https://www.petfinder.com/wp-content/uploads/2012/11/99233806-bringing-home-new-cat-632x475.jpg",
+		"http://www.dogster.com/wp-content/uploads/2015/05/Cute%20dog%20listening%20to%20music%201_1.jpg",
+		"http://www.thepetmatchmaker.com/wp-content/uploads/2014/02/Grumpy_green_iguana_by_GlobalGraphic-1.jpg"
+		];
+		settings2.setImageURL("Random Animal Image", images[value.index]);
 	});
+
+	settings2.addImage("Random Animal Image", "https://www.petfinder.com/wp-content/uploads/2012/11/99233806-bringing-home-new-cat-632x475.jpg");
 
 
 }
