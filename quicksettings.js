@@ -73,6 +73,11 @@
 			this._content.style.height = (h - this._titleBar.offsetHeight) + "px";
 		},
 
+		setWidth: function(w) {
+			this._panel.style.width = w + "px";
+			this._content.style.width = w + "px";
+		},
+
 		setDraggable: function(draggable) {
 			this._draggable = draggable;
 			if(this._draggable || this._collapsible) {
