@@ -16,6 +16,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addButton(title, callback);                        // creates a button
     settings.addInfo(title, text);                              // creates informational text
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
+    settings.addImage(title, imageURL);                         // creates and image element with the specified URL
 
 For range, color, boolean and text, the callback will pass the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
 
@@ -36,6 +37,7 @@ And set values of controls with:
     settings.setText(title, text);
     settings.setInfo(title, text);
     settings.setDropDownIndex(title, index);
+    settings.setImageURL(title, imageURL);
     
 If, for some reason, you need to change the min, max or step of a range input, use:
 
