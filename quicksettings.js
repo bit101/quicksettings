@@ -327,7 +327,7 @@
 
 		setBoolean: function(title, value) {
 			this._controls[title].checkbox.checked = value;
-			if(control.callback) {
+			if(this._controls[title].callback) {
 				this._controls[title].callback(value);
 			}
 			if(this._globalChangeHandler) {
