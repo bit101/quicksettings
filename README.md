@@ -44,9 +44,14 @@ If, for some reason, you need to change the min, max or step of a range input, u
 
     settings.setRangeParameters(title, min, max, step);
     
-And remove any control with:
+You can remove any control with:
 
     settings.removeControl(title);
+    
+Or disable and reenable any controls that can be enabled/disabled with:
+
+    settings.disableControl(title);
+    settings.enableControl(title);
 
 The panel is draggable and collapsible/expandable by a double click on the title bar by default. The following methods affect this behavior:
 
