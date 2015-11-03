@@ -264,7 +264,7 @@
 			control.control.value = value;
 			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
 			if(control.callback) {
-				control.callback(control.range.value);
+				control.callback(control.control.value);
 			}
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
@@ -611,11 +611,15 @@
 		},
 
 		enableControl: function(title) {
-			this._controls[title].control.disabled = false;
+			if(this._controls[title].control) {
+				this._controls[title].control.disabled = false;
+			}
 		},
 
 		disableControl: function(title) {
-			this._controls[title].control.disabled = true;
+			if(this._controls[title].control) {
+				this._controls[title].control.disabled = true;
+			}
 		}
 	};
 
