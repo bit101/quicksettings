@@ -80,6 +80,14 @@ window.onload = function() {
 		];
 		settings2.setImageURL("Random Animal Image", images[value.index]);
 	});
+	settings2.addBoolean("Dropdown enabled", true, function(value) {
+		if(value) {
+			settings2.enableControl("Choices");
+		}
+		else {
+			settings2.disableControl("Choices");
+		}
+	});
 
 	settings2.addImage("Random Animal Image", "https://www.petfinder.com/wp-content/uploads/2012/11/99233806-bringing-home-new-cat-632x475.jpg");
 

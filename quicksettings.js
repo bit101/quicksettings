@@ -224,7 +224,7 @@
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				range: range,
+				control: range,
 				label: label,
 				callback: callback
 			};
@@ -256,13 +256,13 @@
 		},
 
 		getRangeValue: function(title) {
-			return this._controls[title].range.value;
+			return this._controls[title].control.value;
 		},
 
 		setRangeValue: function(title, value) {
 			var control = this._controls[title];
-			control.range.value = value;
-			control.label.innerHTML = "<b>" + title + ":</b> " + control.range.value;
+			control.control.value = value;
+			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
 			if(control.callback) {
 				control.callback(control.range.value);
 			}
@@ -273,9 +273,9 @@
 
 		setRangeParameters: function(title, min, max, step) {
 			var control = this._controls[title];
-			control.range.min = min;
-			control.range.max = max;
-			control.range.step = step;
+			control.control.min = min;
+			control.control.max = max;
+			control.control.step = step;
 		},
 
 		bindBoolean: function(title, value, object) {
@@ -302,7 +302,7 @@
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				checkbox: checkbox,
+				control: checkbox,
 				callback: callback
 			};
 
@@ -327,11 +327,11 @@
 		},
 
 		getBoolean: function(title) {
-			return this._controls[title].checkbox.checked;
+			return this._controls[title].control.checked;
 		},
 
 		setBoolean: function(title, value) {
-			this._controls[title].checkbox.checked = value;
+			this._controls[title].control.checked = value;
 			if(this._controls[title].callback) {
 				this._controls[title].callback(value);
 			}
@@ -353,7 +353,7 @@
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				button: button
+				control: button
 			}
 
 			var gch = this._globalChangeHandler;
@@ -393,7 +393,7 @@
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				colorInput: colorInput,
+				control: colorInput,
 				label: label,
 				callback: callback
 			};
@@ -411,15 +411,15 @@
 		},
 
 		getColor: function(title) {
-			return this._controls[title].colorInput.value;
+			return this._controls[title].control.value;
 		},
 
 		setColor: function(title, value) {
 			var control = this._controls[title];
-			control.colorInput.value = value;
-			control.label.innerHTML = "<b>" + title + ":</b> " + control.colorInput.value;
+			control.control.value = value;
+			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
 			if(control.callback) {
-				control.callback(control.colorInput.value);
+				control.callback(control.control.value);
 			}
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
@@ -447,7 +447,7 @@
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				textInput: textInput,
+				control: textInput,
 				label: label,
 				callback: callback
 			}
@@ -464,12 +464,12 @@
 		}, 
 
 		getText: function(title) {
-			return this._controls[title].textInput.value;
+			return this._controls[title].control.value;
 		},
 
 		setText: function(title, text) {
 			var control = this._controls[title];
-			control.textInput.value = text;
+			control.control.value = text;
 			if(control.callback) {
 				control.callback(text);
 			}
@@ -526,7 +526,7 @@
 
 			this._controls[title] = {
 				container: container,
-				select: select,
+				control: select,
 				label: label,
 				callback: callback
 			};
@@ -534,7 +534,7 @@
 
 		getDropDownValue: function(title) {
 			var control = this._controls[title],
-				select = control.select,
+				select = control.control,
 				index = select.selectedIndex,
 				options = select.options;
 			return {
@@ -545,8 +545,8 @@
 
 		setDropDownIndex: function(title, index) {
 			var control = this._controls[title],
-				options = control.select.options;
-			control.select.selectedIndex = index;
+				options = control.control.options;
+			control.control.selectedIndex = index;
 			if(control.callback) {
 				control.callback({
 					index: index,
@@ -579,13 +579,13 @@
 
 			this._controls[title] = {
 				container: container,
-				image: img,
+				control: img,
 				label: label
 			};
 		},
 
 		setImageURL: function(title, imageURL) {
-			this._controls[title].image.src = imageURL;
+			this._controls[title].control.src = imageURL;
 		},
 
 		addElement: function(title, element) {
@@ -608,6 +608,14 @@
 				container.parentElement.removeChild(container);
 			}
 			this._controls[title] = null;
+		},
+
+		enableControl: function(title) {
+			this._controls[title].control.disabled = false;
+		},
+
+		disableControl: function(title) {
+			this._controls[title].control.disabled = true;
 		}
 	};
 
