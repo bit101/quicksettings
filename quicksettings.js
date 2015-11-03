@@ -496,7 +496,7 @@
 		addDropDown: function(title, items, callback) {
 			var container = this._createContainer();
 
-			var label = this._createLabel("<b>" + title + "<b>");
+			var label = this._createLabel("<b>" + title + "</b>");
 			var select = document.createElement("select");
 			for(var i = 0; i < items.length; i++) {
 				var option = document.createElement("option");
@@ -568,7 +568,7 @@
 
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "<b>");
+				label = this._createLabel("<b>" + title + "</b>");
 				img = document.createElement("img");
 			img.className = "msettings_image";
 			img.src = imageURL;
@@ -588,9 +588,50 @@
 			this._controls[title].control.src = imageURL;
 		},
 
+		addProgressBar: function(title, max, value, showNumbers) {
+			var container = this._createContainer(),
+				label = this._createLabel("");
+				progress = document.createElement("progress");
+			progress.className = "msettings_progress";
+			progress.max = max;
+			progress.value = value;
+			if(showNumbers) {
+				label.innerHTML = "<b>" + title + ":<b> " + value + " / " + max;
+			}
+			else {
+				label.innerHTML = "<b>" + title + "<b>";
+			}
+
+			container.appendChild(label);
+			container.appendChild(progress);
+			this._content.appendChild(container);
+
+			this._controls[title] = {
+				container: container,
+				control: progress,
+				showNumbers: showNumbers,
+				label: label
+			};
+		},
+
+		getProgress: function(title) {
+			return this._controls[title].control.value;
+		},
+
+		setProgress: function(title, value) {
+			var progress = this._controls[title].control;
+			progress.value = value;
+			if(this._controls[title].showNumbers) {
+				this._controls[title].label.innerHTML = "<b>" + title + ":<b> " + progress.value + " / " + progress.max;
+			}
+			else {
+				this._controls[title].label.innerHTML = "<b>" + title + "<b>";
+			}
+		},
+
 		addElement: function(title, element) {
 			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "<b>");
+				label = this._createLabel("<b>" + title + "</b>");
 
 			container.appendChild(label);
 			container.appendChild(element);

@@ -91,6 +91,14 @@ window.onload = function() {
 
 	settings2.addImage("Random Animal Image", "https://www.petfinder.com/wp-content/uploads/2012/11/99233806-bringing-home-new-cat-632x475.jpg");
 
+	var progress = 0;
+	settings2.addProgressBar("Progress", 100, 0);
+	setInterval(function() {
+		settings2.setProgress("Progress", progress);
+		progress++;
+		progress %= 100;
+	}, 1000 / 15);
+
 	var div = document.createElement("div");
 	div.style.width = "300px";
 	div.style.height = "50px";
@@ -98,7 +106,7 @@ window.onload = function() {
 	div.style.backgroundColor = "#ffccff";
 	div.innerHTML = "I am a div";
 	settings2.addElement("Raw Element", div);
-	settings2.setWidth(340);
+	settings2.setWidth(240);
 
 
 }
