@@ -100,13 +100,14 @@ window.onload = function() {
 	}, 1000 / 15);
 
 	var div = document.createElement("div");
-	div.style.width = "300px";
+	div.style.width = "200px";
 	div.style.height = "50px";
 	div.style.padding = "10px";
 	div.style.backgroundColor = "#ffccff";
 	div.innerHTML = "I am a div";
 	settings2.addElement("Raw Element", div);
 	settings2.setWidth(240);
+	settings2.addTextArea("Text Area", "I'm even resizable!");
 
 
 }

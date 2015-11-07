@@ -160,3 +160,11 @@
 .msettings_progress {
   width: 100%;
 }
+
+.msettings_textarea {
+  font-size: 9px;
+  resize: vertical;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}

@@ -64,7 +64,7 @@
 
 		setPosition: function(x, y) {
 			this._panel.style.left = x + "px";
-			this._panel.style.top = y + "px";
+			this._panel.style.top = Math.max(y, 0) + "px";
 		},
 
 		setSize: function(w, h) {
@@ -441,6 +441,36 @@
 			textInput.id = title;
 			textInput.value = text || "";
 			textInput.className = "msettings_text_input";
+
+			container.appendChild(label);
+			container.appendChild(textInput);
+			this._content.appendChild(container);
+			this._controls[title] = {
+				container: container,
+				control: textInput,
+				label: label,
+				callback: callback
+			}
+
+			var gch = this._globalChangeHandler;
+			textInput.addEventListener("input", function() {
+				if(callback) {
+					callback(textInput.value);
+				}
+				if(gch) {
+					gch();
+				}
+			});
+		}, 
+
+		addTextArea: function(title, text, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>");
+
+			var textInput = document.createElement("textarea");
+			textInput.id = title;
+			textInput.value = text || "";
+			textInput.className = "msettings_textarea";
 
 			container.appendChild(label);
 			container.appendChild(textInput);
