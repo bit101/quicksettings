@@ -316,6 +316,9 @@
 				}
 			});
 			label.addEventListener("click", function() {
+				if(checkbox.disabled) {
+					return;
+				}
 				checkbox.checked = !checkbox.checked;
 				if(callback) {
 					callback(checkbox.checked);
