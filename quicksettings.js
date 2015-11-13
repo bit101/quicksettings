@@ -99,8 +99,8 @@
 		},
 
 		_startDrag: function(event) {
-			this._panel.style.zIndex = ++QuickSettings._topZ;
 			if(this._draggable) {
+				this._panel.style.zIndex = ++QuickSettings._topZ;
 				document.addEventListener("mousemove", this._drag);
 				document.addEventListener("mouseup", this._endDrag);
 				this._startX = event.clientX;
