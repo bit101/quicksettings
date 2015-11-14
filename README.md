@@ -65,7 +65,7 @@ Or disable and reenable any controls that can be enabled/disabled with:
 The panel is draggable and collapsible/expandable by a double click on the title bar by default. The following methods affect this behavior:
 
     settings.setDraggable(bool);
-    settings.setCollaspible(bool);
+    settings.setCollapsible(bool);
     settings.collapse();
     settings.expand();
     settings.toggleCollapsed():
