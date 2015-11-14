@@ -48,6 +48,10 @@ If, for some reason, you need to change the min, max or step of a range input, u
 
     settings.setRangeParameters(title, min, max, step);
     
+Set the number of rows in a text area (defaults to 5) with:
+
+    settings.setTextAreasRows(title, rows);
+    
 You can remove any control with:
 
     settings.removeControl(title);
