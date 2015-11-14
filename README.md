@@ -13,6 +13,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addColor(title, color, callback);                  // creates a color input
     settings.addBoolean(title, value, callback);                // creates a checkbox
     settings.addText(title, text, callback);                    // creates an input text field
+    settings.addTextArea(title, text, callback);                // creates a resizable text area
     settings.addButton(title, callback);                        // creates a button
     settings.addInfo(title, text);                              // creates informational text
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
