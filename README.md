@@ -18,9 +18,10 @@ Now you can add controls to the panel. Supported controls are:
     settings.addInfo(title, text);                              // creates informational text
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
     settings.addImage(title, imageURL);                         // creates and image element with the specified URL
-    settings.addElement(title, htmlELement);                    // allows you to add any arbitrary HTML element to the panel
     settings.addProgressBar(title, max, value, showNumbers);    // creates a progress bar
-
+    settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
+    settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
+    
 For range, color, boolean and text, the callback will pass the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
 
 You can also query the value of controls at any time with:
@@ -91,7 +92,7 @@ Or, perhaps more useful, you can set only the width and let the height continue 
 
     settings.setWidth(w);
     
-You can also, of course, set the width in the CSS if you want. But this allows for dynamic width setting, or having multiple panels with different widths.
+You can also, of course, set the width in the CSS if you want. But this allows for dynamic width setting, or having multiple panels with different widths. If you want to size the panel to exactly fit some certain content, add 20px to the content size. For example, if you've added an element using `addElement` and that element is 300px wide, say `setWidth(320)` and it should fit just fine.
 
 Add the library in a script tag, or via require.js.
 
