@@ -681,6 +681,12 @@
 			};
 		},
 
+		addHTML: function(title, html) {
+			var div = document.createElement("div");
+			div.innerHTML = html;
+			this.addElement(title, div);
+		},
+
 		removeControl: function(title) {
 			var container = this._controls[title].container;
 			if(container.parentElement) {
