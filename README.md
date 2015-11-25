@@ -127,8 +127,8 @@ These two changes allow you to have a single model object and a single change ha
 
 ## Demos
 
-http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
-http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
-http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
-http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
-http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
