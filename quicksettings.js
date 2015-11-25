@@ -688,8 +688,10 @@
 		},
 
 		removeControl: function(title) {
-			var container = this._controls[title].container;
-			if(container.parentElement) {
+			if(this._controls[title]){
+				var container = this._controls[title].container;
+			}
+			if(container && container.parentElement) {
 				container.parentElement.removeChild(container);
 			}
 			this._controls[title] = null;
