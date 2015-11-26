@@ -36,7 +36,7 @@ require(["../quicksettings"], function (QuickSettings) {
 
 
 	var settings = QuickSettings.create(0, 0, "Settings");
-	settings.addRange("CicleCount", 3, 30, numCircles, 1, function(value) {
+	settings.addRange("CircleCount", 3, 30, numCircles, 1, function(value) {
 		numCircles = value;
 		draw();
 	});

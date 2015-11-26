@@ -34,7 +34,7 @@ window.onload = function() {
 
 
 	var settings = QuickSettings.create(20, 20, "Settings");
-	settings.addRange("CicleCount", 3, 30, numCircles, 1, function(value) {
+	settings.addRange("CircleCount", 3, 30, numCircles, 1, function(value) {
 		numCircles = value;
 		draw();
 	});
