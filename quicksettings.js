@@ -264,7 +264,7 @@
 			control.control.value = value;
 			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
 			if(control.callback) {
-				control.callback(control.control.value);
+				control.callback(parseFloat(control.control.value));
 			}
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
