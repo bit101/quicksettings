@@ -164,6 +164,7 @@
 
 		show: function() {
 			this._panel.style.visibility = "visible";
+			this._panel.style.zIndex = ++QuickSettings._topZ;
 			this._hidden = false;
 		},
 
