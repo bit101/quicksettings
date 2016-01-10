@@ -136,6 +136,8 @@
 
 		setGlobalChangeHandler: function(handler) {
 			this._globalChangeHandler = handler;
+
+			return this;
 		},
 
 		toggleCollapsed: function() {
@@ -205,6 +207,7 @@
 			this.addRange(title, min, max, value, step, function(value) {
 				object[title] = value;
 			});
+			return this;
 		},
 
 		addRange: function(title, min, max, value, step, callback) {
@@ -284,6 +287,8 @@
 			this.addBoolean(title, value, function(value) {
 				object[title] = value;
 			});
+
+			return this;
 		},
 
 		addBoolean: function(title, value, callback) {
@@ -376,6 +381,8 @@
 			this.addColor(title, color, function(value) {
 				object[title] = value;
 			});
+
+			return this;
 		},
 
 		addColor: function(title, color, callback) {
@@ -435,6 +442,9 @@
 			this.addText(title, text, function(value) {
 				object[title] = value;
 			});
+
+			return this;
+
 		},
 
 		addText: function(title, text, callback) {
@@ -531,6 +541,9 @@
 			this.addDropDown(title, items, function(value) {
 				object[title] = value.value;
 			});
+
+			return this;
+
 		},
 
 		addDropDown: function(title, items, callback) {
