@@ -124,6 +124,23 @@ When the checkbox is clicked, it will set `model.visible` to true or false.
 
 These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
 
+## New as of February 11, 2016
+
+Add multiple callbacks to one control.
+
+    settings.addCallbackHandler(title, callback);
+    settings.removeCallbackHandler(title, callback);
+
+Callback will be called with an event object. 
+
+Example:
+
+    {
+        value: 5
+    }
+
+For buttons, it has button set and for dropdown it has index and value.
+
 
 ## Demos
 

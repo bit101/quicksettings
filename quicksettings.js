@@ -14,6 +14,7 @@
 		_draggable: true,
 		_collapsible: true,
 		_globalChangeHandler: null,
+		_callbacks = {},
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
@@ -138,6 +139,30 @@
 			this._globalChangeHandler = handler;
 		},
 
+		addCallbackHandler: function (title, callback) {
+			if (typeof callback !== "function")
+				throw "addCallbackHandler expects a function as second argument";
+
+			this._callbacks[title] = this._callbacks[title] || [];
+			if (this._callbacks[title].indexOf(callback) !== -1) return;
+			this.callbacks[title].push(callback);
+		},
+
+		removeCallbackHandler: function (title, callback) {
+			var index = this._callbacks[title].indexOf(callback);
+			while (index !== -1) {
+				this._callbacks[title].splice(index, 1);
+				var index = this._callbacks[title].indexOf(callback);
+			}
+		},
+
+		_callCallbacks: function (title, event) {
+			this._callbacks[title] = this._callbacks[title] || [];
+			for (var k = 0; k < this._callbacks[title].length; k++) {
+				this._callbacks[title][k](event);
+			}
+		},
+
 		toggleCollapsed: function() {
 			if(this._collapsed) {
 				this.expand();
@@ -236,6 +261,7 @@
 				eventName = "change";
 			}
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			range.addEventListener(eventName, function() {
 				label.innerHTML = "<b>" + title + ":</b> " + range.value;
 				if(callback) {
@@ -244,6 +270,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: parseFloat(range.value)});
 			});
 		}, 
 
@@ -309,6 +336,7 @@
 			};
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			checkbox.addEventListener("change", function() {
 				if(callback) {
 					callback(checkbox.checked);
@@ -316,6 +344,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: checkbox.checked});
 			});
 			label.addEventListener("click", function() {
 				if(checkbox.disabled) {
@@ -328,6 +357,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: checkbox.checked});
 			});
 		},
 
@@ -362,6 +392,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			button.addEventListener("click", function() {
 				if(callback) {
 					callback(button);
@@ -369,6 +400,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {button: button});
 			});
 		},
 
@@ -404,6 +436,7 @@
 			};
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
 				if(callback) {
@@ -412,6 +445,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: colorInput.value});
 			});
 		},
 
@@ -458,6 +492,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
@@ -465,6 +500,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: textInput.value});
 			});
 		}, 
 
@@ -489,6 +525,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
@@ -496,6 +533,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: textInput.value});
 			});
 		}, 
 
@@ -544,6 +582,7 @@
 				select.add(option);
 			};
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			select.addEventListener("change", function() {
 				var index = select.selectedIndex,
 					options = select.options;
@@ -557,6 +596,11 @@
 				if(gch) {
 					gch();
 				}
+
+				qs._callCallbacks(title, {
+					index: index,
+					value: options[index].label
+				});
 			});
 			select.className = "msettings_select";
 
