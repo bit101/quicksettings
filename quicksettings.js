@@ -14,7 +14,7 @@
 		_draggable: true,
 		_collapsible: true,
 		_globalChangeHandler: null,
-		_callbacks = {},
+		_callbacks: {},
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
