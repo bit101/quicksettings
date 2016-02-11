@@ -145,7 +145,7 @@
 
 			this._callbacks[title] = this._callbacks[title] || [];
 			if (this._callbacks[title].indexOf(callback) !== -1) return;
-			this.callbacks[title].push(callback);
+			this._callbacks[title].push(callback);
 		},
 
 		removeCallbackHandler: function (title, callback) {
@@ -236,7 +236,7 @@
 			if (typeof props.type !== "string")
 				throw "AddControl needs an object with a type";
 
-			var value = localStorage.getItem("quicksettings-" + title) || props.value || props.color || props.text;
+			var value = localStorage.getItem("quicksettings-" + props.title) || props.value || props.color || props.text;
 			var callback = props.callback || function () {};
 
 			switch (props.type.toLowerCase()) {
