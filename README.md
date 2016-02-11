@@ -141,6 +141,25 @@ Example:
 
 For buttons, it has button set and for dropdown it has index and value.
 
+There is now a method to add from an object. This will also automatically save and load the settings between reloads.
+
+    settings.addControl({
+        type: "textarea",
+        title: "sometitle",
+        value: "defaultvalue if never been set by user"
+    });
+
+The other propertys are the same as with the normal add methods.
+Example:
+
+    settings.addControl({
+        type: range,
+        title: "somerange",
+        min: 5,
+        max: 10,
+        step: 1,
+        callback: function () {} // optional for all
+    });
 
 ## Demos
 

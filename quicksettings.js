@@ -232,6 +232,39 @@
 			});
 		},
 
+		addControl: function (props) {
+			if (typeof props.type !== "string")
+				throw "AddControl needs an object with a type";
+
+			var value = localStorage.getItem("quicksettings-" + title) || props.value || props.color || props.text;
+			var callback = props.callback || function () {};
+
+			switch (props.type.toLowerCase()) {
+				case "range":
+					this.addRange(props.title, props.min, props.max, parseFloat(value), props.step, callback);
+				break;
+				case "color":
+					this.addColor(props.title, value, callback);
+				break;
+				case "boolean":
+					this.addBoolean(props.title, typeof value == "string" ? value == "true" : value, callback);
+				break;
+				case "text":
+					this.addText(props.title, value, callback);
+				break;
+				case "textarea":
+					this.addTextArea(props);
+				break;
+				case "dropdown":
+					this.addDropDown(props.title, props.items, callback, value);
+				break;
+			}
+
+			this.addCallbackHandler(props.title, function (event) {
+				localStorage.setItem(props.title, event.index || event.value);
+			});
+		},
+
 		addRange: function(title, min, max, value, step, callback) {
 			var container = this._createContainer();
 
@@ -373,6 +406,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: value});
 		},
 
 		addButton: function(title, callback) {
@@ -463,6 +497,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: value});
 		},
 
 		bindText: function(title, text, object) {
@@ -554,6 +589,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: text});
 		},
 
 		addInfo: function(title, info) {
@@ -571,7 +607,7 @@
 			});
 		},
 
-		addDropDown: function(title, items, callback) {
+		addDropDown: function(title, items, callback, selectedIndex) {
 			var container = this._createContainer();
 
 			var label = this._createLabel("<b>" + title + "</b>");
@@ -581,6 +617,8 @@
 				option.label = items[i];
 				select.add(option);
 			};
+			if (selectedIndex) select.selectedIndex = selectedIndex;
+
 			var gch = this._globalChangeHandler;
 			var qs = this;
 			select.addEventListener("change", function() {
@@ -640,6 +678,10 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {
+				index: index,
+				value: options[index].label
+			});
 		},
 
 		getInfo: function(title) {
