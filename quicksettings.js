@@ -261,7 +261,7 @@
 			}
 
 			this.addCallbackHandler(props.title, function (event) {
-				localStorage.setItem(props.title, event.index || event.value);
+				localStorage.setItem("quicksettings-" + props.title, event.index || event.value);
 			});
 		},
 
