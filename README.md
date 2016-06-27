@@ -3,6 +3,18 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 ![QuickSettings Panel](images/chrome_pc.png)
 
+You can directly link to the main minified js file at:
+
+https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings.min.js
+
+You’ll also need to add one of the QuickSettings style sheets: plain, minimal or minimal dark:
+
+https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings.css
+
+https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings_minimal.css
+
+https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings_minimal_dark.css
+
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
     var settings = QuickSettings.create(x, y, panelTitle);
