@@ -14,6 +14,7 @@
 		_draggable: true,
 		_collapsible: true,
 		_globalChangeHandler: null,
+		_callbacks: {},
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
@@ -138,6 +139,30 @@
 			this._globalChangeHandler = handler;
 		},
 
+		addCallbackHandler: function (title, callback) {
+			if (typeof callback !== "function")
+				throw "addCallbackHandler expects a function as second argument";
+
+			this._callbacks[title] = this._callbacks[title] || [];
+			if (this._callbacks[title].indexOf(callback) !== -1) return;
+			this._callbacks[title].push(callback);
+		},
+
+		removeCallbackHandler: function (title, callback) {
+			var index = this._callbacks[title].indexOf(callback);
+			while (index !== -1) {
+				this._callbacks[title].splice(index, 1);
+				var index = this._callbacks[title].indexOf(callback);
+			}
+		},
+
+		_callCallbacks: function (title, event) {
+			this._callbacks[title] = this._callbacks[title] || [];
+			for (var k = 0; k < this._callbacks[title].length; k++) {
+				this._callbacks[title][k](event);
+			}
+		},
+
 		toggleCollapsed: function() {
 			if(this._collapsed) {
 				this.expand();
@@ -207,6 +232,39 @@
 			});
 		},
 
+		addControl: function (props) {
+			if (typeof props.type !== "string")
+				throw "AddControl needs an object with a type";
+
+			var value = localStorage.getItem("quicksettings-" + props.title) || props.value || props.color || props.text;
+			var callback = props.callback || function () {};
+
+			switch (props.type.toLowerCase()) {
+				case "range":
+					this.addRange(props.title, props.min, props.max, parseFloat(value), props.step, callback);
+				break;
+				case "color":
+					this.addColor(props.title, value, callback);
+				break;
+				case "boolean":
+					this.addBoolean(props.title, typeof value == "string" ? value == "true" : value, callback);
+				break;
+				case "text":
+					this.addText(props.title, value, callback);
+				break;
+				case "textarea":
+					this.addTextArea(props);
+				break;
+				case "dropdown":
+					this.addDropDown(props.title, props.items, callback, value);
+				break;
+			}
+
+			this.addCallbackHandler(props.title, function (event) {
+				localStorage.setItem("quicksettings-" + props.title, event.index || event.value);
+			});
+		},
+
 		addRange: function(title, min, max, value, step, callback) {
 			var container = this._createContainer();
 
@@ -236,6 +294,7 @@
 				eventName = "change";
 			}
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			range.addEventListener(eventName, function() {
 				label.innerHTML = "<b>" + title + ":</b> " + range.value;
 				if(callback) {
@@ -244,6 +303,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: parseFloat(range.value)});
 			});
 		}, 
 
@@ -309,6 +369,7 @@
 			};
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			checkbox.addEventListener("change", function() {
 				if(callback) {
 					callback(checkbox.checked);
@@ -316,6 +377,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: checkbox.checked});
 			});
 			label.addEventListener("click", function() {
 				if(checkbox.disabled) {
@@ -328,6 +390,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: checkbox.checked});
 			});
 		},
 
@@ -343,6 +406,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: value});
 		},
 
 		addButton: function(title, callback) {
@@ -362,6 +426,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			button.addEventListener("click", function() {
 				if(callback) {
 					callback(button);
@@ -369,6 +434,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {button: button});
 			});
 		},
 
@@ -404,6 +470,7 @@
 			};
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
 				if(callback) {
@@ -412,6 +479,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: colorInput.value});
 			});
 		},
 
@@ -429,6 +497,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: value});
 		},
 
 		bindText: function(title, text, object) {
@@ -458,6 +527,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
@@ -465,6 +535,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: textInput.value});
 			});
 		}, 
 
@@ -489,6 +560,7 @@
 			}
 
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
@@ -496,6 +568,7 @@
 				if(gch) {
 					gch();
 				}
+				qs._callCallbacks(title, {value: textInput.value});
 			});
 		}, 
 
@@ -516,6 +589,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {value: text});
 		},
 
 		addInfo: function(title, info) {
@@ -533,7 +607,7 @@
 			});
 		},
 
-		addDropDown: function(title, items, callback) {
+		addDropDown: function(title, items, callback, selectedIndex) {
 			var container = this._createContainer();
 
 			var label = this._createLabel("<b>" + title + "</b>");
@@ -543,7 +617,10 @@
 				option.label = items[i];
 				select.add(option);
 			};
+			if (selectedIndex) select.selectedIndex = selectedIndex;
+
 			var gch = this._globalChangeHandler;
+			var qs = this;
 			select.addEventListener("change", function() {
 				var index = select.selectedIndex,
 					options = select.options;
@@ -557,6 +634,11 @@
 				if(gch) {
 					gch();
 				}
+
+				qs._callCallbacks(title, {
+					index: index,
+					value: options[index].label
+				});
 			});
 			select.className = "msettings_select";
 
@@ -596,6 +678,10 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			this._callCallbacks(title, {
+				index: index,
+				value: options[index].label
+			});
 		},
 
 		getInfo: function(title) {

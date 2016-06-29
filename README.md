@@ -136,6 +136,42 @@ When the checkbox is clicked, it will set `model.visible` to true or false.
 
 These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
 
+## New as of February 11, 2016
+
+Add multiple callbacks to one control.
+
+    settings.addCallbackHandler(title, callback);
+    settings.removeCallbackHandler(title, callback);
+
+Callback will be called with an event object. 
+
+Example:
+
+    {
+        value: 5
+    }
+
+For buttons, it has button set and for dropdown it has index and value.
+
+There is now a method to add from an object. This will also automatically save and load the settings between reloads.
+
+    settings.addControl({
+        type: "textarea",
+        title: "sometitle",
+        value: "defaultvalue if never been set by user"
+    });
+
+The other propertys are the same as with the normal add methods.
+Example:
+
+    settings.addControl({
+        type: range,
+        title: "somerange",
+        min: 5,
+        max: 10,
+        step: 1,
+        callback: function () {} // optional for all
+    });
 
 ## Demos
 
