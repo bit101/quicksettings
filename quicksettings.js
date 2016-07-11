@@ -258,7 +258,7 @@
 		},
 
 		getRangeValue: function(title) {
-			return this._controls[title].control.value;
+			return parseFloat(this._controls[title].control.value);
 		},
 
 		setRangeValue: function(title, value) {
@@ -468,6 +468,37 @@
 			});
 		}, 
 
+		addPassword: function(title, text, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>");
+
+			var textInput = document.createElement("input");
+			textInput.type = "password";
+			textInput.id = title;
+			textInput.value = text || "";
+			textInput.className = "msettings_text_input";
+
+			container.appendChild(label);
+			container.appendChild(textInput);
+			this._content.appendChild(container);
+			this._controls[title] = {
+				container: container,
+				control: textInput,
+				label: label,
+				callback: callback
+			}
+
+			var gch = this._globalChangeHandler;
+			textInput.addEventListener("input", function() {
+				if(callback) {
+					callback(textInput.value);
+				}
+				if(gch) {
+					gch();
+				}
+			});
+		}, 
+
 		addTextArea: function(title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
@@ -516,6 +547,68 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+		},
+
+		addDate: function(title, date, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>");
+
+			var dateInput = document.createElement("input");
+			dateInput.type = "date";
+			dateInput.id = title;
+			dateInput.value = date || "";
+			dateInput.className = "msettings_text_input";
+
+			container.appendChild(label);
+			container.appendChild(dateInput);
+			this._content.appendChild(container);
+			this._controls[title] = {
+				container: container,
+				control: dateInput,
+				label: label,
+				callback: callback
+			}
+
+			var gch = this._globalChangeHandler;
+			dateInput.addEventListener("input", function() {
+				if(callback) {
+					callback(dateInput.value);
+				}
+				if(gch) {
+					gch();
+				}
+			});
+		},
+
+		addTime: function(title, time, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>");
+
+			var timeInput = document.createElement("input");
+			timeInput.type = "time";
+			timeInput.id = title;
+			timeInput.value = time || "";
+			timeInput.className = "msettings_text_input";
+
+			container.appendChild(label);
+			container.appendChild(timeInput);
+			this._content.appendChild(container);
+			this._controls[title] = {
+				container: container,
+				control: timeInput,
+				label: label,
+				callback: callback
+			}
+
+			var gch = this._globalChangeHandler;
+			timeInput.addEventListener("input", function() {
+				if(callback) {
+					callback(timeInput.value);
+				}
+				if(gch) {
+					gch();
+				}
+			});
 		},
 
 		addInfo: function(title, info) {
