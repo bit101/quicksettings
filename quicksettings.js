@@ -283,7 +283,7 @@
 			}
 			var gch = this._globalChangeHandler;
 			input.addEventListener(eventName, function() {
-				label.innerHTML = "<b>" + title + ":</b> " + range.value;
+				label.innerHTML = "<b>" + title + ":</b> " + input.value;
 				if(callback) {
 					callback(parseFloat(input.value));
 				}
@@ -622,7 +622,8 @@
 		},
 
 		addDate: function(title, date, callback) {
-			if(this._isIE) {
+			if(this._isIE()) {
+				console.log("returning....")
 				return this.addText(title, date, callback);
 			}
 			var container = this._createContainer();
@@ -666,7 +667,7 @@
 
 
 		addTime: function(title, time, callback) {
-			if(this._isIE) {
+			if(this._isIE()) {
 				return this.addText(title, time, callback);
 			}
 

@@ -50,7 +50,7 @@ For most controls, the callback will pass the current value of the control. For 
 
 The date control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Date input must be in the form aof a string: "YYYY-MM-DD". Output value will be the same.
 
-The time control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Time input must be in the form aof a string: "HH-MM" or "HH:MM:SS" or "HH:MM:SS:MSS". Output value will be the same.
+The time control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Time input must be in the form aof a string: "HH-MM" or "HH:MM:SS" in 24-hour format. Output value will be the same.
 
 ## Querying Controls
 
