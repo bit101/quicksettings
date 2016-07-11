@@ -5,15 +5,15 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 You can directly link to the main minified js file at:
 
-https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings.min.js
+https://cdn.jsdelivr.net/quicksettings/1.1/quicksettings.min.js
 
 You’ll also need to add one of the QuickSettings style sheets: plain, minimal or minimal dark:
 
-https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings.css
+https://cdn.jsdelivr.net/quicksettings/1.1/quicksettings.css
 
-https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings_minimal.css
+https://cdn.jsdelivr.net/quicksettings/1.1/quicksettings_minimal.css
 
-https://cdn.jsdelivr.net/quicksettings/1.0/quicksettings_minimal_dark.css
+https://cdn.jsdelivr.net/quicksettings/1.1/quicksettings_minimal_dark.css
 
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
