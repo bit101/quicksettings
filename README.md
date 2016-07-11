@@ -46,6 +46,8 @@ Now you can add controls to the panel. Supported controls are:
     settings.addDate(title, date, callback);                    // adds a date input
     settings.addTime(title, time, callback);                    // adds a time input
     
+See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
+    
 For most controls, the callback will pass the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
 
 The date control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Date input must be in the form aof a string: "YYYY-MM-DD". Output value will be the same.
@@ -180,6 +182,7 @@ Pretty much all methods that are not getters will return a reference to the pane
 
 ## Demos
 
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
