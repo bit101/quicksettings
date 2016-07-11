@@ -66,17 +66,20 @@
 		setPosition: function(x, y) {
 			this._panel.style.left = x + "px";
 			this._panel.style.top = Math.max(y, 0) + "px";
+			return this;
 		},
 
 		setSize: function(w, h) {
 			this._panel.style.width = w + "px";
 			this._content.style.width = w + "px";
 			this._content.style.height = (h - this._titleBar.offsetHeight) + "px";
+			return this;
 		},
 
 		setWidth: function(w) {
 			this._panel.style.width = w + "px";
 			this._content.style.width = w + "px";
+			return this;
 		},
 
 		setDraggable: function(draggable) {
@@ -87,6 +90,7 @@
 			else {
 				this._titleBar.style.cursor = "default";
 			}
+			return this;
 		},
 
 		setCollapsible: function(collapsible) {
@@ -97,6 +101,7 @@
 			else {
 				this._titleBar.style.cursor = "default";
 			}
+			return this;
 		},
 
 		_startDrag: function(event) {
@@ -136,6 +141,7 @@
 
 		setGlobalChangeHandler: function(handler) {
 			this._globalChangeHandler = handler;
+			return this;
 		},
 
 		toggleCollapsed: function() {
@@ -145,27 +151,32 @@
 			else {
 				this.collapse();
 			}
+			return this;
 		},
 
 		collapse: function() {
 			this._panel.removeChild(this._content);
 			this._collapsed = true;
+			return this;
 		},
 
 		expand: function() {
 			this._panel.appendChild(this._content);
 			this._collapsed = false;
+			return this;
 		},
 
 		hide: function() {
 			this._panel.style.visibility = "hidden";
 			this._hidden = true;
+			return this;
 		},
 
 		show: function() {
 			this._panel.style.visibility = "visible";
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			this._hidden = false;
+			return this;
 		},
 
 		_createContainer: function() {
@@ -184,6 +195,7 @@
 		setKey: function(char) {
 			this._keyCode = char.toUpperCase().charCodeAt(0);
 			document.body.addEventListener("keyup", this.onKeyUp);
+			return this;
 		},
 
 		_onKeyUp: function(event) {
@@ -199,52 +211,24 @@
 			else {
 				this.hide();
 			}
+			return this;
 		},
 
 		bindRange: function(title, min, max, value, step, object) {
 			this.addRange(title, min, max, value, step, function(value) {
 				object[title] = value;
 			});
+			return this;
 		},
 
 		addRange: function(title, min, max, value, step, callback) {
-			var container = this._createContainer();
+			this._addNumber("range", title, min, max, value, step, callback);
+			return this;
+		}, 
 
-			var range = document.createElement("input");
-			range.type = "range";
-			range.id = title;
-			range.min = min || 0;
-			range.max = max || 100;
-			range.step = step || 1;
-			range.value = value || 0;
-			range.className = "msettings_range";
-
-			var label = this._createLabel("<b>" + title + ":</b> " + range.value);
-
-			container.appendChild(label);
-			container.appendChild(range);
-			this._content.appendChild(container);
-			this._controls[title] = {
-				container: container,
-				control: range,
-				label: label,
-				callback: callback
-			};
-
-			var eventName = "input";
-			if(this._isIE()) {
-				eventName = "change";
-			}
-			var gch = this._globalChangeHandler;
-			range.addEventListener(eventName, function() {
-				label.innerHTML = "<b>" + title + ":</b> " + range.value;
-				if(callback) {
-					callback(parseFloat(range.value));
-				}
-				if(gch) {
-					gch();
-				}
-			});
+		addNumber: function(title, min, max, value, step, callback) {
+			this._addNumber("number", title, min, max, value, step, callback);
+			return this;
 		}, 
 
 		_isIE: function() {
@@ -256,6 +240,51 @@
 			}
 			return false;
 		},
+
+		_addNumber: function(type, title, min, max, value, step, callback) {
+			var container = this._createContainer();
+
+			var input = document.createElement("input");
+			input.type = type;
+			input.id = title;
+			input.min = min || 0;
+			input.max = max || 100;
+			input.step = step || 1;
+			input.value = value || 0;
+			if(type === "range") {
+				input.className = "msettings_range";
+			}
+			else {
+				input.className = "msettings_text_input";
+			}
+
+			var label = this._createLabel("<b>" + title + ":</b> " + input.value);
+
+			container.appendChild(label);
+			container.appendChild(input);
+			this._content.appendChild(container);
+			this._controls[title] = {
+				container: container,
+				control: input,
+				label: label,
+				callback: callback
+			};
+
+			var eventName = "input";
+			if(this._isIE()) {
+				eventName = "change";
+			}
+			var gch = this._globalChangeHandler;
+			input.addEventListener(eventName, function() {
+				label.innerHTML = "<b>" + title + ":</b> " + range.value;
+				if(callback) {
+					callback(parseFloat(input.value));
+				}
+				if(gch) {
+					gch();
+				}
+			});
+		}, 
 
 		getRangeValue: function(title) {
 			return parseFloat(this._controls[title].control.value);
@@ -271,6 +300,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			return this;
 		},
 
 		setRangeParameters: function(title, min, max, step) {
@@ -278,12 +308,14 @@
 			control.control.min = min;
 			control.control.max = max;
 			control.control.step = step;
+			return this;
 		},
 
 		bindBoolean: function(title, value, object) {
 			this.addBoolean(title, value, function(value) {
 				object[title] = value;
 			});
+			return this;
 		},
 
 		addBoolean: function(title, value, callback) {
@@ -329,6 +361,7 @@
 					gch();
 				}
 			});
+			return this;
 		},
 
 		getBoolean: function(title) {
@@ -343,6 +376,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			return this;
 		},
 
 		addButton: function(title, callback) {
@@ -370,12 +404,14 @@
 					gch();
 				}
 			});
+			return this;
 		},
 
 		bindColor: function(title, color, object) {
 			this.addColor(title, color, function(value) {
 				object[title] = value;
 			});
+			return this;
 		},
 
 		addColor: function(title, color, callback) {
@@ -413,6 +449,7 @@
 					gch();
 				}
 			});
+			return this;
 		},
 
 		getColor: function(title) {
@@ -429,12 +466,14 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			return this;
 		},
 
 		bindText: function(title, text, object) {
 			this.addText(title, text, function(value) {
 				object[title] = value;
 			});
+			return this;
 		},
 
 		addText: function(title, text, callback) {
@@ -466,6 +505,7 @@
 					gch();
 				}
 			});
+			return this;
 		}, 
 
 		addPassword: function(title, text, callback) {
@@ -497,6 +537,7 @@
 					gch();
 				}
 			});
+			return this;
 		}, 
 
 		addTextArea: function(title, text, callback) {
@@ -528,10 +569,12 @@
 					gch();
 				}
 			});
+			return this;
 		}, 
 
 		setTextAreaRows: function(title, rows) {
 			this._controls[title].control.rows = rows;
+			return this;
 		},
 
 		getText: function(title) {
@@ -547,6 +590,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			return this;
 		},
 
 		addDate: function(title, date, callback) {
@@ -578,6 +622,7 @@
 					gch();
 				}
 			});
+			return this;
 		},
 
 		addTime: function(title, time, callback) {
@@ -609,6 +654,7 @@
 					gch();
 				}
 			});
+			return this;
 		},
 
 		addInfo: function(title, info) {
@@ -618,12 +664,14 @@
 				container: container
 			};
 			this._content.appendChild(container);
+			return this;
 		},
 
 		bindDropDown: function(title, items, object) {
 			this.addDropDown(title, items, function(value) {
 				object[title] = value.value;
 			});
+			return this;
 		},
 
 		addDropDown: function(title, items, callback) {
@@ -663,6 +711,7 @@
 				label: label,
 				callback: callback
 			};
+			return this;
 		},
 
 		getDropDownValue: function(title) {
@@ -689,6 +738,7 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
+			return this;
 		},
 
 		getInfo: function(title) {
@@ -697,6 +747,7 @@
 
 		setInfo: function(title, info) {
 			this._controls[title].container.innerHTML = info;
+			return this;
 		},
 
 		addImage: function(title, imageURL) {
@@ -715,10 +766,12 @@
 				control: img,
 				label: label
 			};
+			return this;
 		},
 
 		setImageURL: function(title, imageURL) {
 			this._controls[title].control.src = imageURL;
+			return this;
 		},
 
 		addProgressBar: function(title, max, value, showNumbers) {
@@ -745,6 +798,7 @@
 				showNumbers: showNumbers,
 				label: label
 			};
+			return this;
 		},
 
 		getProgress: function(title) {
@@ -760,6 +814,7 @@
 			else {
 				this._controls[title].label.innerHTML = "<b>" + title + "<b>";
 			}
+			return this;
 		},
 
 		addElement: function(title, element) {
@@ -774,12 +829,14 @@
 				container: container,
 				label: label
 			};
+			return this;
 		},
 
 		addHTML: function(title, html) {
 			var div = document.createElement("div");
 			div.innerHTML = html;
 			this.addElement(title, div);
+			return this;
 		},
 
 		removeControl: function(title) {
@@ -790,18 +847,21 @@
 				container.parentElement.removeChild(container);
 			}
 			this._controls[title] = null;
+			return this;
 		},
 
 		enableControl: function(title) {
 			if(this._controls[title].control) {
 				this._controls[title].control.disabled = false;
 			}
+			return this;
 		},
 
 		disableControl: function(title) {
 			if(this._controls[title].control) {
 				this._controls[title].control.disabled = true;
 			}
+			return this;
 		}
 	};
 
