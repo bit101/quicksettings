@@ -303,7 +303,7 @@
 
 		setRangeValue: function(title, value) {
 			return this.setNumberValue(title, value);
-		}
+		},
 
 		setNumberValue: function(title, value) {
 			var control = this._controls[title];
@@ -319,6 +319,10 @@
 		},
 
 		setRangeParameters: function(title, min, max, step) {
+			return this.setNumberParameters(title, min, max, step);
+		},
+
+		setNumberParameters: function(title, min, max, step) {
 			var control = this._controls[title];
 			control.control.min = min;
 			control.control.max = max;
