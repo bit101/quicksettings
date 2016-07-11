@@ -297,7 +297,15 @@
 			return parseFloat(this._controls[title].control.value);
 		},
 
+		getNumberValue: function(title) {
+			return parseFloat(this._controls[title].control.value);
+		},
+
 		setRangeValue: function(title, value) {
+			return this.setNumberValue(title, value);
+		}
+
+		setNumberValue: function(title, value) {
 			var control = this._controls[title];
 			control.control.value = value;
 			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
