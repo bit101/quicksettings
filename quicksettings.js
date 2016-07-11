@@ -221,6 +221,13 @@
 			return this;
 		},
 
+		bindNumber: function(title, min, max, value, step, object) {
+			this.addNumber(title, min, max, value, step, function(value) {
+				object[title] = value;
+			});
+			return this;
+		},
+
 		addRange: function(title, min, max, value, step, callback) {
 			this._addNumber("range", title, min, max, value, step, callback);
 			return this;
@@ -271,7 +278,7 @@
 			};
 
 			var eventName = "input";
-			if(this._isIE()) {
+			if(type === "range" && this._isIE()) {
 				eventName = "change";
 			}
 			var gch = this._globalChangeHandler;
@@ -540,6 +547,15 @@
 			return this;
 		}, 
 
+		bindPassword: function(title, text, object) {
+			this.addPassword(title, text, function(value) {
+				object[title] = value;
+			});
+			return this;
+		},
+
+
+
 		addTextArea: function(title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
@@ -594,6 +610,9 @@
 		},
 
 		addDate: function(title, date, callback) {
+			if(this._isIE) {
+				return this.addText(title, date, callback);
+			}
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
 
@@ -625,7 +644,20 @@
 			return this;
 		},
 
+		bindDate: function(title, date, object) {
+			this.addDate(title, date, function(value) {
+				object[title] = value;
+			});
+			return this;
+		},
+
+
+
 		addTime: function(title, time, callback) {
+			if(this._isIE) {
+				return this.addText(title, time, callback);
+			}
+
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
 
@@ -656,6 +688,15 @@
 			});
 			return this;
 		},
+
+		bindTime: function(title, time, object) {
+			this.addTime(title, time, function(value) {
+				object[title] = value;
+			});
+			return this;
+		},
+
+
 
 		addInfo: function(title, info) {
 			var container = this._createContainer();
