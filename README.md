@@ -136,6 +136,25 @@ When the checkbox is clicked, it will set `model.visible` to true or false.
 
 These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
 
+## New as of July 11, 2016
+
+New inputs.
+
+    settings.addPassword(title, text, callback);
+
+Works exactly the same as `addText`, but input is hidden as password text.
+
+    settings.addDate(title, date, callback);
+    
+Creates a date input. Actual implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Date input must be in the form aof a string: "YYYY-MM-DD". Output value will be the same.
+
+Works exactly the same as `addText`, but input is hidden as password text.
+
+    settings.addTime(title, time, callback);
+    
+Creates a time input. Actual implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Time input must be in the form aof a string: "HH-MM" or "HH:MM:SS" or "HH:MM:SS:MS". Output value will be the same.
+
+
 
 ## Demos
 
