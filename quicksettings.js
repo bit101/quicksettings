@@ -13,6 +13,8 @@
 		_keyCode: -1,
 		_draggable: true,
 		_collapsible: true,
+		_snapToGrid: false,
+		_gridSize: 40,
 		_globalChangeHandler: null,
 
 		create: function(x, y, title) {
@@ -104,6 +106,16 @@
 			return this;
 		},
 
+		setSnapToGrid: function(value) {
+			this._snapToGrid = value;
+			return this;
+		},
+
+		setGridSize: function(value) {
+			this._gridSize = value;
+			return this;
+		},
+
 		_startDrag: function(event) {
 			if(this._draggable) {
 				this._panel.style.zIndex = ++QuickSettings._topZ;
@@ -128,6 +140,18 @@
 		},
 
 		_endDrag: function(event) {
+			if(this._snapToGrid) {
+				var x = parseInt(this._panel.style.left),
+					y = parseInt(this._panel.style.top),
+					mouseX = event.clientX,
+					mouseY = event.clientY;
+				x = x + mouseX - this._startX;
+				y = y + mouseY - this._startY;
+
+				x = Math.round(x / this._gridSize) * this._gridSize;
+				y = Math.round(y / this._gridSize) * this._gridSize;
+				this.setPosition(x, y);
+			}
 			document.removeEventListener("mousemove", this._drag);
 			document.removeEventListener("mouseup", this._endDrag);
 			event.preventDefault();
