@@ -24,6 +24,10 @@ https://cdn.jsdelivr.net/quicksettings/1.3/quicksettings_minimal_dark.css
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
     var settings = QuickSettings.create(x, y, panelTitle);
+    
+Destroying a panel removes it from the page and nulls out all methods and properties.
+
+    settings.destroy();
 
 ## Adding Controls
 
