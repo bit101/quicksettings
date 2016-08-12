@@ -124,6 +124,11 @@ Or, you can set a keyboard key that will show and hide the panel when pressed:
 You can set the position of the panel with:
 
     settings.setPosition(x, y);
+    
+If the panel is draggable, you can have it snap to a grid when dropped. And you can specify the size of that grid:
+
+    settings.setSnapToGrid(bool);
+    settings.setGridSize(number);
 
 By default, the panel will be 200px wide and grow in height to fit its content. You can set an explicit size with:
 
