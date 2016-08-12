@@ -23,6 +23,13 @@
 			return obj;
 		},
 
+		destroy: function() {
+			document.body.removeChild(this._panel);
+			for(var prop in this) {
+				this[prop] = null;
+			}
+		},
+
 		_init: function(x, y, title) {
 			this._bindHandlers();
 			this._createPanel(x, y);
@@ -940,6 +947,88 @@
 				this._controls[title].control.disabled = true;
 			}
 			return this;
+		},
+
+		parse: function(json, scope) {
+			if(typeof json === "string") {
+				json = JSON.parse(json);
+			}
+			var panel = QuickSettings.create(json.x, json.y, json.title);
+			panel.setDraggable(json.draggable == null ? true : json.draggable);
+			panel.setCollapsible(json.collapsible == null ? true : json.collapsible);
+			panel.setGridSize(json.gridSize || 40);
+			panel.setSnapToGrid(json.snapToGrid == null ? false : json.snapToGrid);
+			scope = scope || {};
+
+			for(var i = 0; i < json.controls.length; i++) {
+				var control = json.controls[i];
+				switch(control.type) {
+					case "range":
+						panel.addRange(control.title, control.min || 0, control.max || 100, control.value || control.min || 0, control.step || 1, scope[control.callback]);
+						break;
+
+					case "number":
+						panel.addNumber(control.title, control.min || 0, control.max || 100, control.value || control.min || 0, control.step || 1, scope[control.callback]);
+						break;
+
+					case "boolean":
+						panel.addBoolean(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "button":
+						panel.addButton(control.title, scope[control.callback]);
+						break;
+
+					case "color":
+						panel.addColor(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "text":
+						panel.addText(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "password":
+						panel.addPassword(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "textarea":
+					case "textArea":
+						panel.addTextArea(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "date":
+						panel.addDate(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "time":
+						panel.addTime(control.title, control.value,  scope[control.callback]);
+						break;
+
+					case "info":
+						panel.addInfo(control.title, control.value);
+						break;
+
+					case "dropdown":
+					case "dropDown":
+						panel.addDropDown(control.title, control.value, scope[control.callback]);
+						break;
+
+					case "image":
+						panel.addImage(control.title, control.value);
+						break;
+
+					case "progressbar":
+					case "progressBar":
+						panel.addProgressBar(control.title, control.max || 100, control.value || 0, control.showNumbers);
+						break;
+
+					case "html":
+						panel.addHTML(control.title, control.value);
+						break;
+
+				}
+			}
+			return panel;
 		}
 	};
 
