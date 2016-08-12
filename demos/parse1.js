@@ -108,7 +108,7 @@ callback: string
 	        {
 	            "type": "html",
 	            "title": "html test",
-	            "value": "this is html"
+	            "value": "<i>this</i> is <u>html</u><ul><li>one</li><li>two</li><li>three</li></ul>"
 	        }
 	    ]
 	};
