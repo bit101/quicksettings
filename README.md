@@ -217,6 +217,8 @@ Control object format:
 
 All controls are supported except `addElement`.
 
+See Parse Demos below.
+
 ## Demos
 
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
