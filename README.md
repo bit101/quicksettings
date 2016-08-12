@@ -225,3 +225,8 @@ All controls are supported except `addElement`.
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
+
+Parse demos:
+
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/parse_demo_1.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/parse_demo_2.html
