@@ -179,6 +179,43 @@ Pretty much all methods that are not getters will return a reference to the pane
         .addRange("w", 0, 100, 50, 1)
         .addRange("h", 0, 100, 50, 1)
         .setGlobalChangeHandler(myChangeHandler);
+        
+## JSON Parser
+
+You can also create your panel with a JavaScript object or JSON string. Just call:
+
+    var panel = QuickSettings.parse(json, scope);
+    
+The `json` parameter is a JSON string or JavaScript object and `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. JSON format:
+
+    {
+      "title": "Panel name",    // required string
+      "x": 400,                 // required number
+      "y": 30,                  // required number
+      "draggable": true,        // optional bool
+      "collapsible": true,      // optional bool
+      "snapToGrid": true,       // optional bool
+      "gridSize": 40,           // optional number
+      "controls": []            // optional array of control objects
+    }
+    
+Control object format:
+
+    {
+        "type": "range",        // required string
+        "title": "my range",    // required string
+        "value": 100,           // optional value:
+                                    // number or string for most controls.
+                                    // bool for boolean
+                                    // array for dropdown
+                                    // not used for button
+        "min": 0,               // optional number (range and number only)
+        "max": 100,             // optional number (range, number, progressbar only)
+        "step": 1,              // optional number (range and number only)
+        "callback": "onRange"   // optional string - maps to function name on scope object
+    }
+
+All controls are supported except `addElement`.
 
 ## Demos
 
