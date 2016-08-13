@@ -1,6 +1,6 @@
 (function() {
 	var QuickSettings = {
-		_version: "1.5",
+		_version: "1.6",
 		_topZ: 1,
 
 		_panel: null,
