@@ -7,17 +7,35 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 You can directly link to the main minified js file at:
 
-https://cdn.jsdelivr.net/quicksettings/1.5/quicksettings.min.js
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.min.js
 
 You can add the script to the HTML page directly, or use require.js to import the code.
 
-You’ll also need to add one of the QuickSettings style sheets: plain, minimal or minimal dark:
+You’ll also need to load a style sheet. There are two ways to do this. The simple way it to call:
 
-https://cdn.jsdelivr.net/quicksettings/1.5/quicksettings.css
+    QuickSettings.loadStyleSheet();
 
-https://cdn.jsdelivr.net/quicksettings/1.5/quicksettings_minimal.css
+With no parameter, this loads the default style sheet. You can also load a specific style by passing in one of the strings:
 
-https://cdn.jsdelivr.net/quicksettings/1.5/quicksettings_minimal_dark.css
+    "black", "white", "minimal" or "minimal_dark"
+    
+Here you can see examples of all five styles:
+
+![Styles](images/styles.png)
+
+Alternately, you can add a stylesheet to the page itself, linking to one of the following:
+
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.css
+
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_black.css
+
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_white.css
+
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal.css
+
+https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal_dark.css
+
+Or you can alter any of this CSS to create your own custom stylesheet and add it to the page.
 
 ## Creating a Panel
 
