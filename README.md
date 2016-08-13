@@ -11,7 +11,7 @@ https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.min.js
 
 QuickSettings is fully require.js compatible. So add the script to your HTML or use require to import it.
 
-You’ll also need to load a style sheet. There are two ways to do this. The simple way it to call:
+You’ll also need to load a style sheet. There are two ways to do this. The simple way is to call:
 
     QuickSettings.loadStyleSheet();
 
