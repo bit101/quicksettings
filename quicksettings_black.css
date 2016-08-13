@@ -1,0 +1,96 @@
+.msettings_main {
+	text-align:left;
+	position: absolute;
+	width: 200px;
+	font: 12px sans-serif;
+	box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.35);
+	user-select: none;
+  	-webkit-user-select: none;
+  	background-color: #000000;
+	border: 1px solid #999999;
+	color: #cccccc;
+}
+
+.msettings_content {
+	background-color: #transparent;
+	overflow-y: auto;
+}
+
+.msettings_title_bar {
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+	padding: 5px;
+}
+
+.msettings_container {
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid #999999;
+	background-color: #000000;
+}
+
+.msettings_range {
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+.msettings_checkbox {
+	margin-left: 5px;
+}
+
+.msettings_checkbox_label {
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
+}
+
+.msettings_label {
+	margin-bottom: 3px;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
+}
+
+.msettings_text_input {
+  	width: 90%;
+  	padding: 2px;
+	background-color: #000000;
+	color: #cccccc;
+	border: 1px solid #999999;
+}
+
+.msettings_select {
+	background-color: #000000;
+	color: #cccccc;
+	border: 1px solid #999999;	
+}
+
+.msettings_button {
+	background-color: #000000;
+	color: #cccccc;
+	border: 1px solid #999999;	
+}
+
+.msettings_button:active {
+	background-color: #333333;
+}
+
+.msettings_image {
+	width: 100%;
+}
+
+.msettings_progress {
+	width: 100%;
+}
+
+.msettings_textarea {
+	resize: vertical;
+	width: 100%;
+	padding: 2px;
+	margin: 0;
+	background-color: #000000;
+	color: #cccccc;
+	border: 1px solid #999999;
+}

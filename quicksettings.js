@@ -1,5 +1,6 @@
 (function() {
 	var QuickSettings = {
+		_version: "1.5",
 		_topZ: 1,
 
 		_panel: null,
@@ -16,6 +17,21 @@
 		_snapToGrid: false,
 		_gridSize: 40,
 		_globalChangeHandler: null,
+
+		loadStyleSheet: function(style) {
+			// style can be empty, "black", "white", "minimal" or "minimal_dark"
+
+			var link = document.createElement("link");
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			if(style) {
+				link.href = "https://cdn.jsdelivr.net/quicksettings/" + this._version + "/quicksettings_" + style + ".css";
+			}
+			else {
+				link.href = "https://cdn.jsdelivr.net/quicksettings/" + this._version + "/quicksettings.css";
+			}
+			document.head.appendChild(link);
+		},
 
 		create: function(x, y, title) {
 			var obj = Object.create(this);
