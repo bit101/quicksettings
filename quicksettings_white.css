@@ -1,4 +1,4 @@
-.msettings_main {
+.qs_main {
 	text-align:left;
 	position: absolute;
 	width: 200px;
@@ -10,19 +10,19 @@
 	border: 1px solid #666666;
 }
 
-.msettings_content {
-	background-color: #transparent;
+.qs_content {
+	background-color: transparent;
 	overflow-y: auto;
 }
 
-.msettings_title_bar {
+.qs_title_bar {
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: pointer;
 	padding: 5px;
 }
 
-.msettings_container {
+.qs_container {
 	border: 1px solid black;
 
 	margin: 5px;
@@ -31,64 +31,149 @@
 	background-color: #ffffff;
 }
 
-.msettings_range {
+/* ================== range ================*/
+
+.qs_range {
+	-webkit-appearance: none;
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
-	background-color: red;
 }
 
-.msettings_checkbox {
+.qs_range:focus {
+	outline: none;
+}
+
+.qs_range::-ms-track {
+	width: 100%;
+	cursor: pointer;
+	background: transparent;
+	border-color: transparent;
+	color: transparent;
+}
+
+.qs_range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 15px;
+	width: 15px;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+	margin-top: 0px;
+}
+
+.qs_range::-moz-range-thumb {
+	height: 15px;
+	width: 15px;
+	border: none;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+}
+
+.qs_range::-ms-thumb {
+	height: 15px;
+	width: 15px;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+}
+
+.qs_range::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 15px;
+	cursor: pointer;
+	background: #dddddd;
+	border-radius: 0px;
+}
+
+.qs_range:focus::-webkit-slider-runnable-track {
+	background: #dddddd;
+}
+
+.qs_range::-moz-range-track {
+	width: 100%;
+	height: 17px;
+	cursor: pointer;
+	background: #dddddd;
+	border-radius: 0px;
+}
+
+.qs_range::-ms-track {
+	width: 100%;
+	height: 15px;
+	cursor: pointer;
+	background: transparent;
+	color: transparent;
+}
+.qs_range::-ms-fill-lower {
+	background: #dddddd;
+	border-radius: 0px;
+}
+.qs_range:focus::-ms-fill-lower {
+	background: #dddddd;
+}
+.qs_range::-ms-fill-upper {
+	background: #dddddd;
+	border-radius: 0px;
+}
+.qs_range:focus::-ms-fill-upper {
+	background: #dddddd;
+}
+
+/* ================== end range ================*/
+
+.qs_checkbox {
 	margin-left: 5px;
 }
 
-.msettings_checkbox_label {
+.qs_checkbox_label {
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: default;
 }
 
-.msettings_label {
+.qs_label {
 	margin-bottom: 3px;
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: default;
 }
 
-.msettings_text_input {
+.qs_text_input {
   	width: 90%;
   	padding: 2px;
 	border: 1px solid #666666;
 }
 
-.msettings_select {
+.qs_select {
 	background-color: #ffffff;
 	color: #000000;
 	border: 1px solid #666666;	
 }
 
-.msettings_button {
+.qs_button {
 	background-color: #ffffff;
 	color: #000000;
 	border: 1px solid #666666;	
 }
 
-.msettings_button:active {
+.qs_button:active {
 	background-color: #cccccc;
 }
 
 
 
 
-.msettings_image {
+.qs_image {
 	width: 100%;
 }
 
-.msettings_progress {
+.qs_progress {
 	width: 100%;
 }
 
-.msettings_textarea {
+.qs_textarea {
 	resize: vertical;
 	width: 100%;
 	padding: 2px;

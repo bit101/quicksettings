@@ -1,4 +1,4 @@
-.msettings_main {
+.qs_main {
 	background-color: #dddddd;
 	text-align:left;
 	position: absolute;
@@ -9,69 +9,220 @@
   	-webkit-user-select: none;
 }
 
-.msettings_content {
-	background-color: #dddddd;
+.qs_content {
+	background-color: #cccccc;
 	overflow-y: auto;
 }
 
-.msettings_title_bar {
-	background-color: #ffffff;
+.qs_title_bar {
+	background-color: #eeeeee;
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: pointer;
 	padding: 5px;
+	font-weight: bold;
 	border: 1px #eeeeee solid;
 }
 
-.msettings_container {
+.qs_container {
 	margin: 5px;
 	padding: 5px;
 	background-color: #eeeeee;
+	position: relative;
 }
 
-.msettings_range {
+
+/*========== range ==========*/
+.qs_range {
+	-webkit-appearance: none;
 	width: 100%;
 	padding: 0px;
 	margin: 0px;
 }
 
-.msettings_checkbox {
-	margin-left: 5px;
+.qs_range:focus {
+	outline: none;
 }
 
-.msettings_checkbox_label {
-	user-select: none;
-	-webkit-user-select: none;
-	cursor: default;
+.qs_range::-ms-track {
+	width: 100%;
+	cursor: pointer;
+	background: transparent;
+	border-color: transparent;
+	color: transparent;
 }
 
-.msettings_label {
+.qs_range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 15px;
+	width: 15px;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+	margin-top: 0px;
+}
+
+.qs_range::-moz-range-thumb {
+	height: 15px;
+	width: 15px;
+	border: none;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+}
+
+.qs_range::-ms-thumb {
+	height: 15px;
+	width: 15px;
+	border-radius: 0px;
+	background: #999999;
+	cursor: pointer;
+}
+
+.qs_range::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 15px;
+	cursor: pointer;
+	background: #cccccc;
+	border-radius: 0px;
+}
+
+.qs_range:focus::-webkit-slider-runnable-track {
+	background: #cccccc;
+}
+
+.qs_range::-moz-range-track {
+	width: 100%;
+	height: 17px;
+	cursor: pointer;
+	background: #cccccc;
+	border-radius: 0px;
+}
+
+.qs_range::-ms-track {
+	width: 100%;
+	height: 15px;
+	cursor: pointer;
+	background: transparent;
+	color: transparent;
+}
+.qs_range::-ms-fill-lower {
+	background: #cccccc;
+	border-radius: 0px;
+}
+.qs_range:focus::-ms-fill-lower {
+	background: #cccccc;
+}
+.qs_range::-ms-fill-upper {
+	background: #cccccc;
+	border-radius: 0px;
+}
+.qs_range:focus::-ms-fill-upper {
+	background: #cccccc;
+}
+/*========== end range ==========*/
+
+
+.qs_button {
+	background-color: #f6f6f6;
+	color: #000000;
+	height: 30px;
+	border: 1px solid #aaaaaa;
+}
+
+.qs_button:active {
+	background-color: #ffffff;
+}
+
+
+.qs_checkbox {
+	cursor: pointer;
+}
+
+.qs_checkbox input {
+	display: none;
+}
+
+.qs_checkbox span {
+	height: 16px;
+	width: 100%;
+	display: block;
+	text-indent: 20px;
+	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAALklEQVQ4T2OcOXPmfwYKACPIgLS0NLKMmDVrFsOoAaNhMJoOGBioFwZkZUWoJgApdFaxjUM1YwAAAABJRU5ErkJggg==') no-repeat;
+}
+
+.qs_checkbox input:checked + span {
+	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAvElEQVQ4T63Tyw2EIBAA0OFKBxBL40wDRovAUACcKc1IB1zZDAkG18GYZTmSmafzgTnnMgwchoDWGlJKheGcP3JtnPceCqCUAmttSZznuYtgchsXQrgC+77DNE0kUpPbmBOoJaBOIVQylnqWgAAeKhDve/AN+EaklJBzhhgjWRoJVGTbNjiOowAIret6a+4jYIwpX8aDwLIs74C2D0IIYIyVP6Gm898m9kbVm85ljHUTf16k4VUefkwDrxk+zoUEwCt0GbUAAAAASUVORK5CYII=') no-repeat;
+}
+
+.qs_checkbox_label {
+	position: absolute;
+	top: 7px;
+	left: 30px;
+}
+
+
+.qs_label {
 	margin-bottom: 3px;
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: default;
 }
 
-.msettings_text_input {
-  width: 90%;
-
+.qs_text_input {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 0 0 5px;
+	height: 24px;
+	border: 1px inset #ffffff;
 }
 
-.msettings_select {
-	
+.qs_select {
+	background-color: #f6f6f6;
+	color: #000000;
+	width: 100%;
+	height: 30px;
+	border: 1px solid #aaaaaa;
 }
 
-.msettings_image {
+.qs_number {
+	height: 28px;
+}
+.qs_image {
 	width: 100%;
 }
 
-.msettings_progress {
+.qs_progress {
 	width: 100%;
+	height: 15px;
+	background-color: #cccccc;
 }
 
-.msettings_textarea {
-  resize: vertical;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+.qs_progress_value {
+	height: 100%;
+	background-color: #999999;
+}
+
+.qs_textarea {
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;
+  	resize: vertical;
+  	width: 100%;
+	padding: 3px 5px;
+	border: 1px inset #ffffff;
+}
+
+.qs_color {
+	visibility: hidden;
+	position: absolute;
+}
+
+.qs_color_label {
+	width: 100%;
+	height: 20px;
+	display: block;
+	border: 1px inset #cccccc;
 }

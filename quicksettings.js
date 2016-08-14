@@ -1,4 +1,28 @@
 (function() {
+	var cssInjected = false,
+		styles = {
+			default: ".qs_main{background-color:#ddd;text-align:left;position:absolute;width:200px;font:12px sans-serif;box-shadow:5px 5px 8px rgba(0,0,0,.35);user-select:none;-webkit-user-select:none}.qs_content{background-color:#ddd;overflow-y:auto}.qs_title_bar{background-color:#fff;user-select:none;-webkit-user-select:none;cursor:pointer;padding:5px;border:1px solid #eee}.qs_container{margin:5px;padding:5px;background-color:#eee}.qs_range{width:100%;padding:0;margin:0}.qs_checkbox{margin-left:5px}.qs_checkbox_label{user-select:none;-webkit-user-select:none;cursor:default}.qs_label{margin-bottom:3px;user-select:none;-webkit-user-select:none;cursor:default}.qs_text_input{width:90%}.qs_image,.qs_progress{width:100%}.qs_textarea{resize:vertical;width:100%;padding:0;margin:0}",
+			black: ".qs_main{text-align:left;position:absolute;width:200px;font:12px sans-serif;box-shadow:3px 3px 5px rgba(0,0,0,.35);user-select:none;-webkit-user-select:none;background-color:#000;border:1px solid #999;color:#ccc}.qs_content{background-color:#transparent;overflow-y:auto}.qs_title_bar{user-select:none;-webkit-user-select:none;cursor:pointer;padding:5px}.qs_container{margin:5px;padding:5px;border:1px solid #999;background-color:#000}.qs_range{width:100%;padding:0;margin:0}.qs_text_input,.qs_textarea{padding:2px;color:#ccc;border:1px solid #999}.qs_checkbox{margin-left:5px}.qs_checkbox_label{user-select:none;-webkit-user-select:none;cursor:default}.qs_label{margin-bottom:3px;user-select:none;-webkit-user-select:none;cursor:default}.qs_text_input{width:90%;background-color:#000}.qs_button,.qs_select{background-color:#000;color:#ccc;border:1px solid #999}.qs_button:active{background-color:#333}.qs_image,.qs_progress{width:100%}.qs_textarea{resize:vertical;width:100%;margin:0;background-color:#000}",
+			white: ".qs_main{text-align:left;position:absolute;width:200px;font:12px sans-serif;box-shadow:3px 3px 5px rgba(0,0,0,.35);user-select:none;-webkit-user-select:none;background-color:#fff;border:1px solid #666}.qs_content{background-color:#transparent;overflow-y:auto}.qs_title_bar{user-select:none;-webkit-user-select:none;cursor:pointer;padding:5px}.qs_container{margin:5px;padding:5px;border:1px solid #666;background-color:#fff}.qs_range{width:100%;padding:0;margin:0;background-color:red}.qs_checkbox{margin-left:5px}.qs_checkbox_label{user-select:none;-webkit-user-select:none;cursor:default}.qs_label{margin-bottom:3px;user-select:none;-webkit-user-select:none;cursor:default}.qs_text_input{width:90%;padding:2px;border:1px solid #666}.qs_button,.qs_select{background-color:#fff;color:#000;border:1px solid #666}.qs_button:active{background-color:#ccc}.qs_image,.qs_progress{width:100%}.qs_textarea{resize:vertical;width:100%;padding:2px;margin:0;border:1px solid #666}",
+			minimal: ".qs_main{background-color:#ddd;position:absolute;text-align:left;width:150px;font:9px sans-serif;box-shadow:5px 5px 8px rgba(0,0,0,.35);user-select:none;-webkit-user-select:none}.qs_content{background-color:#ddd;overflow-y:auto}.qs_title_bar{background-color:#fff;user-select:none;-webkit-user-select:none;cursor:pointer;padding:3px;border:1px solid #eee}.qs_container{margin:3px;padding:3px;background-color:#eee}.qs_range{-webkit-appearance:none;width:100%;padding:0;margin:0}.qs_range:focus{outline:0}.qs_range::-ms-track{border-color:transparent}.qs_range::-webkit-slider-thumb{-webkit-appearance:none;height:10px;width:10px;border-radius:0;background:#999;cursor:pointer;margin-top:0}.qs_range::-moz-range-thumb{height:10px;width:10px;border:none;border-radius:0;background:#999;cursor:pointer}.qs_range::-ms-thumb{height:10px;width:10px;border-radius:0;background:#999;cursor:pointer}.qs_range::-webkit-slider-runnable-track{width:100%;height:10px;cursor:pointer;background:#ccc;border-radius:0}.qs_range:focus::-webkit-slider-runnable-track{background:#ccc}.qs_range::-moz-range-track{width:100%;height:12px;cursor:pointer;background:#ccc;border-radius:0}.qs_range::-ms-track{width:100%;height:10px;cursor:pointer;background:0 0;color:transparent}.qs_range::-ms-fill-lower{background:#ccc;border-radius:0}.qs_range:focus::-ms-fill-lower{background:#ccc}.qs_range::-ms-fill-upper{background:#ccc;border-radius:0}.qs_range:focus::-ms-fill-upper{background:#ccc}.qs_checkbox{margin-left:2px}.qs_checkbox_label{user-select:none;-webkit-user-select:none;cursor:default}.qs_label{margin-bottom:2px;user-select:none;-webkit-user-select:none;cursor:default}.qs_color{width:40px;font:9px sans-serif;margin:0}.qs_button,.qs_select,.qs_textarea{font-size:9px}.qs_text_input{font-size:9px;width:90%}.qs_image,.qs_progress{width:100%}.qs_textarea{resize:vertical;width:100%;padding:0;margin:0}",
+			minimal_dark: ".qs_main{background-color:#444;position:absolute;text-align:left;width:150px;font:9px sans-serif;color:#ccc;box-shadow:5px 5px 8px rgba(0,0,0,.35);user-select:none;-webkit-user-select:none}.qs_content{background-color:#444;overflow-y:auto}.qs_title_bar{background-color:#333;user-select:none;-webkit-user-select:none;cursor:pointer;padding:3px;border:1px solid #555}.qs_container{margin:3px;padding:3px;background-color:#333}.qs_range{-webkit-appearance:none;width:100%;padding:0;margin:0}.qs_range:focus{outline:0}.qs_range::-ms-track{border-color:transparent}.qs_range::-webkit-slider-thumb{-webkit-appearance:none;height:10px;width:10px;border-radius:0;background:#333;cursor:pointer;margin-top:0}.qs_range::-moz-range-thumb{height:10px;width:10px;border:none;border-radius:0;background:#333;cursor:pointer}.qs_range::-ms-thumb{height:10px;width:10px;border-radius:0;background:#333;cursor:pointer}.qs_range::-webkit-slider-runnable-track{width:100%;height:10px;cursor:pointer;background:#666;border-radius:0}.qs_range:focus::-webkit-slider-runnable-track{background:#666}.qs_range::-moz-range-track{width:100%;height:12px;cursor:pointer;background:#666;border-radius:0}.qs_range::-ms-track{width:100%;height:10px;cursor:pointer;background:0 0;color:transparent}.qs_range::-ms-fill-lower{background:#666;border-radius:0}.qs_range:focus::-ms-fill-lower{background:#666}.qs_range::-ms-fill-upper{background:#666;border-radius:0}.qs_range:focus::-ms-fill-upper{background:#666}.qs_checkbox{margin-left:2px}.qs_checkbox_label{user-select:none;-webkit-user-select:none;cursor:default}.qs_label{margin-bottom:2px;user-select:none;-webkit-user-select:none;cursor:default}.qs_color{width:40px;font:9px sans-serif;margin:0}.qs_button,.qs_select,.qs_textarea{font-size:9px}.qs_text_input{font-size:9px;width:90%}.qs_image,.qs_progress{width:100%}.qs_textarea{resize:vertical;width:100%;padding:0;margin:0}"
+		},
+		chosenStyle = "default";
+
+	function injectCSS() {
+		var qs_Styles = document.getElementById("qs_styles");
+		if(qs_Styles) {
+			document.head.removeChild(qs_Styles);
+		}
+		if(chosenStyle != "custom") {
+			var styleTag = document.createElement("style");
+			styleTag.id = "qs_styles";
+			styleTag.innerText = styles[chosenStyle]
+			document.head.appendChild(styleTag);
+		}
+		cssInjected = true;
+	}
+
 	var QuickSettings = {
 		_version: "1.6",
 		_topZ: 1,
@@ -18,19 +42,9 @@
 		_gridSize: 40,
 		_globalChangeHandler: null,
 
-		loadStyleSheet: function(style) {
-			// style can be empty, "black", "white", "minimal" or "minimal_dark"
-
-			var link = document.createElement("link");
-			link.rel = "stylesheet";
-			link.type = "text/css";
-			if(style) {
-				link.href = "https://cdn.jsdelivr.net/quicksettings/" + this._version + "/quicksettings_" + style + ".css";
-			}
-			else {
-				link.href = "https://cdn.jsdelivr.net/quicksettings/" + this._version + "/quicksettings.css";
-			}
-			document.head.appendChild(link);
+		setStyle: function(style) {
+			chosenStyle = style || "default";
+			injectCSS();
 		},
 
 		create: function(x, y, title) {
@@ -47,6 +61,9 @@
 		},
 
 		_init: function(x, y, title) {
+			if(!cssInjected) {
+				injectCSS();
+			}
 			this._bindHandlers();
 			this._createPanel(x, y);
 			this._createTitleBar(title || "QuickSettings");
@@ -65,7 +82,7 @@
 
 		_createPanel: function(x, y) {
 			this._panel = document.createElement("div");
-			this._panel.className = "msettings_main";
+			this._panel.className = "qs_main";
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			this.setPosition(x || 0, y || 0);
 			this._controls = {};
@@ -74,7 +91,7 @@
 		_createTitleBar: function(text) {
 			this._titleBar = document.createElement("div");
 			this._titleBar.textContent = text;
-			this._titleBar.className = "msettings_title_bar";
+			this._titleBar.className = "qs_title_bar";
 
 			this._titleBar.addEventListener("mousedown", this._startDrag);
 			this._titleBar.addEventListener("dblclick", this._doubleClickTitle);
@@ -84,7 +101,7 @@
 
 		_createContent: function() {
 			this._content = document.createElement("div");
-			this._content.className = "msettings_content";
+			this._content.className = "qs_content";
 			this._panel.appendChild(this._content);
 		},
 
@@ -228,14 +245,14 @@
 
 		_createContainer: function() {
 			var container = document.createElement("div");
-			container.className = "msettings_container";
+			container.className = "qs_container";
 			return container;
 		},
 
 		_createLabel: function(title) {
 			var label = document.createElement("div");
 			label.innerHTML = title;
-			label.className = "msettings_label";
+			label.className = "qs_label";
 			return label;
 		},
 
@@ -306,10 +323,10 @@
 			input.step = step || 1;
 			input.value = value || 0;
 			if(type === "range") {
-				input.className = "msettings_range";
+				input.className = "qs_range";
 			}
 			else {
-				input.className = "msettings_text_input";
+				input.className = "qs_text_input qs_number";
 			}
 
 			var label = this._createLabel("<b>" + title + ":</b> " + input.value);
@@ -387,41 +404,39 @@
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
-			var label = document.createElement("span");
-			label.className = "msettings_checkbox_label";
+			var label = document.createElement("label");
+			label.className = "qs_checkbox_label";
 			label.textContent = title;
+			label.setAttribute("for", title);
 
-			var checkbox = document.createElement("input");
-			checkbox.type = "checkbox";
-			checkbox.id = title;
-			checkbox.checked = value;
-			checkbox.className = "msettings_checkbox";
+			var checkbox = document.createElement("label");
+			checkbox.className = "qs_checkbox";
+			checkbox.setAttribute("for", title);
 
-			container.appendChild(checkbox);
+			var input = document.createElement("input")
+			input.type = "checkbox";
+			input.id = title;
+			input.checked = value;
+
+			checkbox.appendChild(input);
+
+			var span = document.createElement("span");
+			// span.textContent = title;
+			checkbox.appendChild(span);
+
 			container.appendChild(label);
+			container.appendChild(checkbox);
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
-				control: checkbox,
+				control: input,
 				callback: callback
 			};
 
 			var gch = this._globalChangeHandler;
-			checkbox.addEventListener("change", function() {
+			input.addEventListener("change", function() {
 				if(callback) {
-					callback(checkbox.checked);
-				}
-				if(gch) {
-					gch();
-				}
-			});
-			label.addEventListener("click", function() {
-				if(checkbox.disabled) {
-					return;
-				}
-				checkbox.checked = !checkbox.checked;
-				if(callback) {
-					callback(checkbox.checked);
+					callback(input.checked);
 				}
 				if(gch) {
 					gch();
@@ -452,7 +467,7 @@
 			button.type = "button";
 			button.id = title;
 			button.value = title;
-			button.className = "msettings_button";
+			button.className = "qs_button";
 
 			container.appendChild(button);
 			this._content.appendChild(container);
@@ -489,14 +504,20 @@
 				colorInput.type = "color";
 			}
 			catch(e) {
-				colorInput.type = "text";
+				return this.addText(title, color, callback);
 			}
 			colorInput.id = title;
 			colorInput.value = color || "#ff0000";
-			colorInput.className = "msettings_color";
+			colorInput.className = "qs_color";
+
+			var colorLabel = document.createElement("label");
+			colorLabel.setAttribute("for", title);
+			colorLabel.className = "qs_color_label";
+			colorLabel.style.backgroundColor = colorInput.value;
 
 			container.appendChild(label);
 			container.appendChild(colorInput);
+			container.appendChild(colorLabel);
 			this._content.appendChild(container);
 			this._controls[title] = {
 				container: container,
@@ -508,6 +529,7 @@
 			var gch = this._globalChangeHandler;
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
+				colorLabel.style.backgroundColor = colorInput.value;
 				if(callback) {
 					callback(colorInput.value);
 				}
@@ -550,7 +572,7 @@
 			textInput.type = "text";
 			textInput.id = title;
 			textInput.value = text || "";
-			textInput.className = "msettings_text_input";
+			textInput.className = "qs_text_input";
 
 			container.appendChild(label);
 			container.appendChild(textInput);
@@ -582,7 +604,7 @@
 			textInput.type = "password";
 			textInput.id = title;
 			textInput.value = text || "";
-			textInput.className = "msettings_text_input";
+			textInput.className = "qs_text_input";
 
 			container.appendChild(label);
 			container.appendChild(textInput);
@@ -623,7 +645,7 @@
 			textInput.id = title;
 			textInput.rows = 5;
 			textInput.value = text || "";
-			textInput.className = "msettings_textarea";
+			textInput.className = "qs_textarea";
 
 			container.appendChild(label);
 			container.appendChild(textInput);
@@ -676,11 +698,23 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
 
+			var dateStr;
+			if(date instanceof Date) {
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10) month = "0" + month;
+				var day = date.getDate();
+				dateStr = year + "-" + month + "-" + day;
+			}
+			else {
+				dateStr = date;
+			}
+
 			var dateInput = document.createElement("input");
 			dateInput.type = "date";
 			dateInput.id = title;
-			dateInput.value = date || "";
-			dateInput.className = "msettings_text_input";
+			dateInput.value = dateStr || "";
+			dateInput.className = "qs_text_input";
 
 			container.appendChild(label);
 			container.appendChild(dateInput);
@@ -704,11 +738,41 @@
 			return this;
 		},
 
+		setDate: function(title, date) {
+			var control = this._controls[title];
+
+			var dateStr;
+			if(date instanceof Date) {
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10) month = "0" + month;
+				var day = date.getDate();
+				dateStr = year + "-" + month + "-" + day;
+			}
+			else {
+				dateStr = date;
+			}
+
+			control.control.value = dateStr || "";
+			if(control.callback) {
+				control.callback(text);
+			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
+			}
+			return this;
+		},
+
 		bindDate: function(title, date, object) {
 			this.addDate(title, date, function(value) {
 				object[title] = value;
 			});
 			return this;
+		},
+
+		getDate: function(title) {
+			var control = this._controls[title];
+			return control.control.value;
 		},
 
 
@@ -721,11 +785,25 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>");
 
+			var timeStr;
+			if(time instanceof Date) {
+				var hours = time.getHours();
+				if(hours < 10) hours = "0" + hours;
+				var minutes = time.getMinutes() + 1;
+				if(minutes < 10) minutes = "0" + minutes;
+				var seconds = time.getSeconds();
+				if(seconds < 10) seconds = "0" + seconds;
+				timeStr = hours + ":" + minutes + ":" + seconds;
+			}
+			else {
+				timeStr = time;
+			}
+
 			var timeInput = document.createElement("input");
 			timeInput.type = "time";
 			timeInput.id = title;
-			timeInput.value = time || "";
-			timeInput.className = "msettings_text_input";
+			timeInput.value = timeStr || "";
+			timeInput.className = "qs_text_input";
 
 			container.appendChild(label);
 			container.appendChild(timeInput);
@@ -747,6 +825,38 @@
 				}
 			});
 			return this;
+		},
+
+		setTime: function(title, time) {
+			var control = this._controls[title];
+
+			var timeStr;
+			if(time instanceof Date) {
+				var hours = time.getHours();
+				if(hours < 10) hours = "0" + hours;
+				var minutes = time.getMinutes() + 1;
+				if(minutes < 10) minutes = "0" + minutes;
+				var seconds = time.getSeconds();
+				if(seconds < 10) seconds = "0" + seconds;
+				timeStr = hours + ":" + minutes + ":" + seconds;
+			}
+			else {
+				timeStr = time;
+			}
+
+			control.control.value = timeStr || "";
+			if(control.callback) {
+				control.callback(text);
+			}
+			if(this._globalChangeHandler) {
+				this._globalChangeHandler();
+			}
+			return this;
+		},
+
+		getTime: function(title) {
+			var control = this._controls[title];
+			return control.control.value;
 		},
 
 		bindTime: function(title, time, object) {
@@ -783,6 +893,7 @@
 			for(var i = 0; i < items.length; i++) {
 				var option = document.createElement("option");
 				option.label = items[i];
+				option.innerText = items[i];
 				select.add(option);
 			};
 			var gch = this._globalChangeHandler;
@@ -800,7 +911,7 @@
 					gch();
 				}
 			});
-			select.className = "msettings_select";
+			select.className = "qs_select";
 
 			container.appendChild(label);
 			container.appendChild(select);
@@ -855,7 +966,7 @@
 			var container = this._createContainer(),
 				label = this._createLabel("<b>" + title + "</b>");
 				img = document.createElement("img");
-			img.className = "msettings_image";
+			img.className = "qs_image";
 			img.src = imageURL;
 
 			container.appendChild(label);
@@ -875,29 +986,38 @@
 			return this;
 		},
 
-		addProgressBar: function(title, max, value, showNumbers) {
+		addProgressBar: function(title, max, value, valueDisplay) {
 			var container = this._createContainer(),
-				label = this._createLabel("");
-				progress = document.createElement("progress");
-			progress.className = "msettings_progress";
-			progress.max = max;
-			progress.value = value;
-			if(showNumbers) {
-				label.innerHTML = "<b>" + title + ":<b> " + value + " / " + max;
+				label = this._createLabel(""),
+				progressDiv = document.createElement("div"),
+				valueDiv = document.createElement("div");
+			progressDiv.className = "qs_progress";
+			valueDiv.className = "qs_progress_value";
+			progressDiv.appendChild(valueDiv);
+			valueDiv.style.width = (value / max * 100) + "%";
+
+			if(valueDisplay === "numbers") {
+				label.innerHTML = "<b>" + title + ":</b> " + value + " / " + max;
+			}
+			else if(valueDisplay === "percent") {
+				label.innerHTML = "<b>" + title + ":</b> " + Math.round(value / max * 100) + "%";
 			}
 			else {
-				label.innerHTML = "<b>" + title + "<b>";
+				label.innerHTML = "<b>" + title + "</b>";
 			}
 
 			container.appendChild(label);
-			container.appendChild(progress);
+			container.appendChild(progressDiv);
 			this._content.appendChild(container);
 
 			this._controls[title] = {
 				container: container,
-				control: progress,
-				showNumbers: showNumbers,
-				label: label
+				control: progressDiv,
+				valueDiv: valueDiv,
+				valueDisplay: valueDisplay,
+				label: label,
+				value: value,
+				max: max
 			};
 			return this;
 		},
@@ -906,14 +1026,18 @@
 			return this._controls[title].control.value;
 		},
 
-		setProgress: function(title, value) {
-			var progress = this._controls[title].control;
-			progress.value = value;
-			if(this._controls[title].showNumbers) {
-				this._controls[title].label.innerHTML = "<b>" + title + ":<b> " + progress.value + " / " + progress.max;
+		setProgress: function(title, value, max) {
+			var control = this._controls[title];
+			control.value = value;
+			if(max) {
+				control.max = max;
 			}
-			else {
-				this._controls[title].label.innerHTML = "<b>" + title + "<b>";
+			control.valueDiv.style.width = (control.value / control.max * 100) + "%";
+			if(control.valueDisplay === "numbers") {
+				control.label.innerHTML = "<b>" + title + ":</b> " + control.value + " / " + control.max;
+			}
+			else if(control.valueDisplay === "percent") {
+				control.label.innerHTML = "<b>" + title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
 			}
 			return this;
 		},
@@ -1035,7 +1159,7 @@
 
 					case "progressbar":
 					case "progressBar":
-						panel.addProgressBar(control.title, control.max || 100, control.value || 0, control.showNumbers);
+						panel.addProgressBar(control.title, control.max || 100, control.value || 0, control.valueDisplay);
 						break;
 
 					case "html":
