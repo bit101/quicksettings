@@ -888,6 +888,10 @@
 		addDropDown: function(title, items, callback) {
 			var container = this._createContainer();
 
+			var bg = document.createElement("div");
+			bg.className = "qs_select_bg";
+
+
 			var label = this._createLabel("<b>" + title + "</b>");
 			var select = document.createElement("select");
 			for(var i = 0; i < items.length; i++) {
@@ -913,8 +917,10 @@
 			});
 			select.className = "qs_select";
 
+			bg.appendChild(select);
+
 			container.appendChild(label);
-			container.appendChild(select);
+			container.appendChild(bg);
 			this._content.appendChild(container);
 
 			this._controls[title] = {
