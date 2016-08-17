@@ -2,12 +2,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-less");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks("grunt-contrib-uglify");
 
 
     grunt.initConfig({
         watch: {
             files: "src/*.less",
-            tasks: ["less", "copy"]
+            tasks: ["less", "copy", "uglify"]
         },
         less: {
             options: {
@@ -31,25 +32,15 @@ module.exports = function(grunt) {
                 options: {
                     process: function(content, srcPath) {
                         var css = grunt.file.read("quicksettings.css");
-                        content = content.replace("${qsd}", css);
-
-                        css = grunt.file.read("quicksettings_black.css");
-                        content = content.replace("${qsb}", css);
-
-                        css = grunt.file.read("quicksettings_white.css");
-                        content = content.replace("${qsw}", css);
-
-                        css = grunt.file.read("quicksettings_tiny.css");
-                        content = content.replace("${qst}", css);
-
-                        css = grunt.file.read("quicksettings_tiny_black.css");
-                        content = content.replace("${qstb}", css);
-
-                        css = grunt.file.read("quicksettings_tiny_white.css");
-                        content = content.replace("${qstw}", css);
-
-                        return content;
+                        return content.replace("${css}", css);
                     }
+                }
+            }
+        },
+        uglify: {
+            main: {
+                files: {
+                    "quicksettings.min.js": "src/quicksettings.js"
                 }
             }
         }

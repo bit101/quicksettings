@@ -3,15 +3,7 @@
   "version": "2.0.0",
   "description": "QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.",
   "main": "quicksettings.min.js",
-  "scripts": {
-    "less_default": "lessc src/quicksettings.less quicksettings.css --clean-css=\"--s0\"",
-    "less_black": "lessc src/quicksettings_black.less quicksettings_black.css --clean-css=\"--s0\"",
-    "less_white": "lessc src/quicksettings_white.less quicksettings_white.css --clean-css=\"--s0\"",
-    "less_tiny": "lessc src/quicksettings_tiny.less quicksettings_tiny.css --clean-css=\"--s0\"",
-    "less_tiny_black": "lessc src/quicksettings_tiny_black.less quicksettings_tiny_black.css --clean-css=\"--s0\"",
-    "less_tiny_white": "lessc src/quicksettings_tiny_white.less quicksettings_tiny_white.css --clean-css=\"--s0\"",
-    "less": "run npm less_default"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bit101/quicksettings.git"
@@ -26,9 +18,7 @@
     "grunt": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^1.4.0",
-    "grunt-contrib-watch": "^1.0.0",
-    "less": "^2.7.1",
-    "less-plugin-clean-css": "^1.5.1",
-    "uglify-js": "^2.7.1"
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
   }
 }

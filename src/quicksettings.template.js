@@ -1,26 +1,16 @@
 (function() {
 	var cssInjected = false,
-		styles = {
-			default: "${qsd}",
-			black: "${qsb}",
-			white: "${qsw}",
-			tiny: "${qst}",
-			tiny_black: "${qstb}",
-			tiny_white: "${qstw}"
-		},
-		chosenStyle = "default";
+		css = "${css}";
 
 	function injectCSS() {
 		var qs_Styles = document.getElementById("qs_styles");
 		if(qs_Styles) {
 			document.head.removeChild(qs_Styles);
 		}
-		if(chosenStyle != "custom") {
-			var styleTag = document.createElement("style");
-			styleTag.id = "qs_styles";
-			styleTag.innerText = styles[chosenStyle]
-			document.head.appendChild(styleTag);
-		}
+		var styleTag = document.createElement("style");
+		styleTag.id = "qs_styles";
+		styleTag.innerText = css;
+		document.head.appendChild(styleTag);
 		cssInjected = true;
 	}
 
@@ -43,9 +33,8 @@
 		_gridSize: 40,
 		_globalChangeHandler: null,
 
-		setStyle: function(style) {
-			chosenStyle = style || "default";
-			injectCSS();
+		useExtStyleSheet: function() {
+			cssInjected = true;
 		},
 
 		create: function(x, y, title) {
