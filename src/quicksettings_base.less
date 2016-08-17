@@ -35,6 +35,11 @@
 	position: relative;
 }
 
+.qs_container_selected {
+	//border: @selected_container_border;
+	background-color: @selected_container_background;
+}
+
 
 /*========== range ==========*/
 .qs_range {
@@ -45,7 +50,7 @@
 	padding: 0px;
 	margin: 0px;
 	background-color: transparent;
-	border: @common_border;
+	border: none;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -53,7 +58,7 @@
 
 .qs_range:focus {
 	outline: none;
-	border: @common_border;
+	border: none;
 }
 
 // webkit ----------------------------------------------
@@ -166,6 +171,7 @@
 
 .qs_button:focus {
 	border: @button_border;
+	outline: none;
 }
 
 .qs_checkbox {
@@ -173,7 +179,9 @@
 }
 
 .qs_checkbox input {
-	display: none;
+	//display: none;
+	position: absolute;
+	left: -99999px;
 }
 
 .qs_checkbox span {
@@ -216,6 +224,11 @@
 	font-size: @input_font_size;
 }
 
+.qs_text_input:focus {
+	outline: none;
+	background: @text_bg_focused;
+}
+
 .qs_select {
 	background: @select_bg no-repeat right @button_bg;
 	-webkit-appearance: none;
@@ -241,9 +254,22 @@
 	display: none;
 }
 
+.qs_select:focus {
+	outline: none;
+}
+
 .qs_number {
 	height: @common_height;
 }
+
+//.qs_number {
+//	-moz-appearance: textfield;
+//}
+//
+//
+//.qs_number:focus {
+//	-moz-appearance: number-input;
+//}
 
 .qs_image {
 	width: 100%;
@@ -277,9 +303,13 @@
 	font-size: @input_font_size;
 }
 
+.qs_textarea:focus {
+	outline: none;
+}
+
 .qs_color {
-	visibility: hidden;
 	position: absolute;
+	left: -999999px;
 }
 
 .qs_color_label {
