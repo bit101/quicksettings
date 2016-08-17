@@ -35,21 +35,16 @@
 	position: relative;
 }
 
-input {
-	font-size: @input_font_size;
-}
-
-textarea {
-	font-size: @input_font_size;
-}
-
 
 /*========== range ==========*/
 .qs_range {
 	-webkit-appearance: none;
+	-moz-appearance: none;
 	width: 100%;
+	height: @range_size_outer;
 	padding: 0px;
 	margin: 0px;
+	background-color: transparent;
 	border: @common_border;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -58,15 +53,22 @@ textarea {
 
 .qs_range:focus {
 	outline: none;
-	border: common_border;
+	border: @common_border;
 }
 
-.qs_range::-ms-track {
+// webkit ----------------------------------------------
+.qs_range::-webkit-slider-runnable-track {
 	width: 100%;
+	height: @range_size;
 	cursor: pointer;
-	background: transparent;
-	border-color: transparent;
-	color: transparent;
+	background: @range_track;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.qs_range:focus::-webkit-slider-runnable-track {
+	background: @range_track;
 }
 
 .qs_range::-webkit-slider-thumb {
@@ -81,42 +83,7 @@ textarea {
 	margin-top: 0px;
 }
 
-.qs_range::-moz-range-thumb {
-	height: @range_size;
-	width: @range_size;
-	border: none;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-   	background: @range_thumb;
-	cursor: pointer;
-}
-
-.qs_range::-ms-thumb {
-	height: @range_size;
-	width: @range_size;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-   	background: @range_thumb;
-	cursor: pointer;
-	border: none;
-}
-
-.qs_range::-webkit-slider-runnable-track {
-	width: 100%;
-	height: @range_size;
-	cursor: pointer;
-	background: @range_track;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
-}
-
-.qs_range:focus::-webkit-slider-runnable-track {
-	background: @range_track;
-}
-
+// moz ----------------------------------------
 .qs_range::-moz-range-track {
 	width: 100%;
 	height: @range_size;
@@ -127,13 +94,40 @@ textarea {
     border-radius: 0;
 }
 
+.qs_range::-moz-range-thumb {
+	height: @range_size;
+	width: @range_size;
+	border: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	background: @range_thumb;
+	cursor: pointer;
+}
+
+
+//ie -------------------------------------
+
 .qs_range::-ms-track {
 	width: 100%;
 	height: @range_size;
 	cursor: pointer;
+	visibility: hidden;
 	background: transparent;
-	color: transparent;
+	//color: transparent;
 }
+
+.qs_range::-ms-thumb {
+	height: @range_size;
+	width: @range_size;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	background: @range_thumb;
+	cursor: pointer;
+	border: none;
+}
+
 .qs_range::-ms-fill-lower {
 	background: @range_track;
     -webkit-border-radius: 0;
@@ -162,6 +156,7 @@ textarea {
 	color: @text_color;
 	height: @button_height;
 	border: @button_border;
+	font: @font_size sans-serif;
 }
 
 .qs_button:active {
@@ -205,7 +200,7 @@ textarea {
 	user-select: none;
 	-webkit-user-select: none;
 	cursor: default;
-	font: _size sans-serif;
+	font: @font_size sans-serif;
 }
 
 .qs_text_input {
@@ -218,6 +213,7 @@ textarea {
 	border: @text_border;
 	background-color: @text_bg;
 	color: @text_color;
+	font-size: @input_font_size;
 }
 
 .qs_select {
@@ -234,6 +230,11 @@ textarea {
     border-radius: 0;
 	padding: 0 5px;
 	-moz-outline: none;
+	font-size: @select_font_size;
+}
+
+.qs_select option {
+	font-size: @select_font_size;
 }
 
 .qs_select::-ms-expand {
@@ -273,6 +274,7 @@ textarea {
 	border: @text_border;
 	background-color: @text_bg;
 	color: @text_color;
+	font-size: @input_font_size;
 }
 
 .qs_color {
