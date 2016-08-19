@@ -17,6 +17,10 @@
 
 		onColor: function(value) {
 			document.body.style.backgroundColor = value;
+		},
+
+		onClick: function() {
+			console.log(panel.getValuesAsJSON(true));
 		}
 	};
 
@@ -66,6 +70,7 @@
 	        {
 	            "type": "button",
 	            "title": "button test",
+	            "callback": "onClick"
 	        },
 	        {
 	            "type": "color",

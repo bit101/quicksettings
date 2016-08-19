@@ -77,6 +77,44 @@
 			this._onKeyUp = this._onKeyUp.bind(this);
 		},
 
+		getValuesAsJSON: function(asString) {
+			var json = {};
+			for(var title in this._controls) {
+				var control = this._controls[title];
+				switch(control.type) {
+					case "color":
+					case "date":
+					case "password":
+					case "text":
+					case "textarea":
+					case "time":
+						json[title] = control.control.value;
+						break;
+					
+					case "number":
+					case "range":
+						json[title] = parseFloat(control.control.value);
+						break;
+
+					case "boolean":
+						json[title] = control.control.checked;
+						break;
+
+					case "dropdown":
+						var select = control.control,
+							options = select.options,
+							index = select.selectedIndex,
+							option = options[index];
+						json[title] = option.label;
+						break;
+				}
+			}
+			if(asString) {
+				json = JSON.stringify(json);
+			}
+			return json;
+		},
+
 		////////////////////////////////////////////////////////////////////////////////
 		// CREATION FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
@@ -511,6 +549,7 @@
 
 
 			this._controls[title] = {
+				type: type,
 				container: container,
 				control: input,
 				label: label,
@@ -602,6 +641,7 @@
 			var span = this._createElement("span", null, checkbox);
 
 			this._controls[title] = {
+				type: "boolean",
 				container: container,
 				control: input,
 				callback: callback
@@ -648,6 +688,7 @@
 			button.value = title;
 
 			this._controls[title] = {
+				type: "button",
 				container: container,
 				control: button
 			}
@@ -682,6 +723,7 @@
 			colorLabel.style.backgroundColor = colorInput.value;
 
 			this._controls[title] = {
+				type: "color",
 				container: container,
 				control: colorInput,
 				label: label,
@@ -735,6 +777,7 @@
 			textInput.className = "qs_text_input";
 
 			this._controls[title] = {
+				type: "text",
 				container: container,
 				control: textInput,
 				label: label,
@@ -786,6 +829,7 @@
 			textInput.value = text || "";
 
 			this._controls[title] = {
+				type: "password",
 				container: container,
 				control: textInput,
 				label: label,
@@ -824,6 +868,7 @@
 			textInput.className = "qs_textarea";
 
 			this._controls[title] = {
+				type: "textarea",
 				container: container,
 				control: textInput,
 				label: label,
@@ -880,6 +925,7 @@
 			dateInput.value = dateStr || "";
 
 			this._controls[title] = {
+				type: "date",
 				container: container,
 				control: dateInput,
 				label: label,
@@ -963,6 +1009,7 @@
 			timeInput.value = timeStr || "";
 
 			this._controls[title] = {
+				type: "time",
 				container: container,
 				control: timeInput,
 				label: label,
@@ -1024,6 +1071,7 @@
 			var container = this._createContainer();
 			container.innerHTML = info;
 			this._controls[title] = {
+				type: "info",
 				container: container
 			};
 			return this;
@@ -1068,6 +1116,7 @@
 			});
 
 			this._controls[title] = {
+				type: "dropdown",
 				container: container,
 				control: select,
 				label: label,
@@ -1117,6 +1166,7 @@
 			img.src = imageURL;
 
 			this._controls[title] = {
+				type: "image",
 				container: container,
 				control: img,
 				label: label
@@ -1151,6 +1201,7 @@
 			}
 
 			this._controls[title] = {
+				type: "progressbar",
 				container: container,
 				control: progressDiv,
 				valueDiv: valueDiv,
@@ -1193,6 +1244,7 @@
 			container.appendChild(element);
 
 			this._controls[title] = {
+				type: "element",
 				container: container,
 				label: label
 			};
