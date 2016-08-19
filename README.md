@@ -5,11 +5,9 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 ## Setup
 
-You can use the files from this repo in your project ~~or directly link to the main minified js file at:~~
+You can use the files from this repo in your project or directly link to the main minified js file at:
 
-~~https://cdn.jsdelivr.net/quicksettings/2.0/quicksettings.min.js~~
-
-(Currently having trouble with jsdelivr updating file structure correctly. May need to find a new CDN).
+- https://cdn.jsdelivr.net/quicksettings/2.0/quicksettings.min.js
 
 QuickSettings is fully require.js compatible. So add the script to your HTML or use require to import it.
 
