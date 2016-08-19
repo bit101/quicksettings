@@ -245,7 +245,7 @@ See Parse Demos below.
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/style_demo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/styles_demo.html
 
 Parse demos:
 
