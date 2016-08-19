@@ -1,0 +1,319 @@
+.qs_main {
+	background-color: @main_bg;
+	text-align:left;
+	position: absolute;
+	width: @panel_width;
+	font: @font_size sans-serif;
+	box-shadow: @panel_shadow;
+	user-select: none;
+  	-webkit-user-select: none;
+	color: @text_color;
+	border: @common_border;
+}
+
+.qs_content {
+	background-color: @background;
+	overflow-y: auto;
+}
+
+.qs_title_bar {
+	background-color: @title_bg;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: pointer;
+	padding: 5px;
+	font-weight: bold;
+	border: none;
+	color: @text_color;
+}
+
+.qs_container {
+	margin: @container_margin;
+	padding: @container_padding;
+	background-color: @container_bg;
+	border: @common_border;
+	position: relative;
+}
+
+.qs_container_selected {
+	border: @selected_container_border;
+	background-color: @selected_container_background;
+}
+
+
+/*========== range ==========*/
+.qs_range {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	width: 100%;
+	height: @range_size_outer;
+	padding: 0px;
+	margin: 0px;
+	background-color: transparent;
+	border: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.qs_range:focus {
+	outline: none;
+	border: none;
+}
+
+// webkit ----------------------------------------------
+.qs_range::-webkit-slider-runnable-track {
+	width: 100%;
+	height: @range_size;
+	cursor: pointer;
+	background: @range_track;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.qs_range:focus::-webkit-slider-runnable-track {
+	background: @range_track;
+}
+
+.qs_range::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: @range_size;
+	width: @range_size;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+   	background: @range_thumb;
+	cursor: pointer;
+	margin-top: 0px;
+}
+
+// moz ----------------------------------------
+.qs_range::-moz-range-track {
+	width: 100%;
+	height: @range_size;
+	cursor: pointer;
+	background: @range_track;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.qs_range::-moz-range-thumb {
+	height: @range_size;
+	width: @range_size;
+	border: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	background: @range_thumb;
+	cursor: pointer;
+}
+
+
+//ie -------------------------------------
+
+.qs_range::-ms-track {
+	width: 100%;
+	height: @range_size;
+	cursor: pointer;
+	visibility: hidden;
+	background: transparent;
+	//color: transparent;
+}
+
+.qs_range::-ms-thumb {
+	height: @range_size;
+	width: @range_size;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	background: @range_thumb;
+	cursor: pointer;
+	border: none;
+}
+
+.qs_range::-ms-fill-lower {
+	background: @range_track;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.qs_range:focus::-ms-fill-lower {
+	background: @range_track;
+}
+
+.qs_range::-ms-fill-upper {
+	background: @range_track;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.qs_range:focus::-ms-fill-upper {
+	background: @range_track;
+}
+/*========== end range ==========*/
+
+
+.qs_button {
+	background-color: @button_bg;
+	color: @text_color;
+	height: @button_height;
+	border: @button_border;
+	font: @font_size sans-serif;
+}
+
+.qs_button:active {
+	background-color: @button_bg_active;
+	border: @button_border;
+}
+
+.qs_button:focus {
+	border: @button_border;
+	outline: none;
+}
+
+.qs_checkbox {
+	cursor: pointer;
+}
+
+.qs_checkbox input {
+	//display: none;
+	position: absolute;
+	left: -99999px;
+}
+
+.qs_checkbox span {
+	height: 16px;
+	width: 100%;
+	display: block;
+	text-indent: 20px;
+	background: @checkbox no-repeat;
+}
+
+.qs_checkbox input:checked + span {
+	background: @checkbox_checked no-repeat;
+}
+
+.qs_checkbox_label {
+	position: absolute;
+	top: @checkbox_label_top;
+	left: @checkbox_label_left;
+}
+
+
+.qs_label {
+	margin-bottom: @label_margin;
+	user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
+	font: @font_size sans-serif;
+}
+
+.qs_text_input {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 0 0 5px;
+	height: @common_height;
+	border: @text_border;
+	background-color: @text_bg;
+	color: @text_color;
+	font-size: @input_font_size;
+}
+
+.qs_text_input:focus {
+	outline: none;
+	background: @text_bg_focused;
+	border: @text_border_focused;
+}
+
+.qs_select {
+	background: @select_bg no-repeat right @button_bg;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	color: @text_color;
+	width: 100%;
+	height: @common_height;
+	border: @button_border;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+	padding: 0 5px;
+	-moz-outline: none;
+	font-size: @select_font_size;
+}
+
+.qs_select option {
+	font-size: @select_font_size;
+}
+
+.qs_select::-ms-expand {
+	display: none;
+}
+
+.qs_select:focus {
+	outline: none;
+}
+
+.qs_number {
+	height: @common_height;
+}
+
+.qs_image {
+	width: 100%;
+}
+
+.qs_progress {
+	width: 100%;
+	height: @progress_height;
+	background-color: @progress_bg;
+	border: @common_border;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.qs_progress_value {
+	height: 100%;
+	background-color: @progress_value;
+}
+
+.qs_textarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+  	resize: vertical;
+  	width: 100%;
+	padding: 3px 5px;
+	border: @text_border;
+	background-color: @text_bg;
+	color: @text_color;
+	font-size: @input_font_size;
+}
+
+.qs_textarea:focus {
+	outline: none;
+	background: @text_bg_focused;
+	border: @text_border_focused;
+}
+
+.qs_color {
+	position: absolute;
+	left: -999999px;
+}
+
+.qs_color_label {
+	width: 100%;
+	height: 20px;
+	display: block;
+	border: @button_border;
+	cursor: pointer;
+	padding: 0 0 0 5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}

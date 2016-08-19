@@ -1,0 +1,24 @@
+{
+  "name": "quicksettings",
+  "version": "2.0.0",
+  "description": "QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.",
+  "main": "quicksettings.min.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bit101/quicksettings.git"
+  },
+  "author": "keith peters",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bit101/quicksettings/issues"
+  },
+  "homepage": "https://github.com/bit101/quicksettings#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-less": "^1.4.0",
+    "grunt-contrib-uglify": "^2.0.0",
+    "grunt-contrib-watch": "^1.0.0"
+  }
+}

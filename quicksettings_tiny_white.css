@@ -1,46 +1,46 @@
 .qs_main {
-  background-color: #000000;
+  background-color: #ffffff;
   text-align: left;
   position: absolute;
-  width: 200px;
-  font: 12px sans-serif;
+  width: 160px;
+  font: 10px sans-serif;
   box-shadow: none;
   user-select: none;
   -webkit-user-select: none;
-  color: #bbbbbb;
-  border: 1px solid #666666;
+  color: #333333;
+  border: 1px solid #cccccc;
 }
 .qs_content {
-  background-color: #000000;
+  background-color: #ffffff;
   overflow-y: auto;
 }
 .qs_title_bar {
-  background-color: #000000;
+  background-color: #ffffff;
   user-select: none;
   -webkit-user-select: none;
   cursor: pointer;
   padding: 5px;
   font-weight: bold;
   border: none;
-  color: #bbbbbb;
+  color: #333333;
 }
 .qs_container {
-  margin: 5px;
-  padding: 5px;
-  background-color: #000000;
-  border: 1px solid #666666;
+  margin: 2px;
+  padding: 2px;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
   position: relative;
 }
 .qs_container_selected {
-  border: 1px solid #cccccc;
-  background-color: #000000;
+  border: 1px solid #666666;
+  background-color: #ffffff;
 }
 /*========== range ==========*/
 .qs_range {
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 100%;
-  height: 17px;
+  height: 14px;
   padding: 0px;
   margin: 0px;
   background-color: transparent;
@@ -55,95 +55,95 @@
 }
 .qs_range::-webkit-slider-runnable-track {
   width: 100%;
-  height: 15px;
+  height: 12px;
   cursor: pointer;
-  background: #333333;
+  background: #eeeeee;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
 .qs_range:focus::-webkit-slider-runnable-track {
-  background: #333333;
+  background: #eeeeee;
 }
 .qs_range::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 15px;
-  width: 15px;
+  height: 12px;
+  width: 12px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  background: #111111;
+  background: #aaaaaa;
   cursor: pointer;
   margin-top: 0px;
 }
 .qs_range::-moz-range-track {
   width: 100%;
-  height: 15px;
+  height: 12px;
   cursor: pointer;
-  background: #333333;
+  background: #eeeeee;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
 .qs_range::-moz-range-thumb {
-  height: 15px;
-  width: 15px;
+  height: 12px;
+  width: 12px;
   border: none;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  background: #111111;
+  background: #aaaaaa;
   cursor: pointer;
 }
 .qs_range::-ms-track {
   width: 100%;
-  height: 15px;
+  height: 12px;
   cursor: pointer;
   visibility: hidden;
   background: transparent;
 }
 .qs_range::-ms-thumb {
-  height: 15px;
-  width: 15px;
+  height: 12px;
+  width: 12px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
-  background: #111111;
+  background: #aaaaaa;
   cursor: pointer;
   border: none;
 }
 .qs_range::-ms-fill-lower {
-  background: #333333;
+  background: #eeeeee;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
 .qs_range:focus::-ms-fill-lower {
-  background: #333333;
+  background: #eeeeee;
 }
 .qs_range::-ms-fill-upper {
-  background: #333333;
+  background: #eeeeee;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
 }
 .qs_range:focus::-ms-fill-upper {
-  background: #333333;
+  background: #eeeeee;
 }
 /*========== end range ==========*/
 .qs_button {
-  background-color: #000000;
-  color: #bbbbbb;
-  height: 30px;
-  border: 1px solid #666666;
-  font: 12px sans-serif;
+  background-color: #ffffff;
+  color: #333333;
+  height: 20px;
+  border: 1px solid #cccccc;
+  font: 10px sans-serif;
 }
 .qs_button:active {
-  background-color: #333333;
-  border: 1px solid #666666;
+  background-color: #cccccc;
+  border: 1px solid #cccccc;
 }
 .qs_button:focus {
-  border: 1px solid #666666;
+  border: 1px solid #cccccc;
   outline: none;
 }
 .qs_checkbox {
@@ -158,22 +158,22 @@
   width: 100%;
   display: block;
   text-indent: 20px;
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAALklEQVQ4T2NMS0v7z0ABYAQZMGvWLLKMSEtLYxg1YDQMRtMBAwP1woCsrAjVBAB1700hDp2I2AAAAABJRU5ErkJggg==') no-repeat;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAALklEQVQ4T2OcOXPmfwYKACPIgLS0NLKMmDVrFsOoAaNhMJoOGBioFwZkZUWoJgApdFaxjUM1YwAAAABJRU5ErkJggg==') no-repeat;
 }
 .qs_checkbox input:checked + span {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAvklEQVQ4T63Tyw2EIBAA0OFKCSCdeaYAoAy1AM52JrTAlc2QYHAdjFmWo5l5zgeY1jrDwGEIeO+Bc16YlNIj18ZpraEA+76DMaYkbtvWRTC5jZvn+QoopeA4DhKpyW3MCdQWUKcQKhlbPVtAAA8ViN978A34RkIIwBgDKSXZGglUxFoL0zSVymKMsCzLbbiPgHMOhBClAqxkXdd3QDsH/HPOuVRCbee/Q+ytqredyxrrTfz5Ig1f5eHHNPCa4QMbS/ghxbi89AAAAABJRU5ErkJggg==') no-repeat;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAvElEQVQ4T63Tyw2EIBAA0OFKBxBL40wDRovAUACcKc1IB1zZDAkG18GYZTmSmafzgTnnMgwchoDWGlJKheGcP3JtnPceCqCUAmttSZznuYtgchsXQrgC+77DNE0kUpPbmBOoJaBOIVQylnqWgAAeKhDve/AN+EaklJBzhhgjWRoJVGTbNjiOowAIret6a+4jYIwpX8aDwLIs74C2D0IIYIyVP6Gm898m9kbVm85ljHUTf16k4VUefkwDrxk+zoUEwCt0GbUAAAAASUVORK5CYII=') no-repeat;
 }
 .qs_checkbox_label {
   position: absolute;
-  top: 7px;
-  left: 30px;
+  top: 5px;
+  left: 24px;
 }
 .qs_label {
   margin-bottom: 3px;
   user-select: none;
   -webkit-user-select: none;
   cursor: default;
-  font: 12px sans-serif;
+  font: 10px sans-serif;
 }
 .qs_text_input {
   -webkit-box-sizing: border-box;
@@ -181,35 +181,35 @@
   box-sizing: border-box;
   width: 100%;
   padding: 0 0 0 5px;
-  height: 24px;
+  height: 18px;
   border: none;
-  background-color: #333333;
-  color: #bbbbbb;
-  font-size: 12px;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 10px;
 }
 .qs_text_input:focus {
   outline: none;
-  background: #333333;
+  background: #eeeeee;
   border: none;
 }
 .qs_select {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAn0lEQVRIS+2SwQ3AIAhFPzM4iUe3cTS38eYmzmDzm5jYpgWTpjc4Cv4PDwTAwI8hbmDRdUQWITii74hCCOi9PwppuflB3UFKCTlnlFJQa72YaLm1UDWgOIUYq8kU5zuNmXsL84ruJhTi2444a0yDKTgnGWNARMzOt3awjs2uY4yneGtNxbK9gztXXg3j7aqe9rCFyDx2pcANTHqOyER0AGnMUQHV+W35AAAAAElFTkSuQmCC') no-repeat right #000000;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAApklEQVRIS+2UwQ2AIAxF2wEYgguMAaPDGHBhCAbAlMQEjbYkxls5wrcPXhtxjDHgx4UKkOyqIskQqKLvinrvYIx5LMSdnR+wPSilQM4ZQgjgvb9AuLM1yAJSSlBrnfkVchanfeccxBhfVYlTdIdQJXrVTnHKiAAKrRD6+SKiePOtHqzvJkhrbW5Za1kt2z24i6WpofU2VU+N2FIkDjsTUIBoTxWJig7pMJi50zaHaQAAAABJRU5ErkJggg==') no-repeat right #ffffff;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  color: #bbbbbb;
+  color: #333333;
   width: 100%;
-  height: 24px;
-  border: 1px solid #666666;
+  height: 18px;
+  border: 1px solid #cccccc;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
   padding: 0 5px;
   -moz-outline: none;
-  font-size: 14px;
+  font-size: 12px;
 }
 .qs_select option {
-  font-size: 14px;
+  font-size: 12px;
 }
 .qs_select::-ms-expand {
   display: none;
@@ -218,23 +218,23 @@
   outline: none;
 }
 .qs_number {
-  height: 24px;
+  height: 18px;
 }
 .qs_image {
   width: 100%;
 }
 .qs_progress {
   width: 100%;
-  height: 15px;
-  background-color: #000000;
-  border: 1px solid #666666;
+  height: 12px;
+  background-color: #eeeeee;
+  border: 1px solid #cccccc;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 .qs_progress_value {
   height: 100%;
-  background-color: #444444;
+  background-color: #aaaaaa;
 }
 .qs_textarea {
   -webkit-box-sizing: border-box;
@@ -244,13 +244,13 @@
   width: 100%;
   padding: 3px 5px;
   border: none;
-  background-color: #333333;
-  color: #bbbbbb;
-  font-size: 12px;
+  background-color: #eeeeee;
+  color: #333333;
+  font-size: 10px;
 }
 .qs_textarea:focus {
   outline: none;
-  background: #333333;
+  background: #eeeeee;
   border: none;
 }
 .qs_color {
@@ -261,7 +261,7 @@
   width: 100%;
   height: 20px;
   display: block;
-  border: 1px solid #666666;
+  border: 1px solid #cccccc;
   cursor: pointer;
   padding: 0 0 0 5px;
   -webkit-box-sizing: border-box;

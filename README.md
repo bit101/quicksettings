@@ -7,41 +7,23 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 You can use the files from this repo to your project or directly link to the main minified js file at:
 
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.min.js
+https://cdn.jsdelivr.net/quicksettings/2.0/quicksettings.min.js
 
 QuickSettings is fully require.js compatible. So add the script to your HTML or use require to import it.
 
-You’ll also need to load a style sheet. There are two ways to do this. The simple way is to call:
-
-    QuickSettings.loadStyleSheet();
-
-With no parameter, this loads the default style sheet. You can also load a specific style by passing in one of the strings:
-
-    "black", "white", "minimal" or "minimal_dark"
-    
-Here you can see examples of all five styles:
-
-![Styles](images/styles.png)
-
-Alternately, you can add a stylesheet to the page itself, linking to one of the following:
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_black.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_white.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal_dark.css
-
-Or you can alter any of this CSS to create your own custom stylesheet and add it to the page.
+When you create your first panel, QuickSettings will automatically inject its own default style sheet into the page. If you want to use a different style, call `QuickSettings.useExtStyleSheet()` prior to creating a panel. This will prevent the automatic css injection. You can then use one of the style sheets included in this repo or alter them to create your own styles.
 
 ## Creating a Panel
 
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
-    var settings = QuickSettings.create(x, y, panelTitle);
+    var settings = QuickSettings.create(x, y, panelTitle, parent);
+    
+The `x` and `y` parameters control the initial position of the panel and default to 0, 0.
+
+The `panelTitle` parameter lets you add an optional title. It defaults to the string, "QuickSettings".
+
+The `parent` parameter lets you specify where on the DOM you want to add the panel and will default to the document's body element.
     
 Destroying a panel removes it from the page and nulls out all methods and properties.
 
@@ -51,57 +33,63 @@ Destroying a panel removes it from the page and nulls out all methods and proper
 
 Now you can add controls to the panel. Supported controls are:
 
-    settings.addRange(title, min, max, value, step, callback);  // creates a range slider
-    settings.addNumber(title, min, max, value, step, callback); // creates a number input
-    settings.addColor(title, color, callback);                  // creates a color input
     settings.addBoolean(title, value, callback);                // creates a checkbox
-    settings.addText(title, text, callback);                    // creates an input text field
-    settings.addTextArea(title, text, callback);                // creates a resizable text area
     settings.addButton(title, callback);                        // creates a button
-    settings.addInfo(title, text);                              // creates informational text
+    settings.addColor(title, color, callback);                  // creates a color input
+    settings.addDate(title, date, callback);                    // adds a date input
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
-    settings.addImage(title, imageURL);                         // creates and image element with the specified URL
-    settings.addProgressBar(title, max, value, showNumbers);    // creates a progress bar
     settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
     settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
+    settings.addInfo(title, text);                              // creates informational text
+    settings.addImage(title, imageURL);                         // creates and image element with the specified URL
+    settings.addNumber(title, min, max, value, step, callback); // creates a number input
     settings.addPassword(title, text, callback);                // adds a password text field
-    settings.addDate(title, date, callback);                    // adds a date input
+    settings.addProgressBar(title, max, value, showNumbers);    // creates a progress bar
+    settings.addRange(title, min, max, value, step, callback);  // creates a range slider
+    settings.addText(title, text, callback);                    // creates an input text field
+    settings.addTextArea(title, text, callback);                // creates a resizable text area
     settings.addTime(title, time, callback);                    // adds a time input
     
 See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
     
-For most controls, the callback will pass the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
+For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
 
-The date control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Date input must be in the form aof a string: "YYYY-MM-DD". Output value will be the same.
+The color control implementation will vary on platforms. On some platforms, this will be the same as a text input. Color input is any valid color string such as "#f00", "#ff0000", "red", "rgb(255, 0, 0)", "rgba(255, 0, 0, 1)".
 
-The time control implementation of the control will vary on platforms. On some platforms, this will be the same as a text input. Time input must be in the form aof a string: "HH-MM" or "HH:MM:SS" in 24-hour format. Output value will be the same.
+The date control implementation will vary on platforms. On some platforms, this will be the same as a text input. Date input must be in the form aof a string: "YYYY-MM-DD". Output value will be the same.
+
+The time control implementation will vary on platforms. On some platforms, this will be the same as a text input. Time input must be in the form aof a string: "HH-MM" or "HH:MM:SS" in 24-hour format. Output value will be the same.
 
 ## Querying Controls
 
 You can also query the value of controls at any time with:
 
-    settings.getRangeValue(title);
-    settings.getNumberValue(title);
     settings.getBoolean(title);
     settings.getColor(title);
-    settings.getText(title);
-    settings.getInfo(title);
+    settings.getDate(title);
     settings.getDropDownValue(title);
+    settings.getInfo(title);
+    settings.getNumberValue(title);
     settings.getProgressValue(title);
+    settings.getRangeValue(title);
+    settings.getText(title);        // text, textarea, password
+    settings.getTime(title);
     
 ## Setting Values Programatically    
 
 And set values of controls with:
 
-    settings.setRangeValue(title, value);
-    settings.setNumberValue(title, value);
     settings.setBoolean(title, value);
     settings.setColor(title, color);
-    settings.setText(title, text);
-    settings.setInfo(title, text);
+    settings.setDate(title, date);
     settings.setDropDownIndex(title, index);
     settings.setImageURL(title, imageURL);
+    settings.setInfo(title, text);
+    settings.setNumberValue(title, value);
     settings.setProgressValue(title, value);
+    settings.setRangeValue(title, value);
+    settings.setText(title, text);  // text, textarea, password
+    settings.setTime(title, time);
     
 If, for some reason, you need to change the min, max or step of a range input or number input, use:
 
@@ -112,7 +100,7 @@ Set the number of rows in a text area (defaults to 5) with:
 
     settings.setTextAreasRows(title, rows);
     
-## Removing, Enabling, Disabling Controlsoc
+## Removing, Enabling, Disabling Controls
 
 You can remove any control with:
 
@@ -159,14 +147,11 @@ By default, the panel will be 200px wide and grow in height to fit its content. 
 Or, perhaps more useful, you can set only the width and let the height continue to grow as normal:
 
     settings.setWidth(w);
+
+You can also set a fixed height. If the controls do not fit in this height, they will scroll.
+
+    settings.setHeight(h);
     
-You can also, of course, set the width in the CSS if you want. But this allows for dynamic width setting, or having multiple panels with different widths. If you want to size the panel to exactly fit some certain content, add 20px to the content size. For example, if you've added an element using `addElement` and that element is 300px wide, say `setWidth(320)` and it should fit just fine.
-
-## Styles
-
-Styles are in quicksettings.css which must be included. Alternate styling can be done through this. I've included a minimal style sheet which makes everything a bit more compact and does some advanced styling on the sliders to make them look more the same across browsers.
-
-![Minimal Style](images/chrome_pc_minimal.png)
 
 ## Responding to changes
 
@@ -178,15 +163,16 @@ This callback will be called whenever any change is made to any control in this 
 
 There are also bind functions:
 
-    settings.bindRange(title, min, max, value, step, object);
-    settings.bindColor(title, color, object);
     settings.bindBoolean(title, value, object);
-    settings.bindText(title, text, object);
-    settings.bindDropDown(title, [items], object);
-    settings.bindPassword(title, text, object);
+    settings.bindColor(title, color, object);
     settings.bindDate(title, date, object);
-    settings.bindTime(title, time, object);
+    settings.bindDropDown(title, [items], object);
     settings.bindNumber(title, value, object);
+    settings.bindPassword(title, text, object);
+    settings.bindRange(title, min, max, value, step, object);
+    settings.bindText(title, text, object);
+    settings.bindTextArea(title, text, object);
+    settings.bindTime(title, time, object);    
     
 These function the same as their "add" counterparts, but instead of a callback, you pass in an object. When the control's value is changed, it will assign the new value to the property of that object that matches the title. For example:
 
@@ -198,7 +184,7 @@ These two changes allow you to have a single model object and a single change ha
 
 ## Misc.
 
-Pretty much all methods that are not getters will return a reference to the panel itself, allowing you to chang calls.
+Pretty much every method that is not a getter will return a reference to the panel itself, allowing you to chain calls.
 
     var panel = QuickSettings.create(10, 10, "Panel")
         .addRange("x", 0, 100, 50, 1)
@@ -211,18 +197,24 @@ Pretty much all methods that are not getters will return a reference to the pane
 
 You can also create your panel with a JavaScript object or JSON string. Just call:
 
-    var panel = QuickSettings.parse(json, scope);
+    var panel = QuickSettings.parse(json, parent, scope);
     
-The `json` parameter is a JSON string or JavaScript object and `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. JSON format:
+The `json` parameter is a JSON string or JavaScript object.
+
+The `parent` is the parent element where the panel will be created, defaulting to `document.body`.
+
+And `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. If you're not adding callbacks in the JSON, you don't need this.
+
+JSON format:
 
     {
-      "title": "Panel name",    // required string
-      "x": 400,                 // required number
-      "y": 30,                  // required number
-      "draggable": true,        // optional bool
-      "collapsible": true,      // optional bool
-      "snapToGrid": true,       // optional bool
-      "gridSize": 40,           // optional number
+      "title": "Panel name",    // optional string, default "QuickSettings"
+      "x": 400,                 // optional number, default 0
+      "y": 30,                  // optional number, default 0
+      "draggable": true,        // optional bool,   default true
+      "collapsible": true,      // optional bool,   default true
+      "snapToGrid": true,       // optional bool,   default false
+      "gridSize": 40,           // optional number  default 0
       "controls": []            // optional array of control objects
     }
     
@@ -234,7 +226,7 @@ Control object format:
         "value": 100,           // optional value:
                                     // number or string for most controls.
                                     // bool for boolean
-                                    // array for dropdown
+                                    // array of option labels for dropdown
                                     // not used for button
         "min": 0,               // optional number (range and number only)
         "max": 100,             // optional number (range, number, progressbar only)
@@ -250,7 +242,6 @@ See Parse Demos below.
 
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo_minimal.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
