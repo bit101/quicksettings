@@ -18,7 +18,7 @@
 			panel = null;
 		}
 		var json = jsonText.value;
-		panel = QuickSettings.parse(json, null);
+		panel = QuickSettings.parse(json);
 	});
 
 

@@ -1,26 +1,47 @@
-/*
-
-type: required
-title: required
-value: string, number for most. bool for boolean, array for dropdown. not used in button
-min: number for range, number
-max: number for range, number, progressbar
-step: number for range
-callback: string
-
-*/
-
 
 (function() {
+
+	var controller = {
+		onStyle: function(data) {
+			var styleTag = document.getElementById("qs_styles");
+			if(data.value === "defaultStyle") {
+				styleTag.href = "../quicksettings.css";
+			}
+			else {
+				styleTag.href = "../quicksettings_" + data.value + ".css";
+			}
+		},
+		onRange: function(value) {
+			panel.setProgress("progressbar test", value);
+		},
+
+		onColor: function(value) {
+			document.body.style.backgroundColor = value;
+		}
+	};
+
 	var json = {
 	    "title": "test",
-	    "x": 400,
-	    "y": 30,
+	    "x": 20,
+	    "y": 20,
 	    "draggable": true,
 	    "collapsible": true,
 	    "snapToGrid": true,
 	    "gridSize": 100,
 	    "controls": [
+			{
+				"type": "dropdown",
+				"title": "style",
+				"value": [
+					"defaultStyle",
+					"black",
+					"white",
+					"tiny",
+					"tiny_white",
+					"tiny_black"
+				],
+				"callback": "onStyle"
+			},
 	        {
 	            "type": "range",
 	            "title": "range test",
@@ -39,12 +60,12 @@ callback: string
 	        },
 	        {
 	            "type": "boolean",
-	            "title": "boolean test",
-	            "value": true
+	            "title": "Boolean test",
+	            "value": true,
 	        },
 	        {
 	            "type": "button",
-	            "title": "button test"
+	            "title": "button test",
 	        },
 	        {
 	            "type": "color",
@@ -65,33 +86,24 @@ callback: string
 	        {
 	            "type": "textarea",
 	            "title": "text area test",
-	            "value": "whatever"
+	            "value": navigator.userAgent
 	        },
 	        {
 	            "type": "date",
 	            "title": "date test",
-	            "value": "2016-10-11"
+	            "value": new Date()
+                // "value": "2016-08-14"
 	        },
 	        {
 	            "type": "time",
 	            "title": "time test",
-	            "value": "12:34"
+				// "value": "12:34"
+				"value": new Date()
 	        },
 	        {
 	            "type": "info",
 	            "title": "info test",
 	            "value": "some info"
-	        },
-	        {
-	            "type": "dropdown",
-	            "title": "dropdown test",
-	            "value": [
-	                "one",
-	                "two",
-	                "three",
-	                "...",
-	                "profit!"
-	            ]
 	        },
 	        {
 	            "type": "image",
@@ -103,7 +115,7 @@ callback: string
 	            "title": "progressbar test",
 	            "max": 100,
 	            "value": 50,
-	            "showNumbers": true
+	            "valueDisplay": "percent"
 	        },
 	        {
 	            "type": "html",
@@ -112,16 +124,7 @@ callback: string
 	        }
 	    ]
 	};
-
-	document.getElementById("code").innerHTML = "<pre>" + JSON.stringify(json, null, "    ") + "</pre>";
-	var controller = {
-		onRange: function(value) {
-			panel.setProgress("progressbar test", value)
-		},
-		onColor: function(value) {
-			document.body.style.backgroundColor = value;
-		}
-	};
-
+	QuickSettings.useExtStyleSheet();
 	var panel = QuickSettings.parse(json, null, controller);
+
 })();
