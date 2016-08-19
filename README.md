@@ -1,7 +1,7 @@
 # quicksettings
 QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.
 
-![QuickSettings Panel](images/chrome_pc.png)
+![QuickSettings Panel](images/master_demo.png)
 
 ## Setup
 
@@ -245,7 +245,7 @@ See Parse Demos below.
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/style_demo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/styles_demo.html
 
 Parse demos:
 
