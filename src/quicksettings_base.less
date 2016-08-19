@@ -36,7 +36,7 @@
 }
 
 .qs_container_selected {
-	//border: @selected_container_border;
+	border: @selected_container_border;
 	background-color: @selected_container_background;
 }
 
@@ -227,6 +227,7 @@
 .qs_text_input:focus {
 	outline: none;
 	background: @text_bg_focused;
+	border: @text_border_focused;
 }
 
 .qs_select {
@@ -237,7 +238,7 @@
 	color: @text_color;
 	width: 100%;
 	height: @common_height;
-	border: @text_border;
+	border: @button_border;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -261,15 +262,6 @@
 .qs_number {
 	height: @common_height;
 }
-
-//.qs_number {
-//	-moz-appearance: textfield;
-//}
-//
-//
-//.qs_number:focus {
-//	-moz-appearance: number-input;
-//}
 
 .qs_image {
 	width: 100%;
@@ -305,6 +297,8 @@
 
 .qs_textarea:focus {
 	outline: none;
+	background: @text_bg_focused;
+	border: @text_border_focused;
 }
 
 .qs_color {

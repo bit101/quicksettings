@@ -7,41 +7,19 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 You can directly link to the main minified js file at:
 
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.min.js
+https://cdn.jsdelivr.net/quicksettings/2.0/quicksettings.min.js
 
 You can add the script to the HTML page directly, or use require.js to import the code.
 
-You’ll also need to load a style sheet. There are two ways to do this. The simple way it to call:
-
-    QuickSettings.loadStyleSheet();
-
-With no parameter, this loads the default style sheet. You can also load a specific style by passing in one of the strings:
-
-    "black", "white", "minimal" or "minimal_dark"
-    
-Here you can see examples of all five styles:
-
-![Styles](images/styles.png)
-
-Alternately, you can add a stylesheet to the page itself, linking to one of the following:
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_black.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_white.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal.css
-
-https://cdn.jsdelivr.net/quicksettings/1.6/quicksettings_minimal_dark.css
-
-Or you can alter any of this CSS to create your own custom stylesheet and add it to the page.
+When you create your first panel, QuickSettings will automatically inject its own default style sheet into the page. If you want to use a different style, call `QuickSettings.useExtStyleSheet()` prior to creating a panel. This will prevent the automatic css injection. You can then use one of the style sheets included in this repo or alter them to create your own styles.
 
 ## Creating a Panel
 
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
-    var settings = QuickSettings.create(x, y, panelTitle);
+    var settings = QuickSettings.create(x, y, panelTitle, [parent]);
+
+The `parent` parameter is optional and will default to the document's body element.
     
 Destroying a panel removes it from the page and nulls out all methods and properties.
 
@@ -112,7 +90,7 @@ Set the number of rows in a text area (defaults to 5) with:
 
     settings.setTextAreasRows(title, rows);
     
-## Removing, Enabling, Disabling Controlsoc
+## Removing, Enabling, Disabling Controls
 
 You can remove any control with:
 
@@ -162,12 +140,6 @@ Or, perhaps more useful, you can set only the width and let the height continue 
     
 You can also, of course, set the width in the CSS if you want. But this allows for dynamic width setting, or having multiple panels with different widths. If you want to size the panel to exactly fit some certain content, add 20px to the content size. For example, if you've added an element using `addElement` and that element is 300px wide, say `setWidth(320)` and it should fit just fine.
 
-## Styles
-
-Styles are in quicksettings.css which must be included. Alternate styling can be done through this. I've included a minimal style sheet which makes everything a bit more compact and does some advanced styling on the sliders to make them look more the same across browsers.
-
-![Minimal Style](images/chrome_pc_minimal.png)
-
 ## Responding to changes
 
 In addition to adding a callback on each control, you can add a global change handler:
@@ -198,7 +170,7 @@ These two changes allow you to have a single model object and a single change ha
 
 ## Misc.
 
-Pretty much all methods that are not getters will return a reference to the panel itself, allowing you to chang calls.
+Pretty much all methods that are not getters will return a reference to the panel itself, allowing you to chain calls.
 
     var panel = QuickSettings.create(10, 10, "Panel")
         .addRange("x", 0, 100, 50, 1)
@@ -211,9 +183,13 @@ Pretty much all methods that are not getters will return a reference to the pane
 
 You can also create your panel with a JavaScript object or JSON string. Just call:
 
-    var panel = QuickSettings.parse(json, scope);
+    var panel = QuickSettings.parse(json, parent, scope);
     
-The `json` parameter is a JSON string or JavaScript object and `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. JSON format:
+The `json` parameter is a JSON string or JavaScript object.
+
+The `parent` is the parent element where the panel will be created, defaulting to `document.body`.
+
+And `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. JSON format:
 
     {
       "title": "Panel name",    // required string

@@ -3,15 +3,10 @@
 	// PRIVATE/STATIC DATA AND FUNCTIONS
 	////////////////////////////////////////////////////////////////////////////////
 	var cssInjected = false,
-		css = "${css}";
+		css = "${css}"; // will be injected with default css
 
 	function injectCSS() {
-		var qs_Styles = document.getElementById("qs_styles");
-		if(qs_Styles) {
-			document.head.removeChild(qs_Styles);
-		}
 		var styleTag = document.createElement("style");
-		styleTag.id = "qs_styles";
 		styleTag.innerText = css;
 		document.head.appendChild(styleTag);
 		cssInjected = true;
@@ -47,25 +42,28 @@
 			cssInjected = true;
 		},
 
-		create: function(x, y, title) {
+		create: function(x, y, title, parent) {
 			var obj = Object.create(this);
-			obj._init(x, y, title);
+			obj._init(x, y, title, parent);
 			return obj;
 		},
 
 		destroy: function() {
-			document.body.removeChild(this._panel);
+			var parent = this._panel.offsetParent;
+			if(parent) {
+				parent.removeChild(this._panel);
+			}
 			for(var prop in this) {
 				this[prop] = null;
 			}
 		},
 
-		_init: function(x, y, title) {
+		_init: function(x, y, title, parent) {
 			if(!cssInjected) {
 				injectCSS();
 			}
 			this._bindHandlers();
-			this._createPanel(x, y);
+			this._createPanel(x, y, parent);
 			this._createTitleBar(title || "QuickSettings");
 			this._createContent();
 
@@ -77,6 +75,62 @@
 			this._endDrag = this._endDrag.bind(this);
 			this._doubleClickTitle = this._doubleClickTitle.bind(this);
 			this._onKeyUp = this._onKeyUp.bind(this);
+		},
+
+		////////////////////////////////////////////////////////////////////////////////
+		// CREATION FUNCTIONS
+		////////////////////////////////////////////////////////////////////////////////
+		_createPanel: function(x, y, parent) {
+			this._panel = this._createElement("div", "qs_main", parent || document.body);
+			this._panel.style.zIndex = ++QuickSettings._topZ;
+			this.setPosition(x || 0, y || 0);
+			this._controls = {};
+		},
+
+		_createTitleBar: function(text) {
+			this._titleBar = this._createElement("div", "qs_title_bar", this._panel);
+			this._titleBar.textContent = text;
+
+			this._titleBar.addEventListener("mousedown", this._startDrag);
+			this._titleBar.addEventListener("dblclick", this._doubleClickTitle);
+
+		},
+
+		_createContent: function() {
+			this._content = this._createElement("div", "qs_content", this._panel);
+		},
+
+		_createElement: function(type, className, parent) {
+			var element = document.createElement(type);
+			if(!element) return;
+			if(className) {
+				element.className = className;
+			}
+			if(parent) {
+				parent.appendChild(element);
+			}
+			return element;
+		},
+
+		_createContainer: function() {
+			var container = this._createElement("div", "qs_container");
+			container.addEventListener("focus", function() {
+				this.className += " qs_container_selected";
+			}, true);
+			container.addEventListener("blur", function() {
+				var index = this.className.indexOf(" qs_container_selected");
+				if(index > -1) {
+					this.className = this.className.substr(0, index);
+				}
+			}, true);
+			this._content.appendChild(container);
+			return container;
+		},
+
+		_createLabel: function(title, container) {
+			var label = this._createElement("div", "qs_label", container);
+			label.innerHTML = title;
+			return label;
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +152,11 @@
 		setWidth: function(w) {
 			this._panel.style.width = w + "px";
 			this._content.style.width = w + "px";
+			return this;
+		},
+
+		setHeight: function(h) {
+			this._content.style.height = (h - this._titleBar.offsetHeight) + "px";
 			return this;
 		},
 
@@ -178,62 +237,6 @@
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// CREATION FUNCTIONS
-		////////////////////////////////////////////////////////////////////////////////
-		_createPanel: function(x, y) {
-			this._panel = this._createElement("div", "qs_main", document.body);
-			this._panel.style.zIndex = ++QuickSettings._topZ;
-			this.setPosition(x || 0, y || 0);
-			this._controls = {};
-		},
-
-		_createTitleBar: function(text) {
-			this._titleBar = this._createElement("div", "qs_title_bar", this._panel);
-			this._titleBar.textContent = text;
-
-			this._titleBar.addEventListener("mousedown", this._startDrag);
-			this._titleBar.addEventListener("dblclick", this._doubleClickTitle);
-
-		},
-
-		_createContent: function() {
-			this._content = this._createElement("div", "qs_content", this._panel);
-		},
-
-		_createElement: function(type, className, parent) {
-			var element = document.createElement(type);
-			if(!element) return;
-			if(className) {
-				element.className = className;
-			}
-			if(parent) {
-				parent.appendChild(element);
-			}
-			return element;
-		},
-
-		_createContainer: function() {
-			var container = this._createElement("div", "qs_container");
-			container.addEventListener("focus", function() {
-				this.className += " qs_container_selected";
-			}, true);
-			container.addEventListener("blur", function() {
-				var index = this.className.indexOf(" qs_container_selected");
-				if(index > -1) {
-					this.className = this.className.substr(0, index);
-				}
-			}, true);
-			this._content.appendChild(container);
-			return container;
-		},
-
-		_createLabel: function(title, container) {
-			var label = this._createElement("div", "qs_label", container);
-			label.innerHTML = title;
-			return label;
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -347,15 +350,21 @@
 		// JSON PARSER
 		////////////////////////////////////////////////////////////////////////////////
 
-		parse: function(json, scope) {
+		parse: function(json, parent, scope) {
 			if(typeof json === "string") {
 				json = JSON.parse(json);
 			}
-			var panel = QuickSettings.create(json.x, json.y, json.title);
+			var panel = QuickSettings.create(json.x, json.y, json.title, parent);
 			panel.setDraggable(json.draggable == null ? true : json.draggable);
 			panel.setCollapsible(json.collapsible == null ? true : json.collapsible);
 			panel.setGridSize(json.gridSize || 40);
 			panel.setSnapToGrid(json.snapToGrid == null ? false : json.snapToGrid);
+			if(json.width) {
+				panel.setWidth(json.width);
+			}
+			if(json.height) {
+				panel.setHeight(json.height);
+			}
 			scope = scope || {};
 
 			for(var i = 0; i < json.controls.length; i++) {
@@ -512,12 +521,13 @@
 			if(type === "range" && this._isIE()) {
 				eventName = "change";
 			}
+			var self = this;
 			input.addEventListener(eventName, function() {
 				label.innerHTML = "<b>" + title + ":</b> " + input.value;
 				if(callback) {
 					callback(parseFloat(input.value));
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -597,11 +607,12 @@
 				callback: callback
 			};
 
+			var self = this;
 			input.addEventListener("change", function() {
 				if(callback) {
 					callback(input.checked);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -641,11 +652,12 @@
 				control: button
 			}
 
+			var self = this;
 			button.addEventListener("click", function() {
 				if(callback) {
 					callback(button);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -654,19 +666,14 @@
 		// COLOR
 		////////////////////////////////////////////////////////////////////////////////
 		addColor: function(title, color, callback) {
-			if(this._isSafari() || this._isEdge()) {
+			if(this._isSafari() || this._isEdge() || this._isIE()) {
 				return this.addText(title, color, callback);
 			}
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + ":</b> " + color, label);
 
 			var colorInput = this._createElement("input", "qs_color", container);
-			try {
-				colorInput.type = "color";
-			}
-			catch(e) {
-				return this.addText(title, color, callback);
-			}
+			colorInput.type = "color";
 			colorInput.id = title;
 			colorInput.value = color || "#ff0000";
 
@@ -681,13 +688,14 @@
 				callback: callback
 			};
 
+			var self = this;
 			colorInput.addEventListener("input", function() {
 				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
 				colorLabel.style.backgroundColor = colorInput.value;
 				if(callback) {
 					callback(colorInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -733,11 +741,12 @@
 				callback: callback
 			}
 
+			var self = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -783,11 +792,12 @@
 				callback: callback
 			}
 
+			var self = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		}, 
@@ -820,11 +830,12 @@
 				callback: callback
 			}
 
+			var self = this;
 			textInput.addEventListener("input", function() {
 				if(callback) {
 					callback(textInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		}, 
@@ -875,11 +886,12 @@
 				callback: callback
 			}
 
+			var self = this;
 			dateInput.addEventListener("input", function() {
 				if(callback) {
 					callback(dateInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -957,11 +969,12 @@
 				callback: callback
 			}
 
+			var self = this;
 			timeInput.addEventListener("input", function() {
 				if(callback) {
 					callback(timeInput.value);
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 			return this;
 		},
@@ -1039,6 +1052,8 @@
 				option.innerText = items[i];
 				select.add(option);
 			};
+
+			var self = this;
 			select.addEventListener("change", function() {
 				var index = select.selectedIndex,
 					options = select.options;
@@ -1049,7 +1064,7 @@
 						value: options[index].label
 					});
 				}
-				this._callGCH();
+				self._callGCH();
 			});
 
 			this._controls[title] = {
