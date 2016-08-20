@@ -719,7 +719,7 @@
 				return this.addText(title, color, callback);
 			}
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + ":</b> " + color, label);
+			var label = this._createLabel("<b>" + title + ":</b> " + color, container);
 
 			var colorInput = this._createElement("input", "qs_color", container);
 			colorInput.type = "color";
