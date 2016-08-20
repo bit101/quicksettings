@@ -44,7 +44,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addImage(title, imageURL);                         // creates and image element with the specified URL
     settings.addNumber(title, min, max, value, step, callback); // creates a number input
     settings.addPassword(title, text, callback);                // adds a password text field
-    settings.addProgressBar(title, max, value, showNumbers);    // creates a progress bar
+    settings.addProgressBar(title, max, value, valueDisplay);   // creates a progress bar
     settings.addRange(title, min, max, value, step, callback);  // creates a range slider
     settings.addText(title, text, callback);                    // creates an input text field
     settings.addTextArea(title, text, callback);                // creates a resizable text area
