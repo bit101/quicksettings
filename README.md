@@ -74,7 +74,13 @@ You can also query the value of controls at any time with:
     settings.getRangeValue(title);
     settings.getText(title);        // text, textarea, password
     settings.getTime(title);
-    
+
+It's also possible to get an object containing all of the value for all user-interactive controls.
+
+    settings.getValuesAsJSON(asString);
+
+This will give you an object containing the title and value of each object that can be changed by a user. Passing `true` for the `asString` parameter will give you a JSON-formatted string instead of an object.
+
 ## Setting Values Programatically    
 
 And set values of controls with:
@@ -100,7 +106,7 @@ Set the number of rows in a text area (defaults to 5) with:
 
     settings.setTextAreasRows(title, rows);
     
-## Removing, Enabling, Disabling Controls
+## Managing Controls
 
 You can remove any control with:
 
@@ -110,6 +116,19 @@ Or disable and reenable any controls that can be enabled/disabled with:
 
     settings.disableControl(title);
     settings.enableControl(title);
+    
+Or hide and show andy control:
+
+    settings.hideControl(title);
+    settings.showControl(title);
+    
+Finally, you can override most existing style properties for controls with:
+
+    settings.overrideStyle(title, styleName, value);
+
+For example, to change the font size in an intput text field named "text":
+
+    settings.overrideStyle("text", "fontSize", "20px");
 
 ## Panel Settings
 
@@ -237,6 +256,7 @@ Control object format:
 All controls are supported except `addElement`.
 
 See Parse Demos below.
+
 
 ## Demos
 
