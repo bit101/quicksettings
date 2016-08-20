@@ -49,9 +49,8 @@
 		},
 
 		destroy: function() {
-			var parent = this._panel.offsetParent;
-			if(parent) {
-				parent.removeChild(this._panel);
+			if(this._panel.parentElement) {
+				this._panel.parentElement.removeChild(this._panel);
 			}
 			for(var prop in this) {
 				this[prop] = null;
@@ -77,6 +76,9 @@
 			this._onKeyUp = this._onKeyUp.bind(this);
 		},
 
+		////////////////////////////////////////////////////////////////////////////////
+		// VALUE FUNCTIONS
+		////////////////////////////////////////////////////////////////////////////////
 		getValuesAsJSON: function(asString) {
 			var json = {};
 			for(var title in this._controls) {
@@ -370,17 +372,23 @@
 		},
 
 		enableControl: function(title) {
-			if(this._controls[title].control) {
+			if(this._controls[title]) {
 				this._controls[title].control.disabled = false;
 			}
 			return this;
 		},
 
 		disableControl: function(title) {
-			if(this._controls[title].control) {
+			if(this._controls[title]) {
 				this._controls[title].control.disabled = true;
 			}
 			return this;
+		},
+
+		overrideStyle: function(title, style, value) {
+			if(this._controls[title]) {
+				this._controls[title].control.style[style] = value;
+			}
 		},
 
 
