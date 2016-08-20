@@ -385,6 +385,20 @@
 			return this;
 		},
 
+		hideControl: function(title) {
+			if(this._controls[title]) {
+				this._controls[title].container.style.display = "none";
+			}
+			return this;
+		},
+
+		showControl: function(title) {
+			if(this._controls[title]) {
+				this._controls[title].container.style.display = "block";
+			}
+			return this;
+		},
+
 		overrideStyle: function(title, style, value) {
 			if(this._controls[title]) {
 				this._controls[title].control.style[style] = value;
