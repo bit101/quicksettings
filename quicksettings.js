@@ -1,3 +1,6 @@
+/**
+ * @module QuickSettings
+ */
 (function() {
 	////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE/STATIC DATA AND FUNCTIONS
@@ -15,8 +18,13 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// MAIN MODULE DEFINITION
 	////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 *
+	 * @alias module:QuickSettings
+	 */
 	var QuickSettings = {
-		_version: "2.0",
+		_version: "2.1",
 		_topZ: 1,
 
 		_panel: null,
@@ -42,12 +50,23 @@
 			cssInjected = true;
 		},
 
+		/**
+		 * Creates a new QuickSettings Panel
+		 * @param x			{Number}		x position of panel (default 0)
+		 * @param y			{Number}		y position of panel (default 0)
+		 * @param title		{String}		title of panel (default "QuickSettings")
+		 * @param parent	{HTMLElement}	parent element (default document.body)
+		 * @returns {module:QuickSettings}	New QuickSettings Panel
+		 */
 		create: function(x, y, title, parent) {
 			var obj = Object.create(this);
 			obj._init(x, y, title, parent);
 			return obj;
 		},
 
+		/**
+		 * Destroys the panel, removing it from the document and nulling all properties.
+		 */
 		destroy: function() {
 			if(this._panel.parentElement) {
 				this._panel.parentElement.removeChild(this._panel);
@@ -79,6 +98,11 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// VALUE FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Returns an object containing the titles and values of all user-interactive controls in this panel.
+		 * @param asString	{Boolean}	If true, returns a JSON formatted string of these values.
+		 * @returns 		{Object}	An object or string containing the titles and values fo all user-interactive controls in this panel.
+		 */
 		getValuesAsJSON: function(asString) {
 			var json = {};
 			for(var title in this._controls) {
@@ -176,12 +200,24 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// SIZE AND POSITION FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Positions the panel at the given location.
+		 * @param x	{Number} The x position.
+		 * @param y	{Number} The y position.
+		 * @returns {module:QuickSettings}
+		 */
 		setPosition: function(x, y) {
 			this._panel.style.left = x + "px";
 			this._panel.style.top = Math.max(y, 0) + "px";
 			return this;
 		},
 
+		/**
+		 * Sets the size of the panel.
+		 * @param w	{Number} The width of the panel.
+		 * @param h	{Number} The height of the panel.
+		 * @returns {module:QuickSettings}
+		 */
 		setSize: function(w, h) {
 			this._panel.style.width = w + "px";
 			this._content.style.width = w + "px";
@@ -189,12 +225,22 @@
 			return this;
 		},
 
+		/**
+		 * Sets the width of the panel.
+		 * @param w	{Number} The width of the panel.
+		 * @returns {module:QuickSettings}
+		 */
 		setWidth: function(w) {
 			this._panel.style.width = w + "px";
 			this._content.style.width = w + "px";
 			return this;
 		},
 
+		/**
+		 * Sets the height of the panel.
+		 * @param h	{Number} The height of the panel.
+		 * @returns {module:QuickSettings}
+		 */
 		setHeight: function(h) {
 			this._content.style.height = (h - this._titleBar.offsetHeight) + "px";
 			return this;
@@ -203,6 +249,11 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// DRAG AND DROP FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Sets whether or not the panel can be dragged.
+		 * @param draggable {Boolean} Whether or not the panel can be dragged.
+		 * @returns {module:QuickSettings}
+		 */
 		setDraggable: function(draggable) {
 			this._draggable = draggable;
 			if(this._draggable || this._collapsible) {
@@ -255,19 +306,34 @@
 			event.preventDefault();
 		},
 
-		setSnapToGrid: function(value) {
-			this._snapToGrid = value;
+		/**
+		 * Sets whether or not the panel will snap to a grid location when moved.
+		 * @param snap {Boolean} Whether or not the panel will snap to a grid location when moved.
+		 * @returns {module:QuickSettings}
+		 */
+		setSnapToGrid: function(snap) {
+			this._snapToGrid = snap;
 			return this;
 		},
 
-		setGridSize: function(value) {
-			this._gridSize = value;
+		/**
+		 * Sets the size of the grid that the panel will snap to if snapping is set to true.
+		 * @param size {Number} The size of the grid.
+		 * @returns {module:QuickSettings}
+		 */
+		setGridSize: function(size) {
+			this._gridSize = size;
 			return this;
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
 		// CHANGE HANDLER FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Sets a function that will be called whenever any value in the panel is changed.
+		 * @param handler {Function}
+		 * @returns {module:QuickSettings}
+		 */
 		setGlobalChangeHandler: function(handler) {
 			this._globalChangeHandler = handler;
 			return this;
@@ -282,12 +348,20 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// VISIBILITY FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Hides the panel.
+		 * @returns {module:QuickSettings}
+		 */
 		hide: function() {
 			this._panel.style.visibility = "hidden";
 			this._hidden = true;
 			return this;
 		},
 
+		/**
+		 * Shows the panel.
+		 * @returns {module:QuickSettings}
+		 */
 		show: function() {
 			this._panel.style.visibility = "visible";
 			this._panel.style.zIndex = ++QuickSettings._topZ;
@@ -295,6 +369,10 @@
 			return this;
 		},
 
+		/**
+		 * Toggles the panel from hidden to visible and back.
+		 * @returns {module:QuickSettings}
+		 */
 		toggleVisibility: function() {
 			if(this._hidden) {
 				this.show();
@@ -305,6 +383,11 @@
 			return this;
 		},
 
+		/**
+		 * Sets whether or not the panel will collapse and expand when the title is double clicked.
+		 * @param collapsible {Boolean} Wheter or not the panel can collapse and expand.
+		 * @returns {module:QuickSettings}
+		 */
 		setCollapsible: function(collapsible) {
 			this._collapsible = collapsible;
 			if(this._draggable || this._collapsible) {
@@ -316,18 +399,30 @@
 			return this;
 		},
 
+		/**
+		 * Collapses the panel showing only the title bar.
+		 * @returns {module:QuickSettings}
+		 */
 		collapse: function() {
 			this._panel.removeChild(this._content);
 			this._collapsed = true;
 			return this;
 		},
 
+		/**
+		 * If panel is collapsed, re-expands it.
+		 * @returns {module:QuickSettings}
+		 */
 		expand: function() {
 			this._panel.appendChild(this._content);
 			this._collapsed = false;
 			return this;
 		},
 
+		/**
+		 * Toggles the panel back and forth between collapsed and expanded states.
+		 * @returns {module:QuickSettings}
+		 */
 		toggleCollapsed: function() {
 			if(this._collapsed) {
 				this.expand();
@@ -338,6 +433,11 @@
 			return this;
 		},
 
+		/**
+		 * Sets a key that, when pressed, will show and hide the panel.
+		 * @param char
+		 * @returns {module:QuickSettings}
+		 */
 		setKey: function(char) {
 			this._keyCode = char.toUpperCase().charCodeAt(0);
 			document.body.addEventListener("keyup", this.onKeyUp);
@@ -360,6 +460,11 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// CONTROL FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Removes a given control from the panel.
+		 * @param title {String} The title of the control to remove.
+		 * @returns {module:QuickSettings}
+		 */
 		removeControl: function(title) {
 			if(this._controls[title]){
 				var container = this._controls[title].container;
@@ -371,6 +476,11 @@
 			return this;
 		},
 
+		/**
+		 * Enables the given control.
+		 * @param title {String} The title of the control to enable.
+		 * @returns {module:QuickSettings}
+		 */
 		enableControl: function(title) {
 			if(this._controls[title]) {
 				this._controls[title].control.disabled = false;
@@ -378,6 +488,11 @@
 			return this;
 		},
 
+		/**
+		 * Disables the given control.
+		 * @param title {String} The title of the control to disable.
+		 * @returns {module:QuickSettings}
+		 */
 		disableControl: function(title) {
 			if(this._controls[title]) {
 				this._controls[title].control.disabled = true;
@@ -385,6 +500,11 @@
 			return this;
 		},
 
+		/**
+		 * Hides the given control.
+		 * @param title {String} The title of the control to hide.
+		 * @returns {module:QuickSettings}
+		 */
 		hideControl: function(title) {
 			if(this._controls[title]) {
 				this._controls[title].container.style.display = "none";
@@ -392,6 +512,11 @@
 			return this;
 		},
 
+		/**
+		 * Shows the given control.
+		 * @param title {String} The title of the control to show.
+		 * @returns {module:QuickSettings}
+		 */
 		showControl: function(title) {
 			if(this._controls[title]) {
 				this._controls[title].container.style.display = "block";
@@ -399,6 +524,12 @@
 			return this;
 		},
 
+		/**
+		 * Changes a specific style on the given component.
+		 * @param title {String} The title of the control.
+		 * @param style {String} The name of the style.
+		 * @param value {Various} The new value of the style.
+		 */
 		overrideStyle: function(title, style, value) {
 			if(this._controls[title]) {
 				this._controls[title].control.style[style] = value;
@@ -409,7 +540,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// JSON PARSER
 		////////////////////////////////////////////////////////////////////////////////
-
+		/**
+		 * Creates a new QuickSettings Panel from a JSON string or object.
+		 * @param json {Object|String} The JSON string or object to parse.
+		 * @param parent {HTMLElement} The parent element to attach the new panel to.
+		 * @param scope {Object} The object to look for any callbacks on.
+		 * @returns {module:QuickSettings}
+		 */
 		parse: function(json, parent, scope) {
 			if(typeof json === "string") {
 				json = JSON.parse(json);
@@ -545,10 +682,30 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// RANGE (SLIDER)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a range slider control.
+		 * @param title {String} Title of the control.
+		 * @param min {Number} Minimum value of control.
+		 * @param max {Number} Maximum value of control.
+		 * @param value {Number} Initial value of control.
+		 * @param step {Number} Size of value increments.
+		 * @param callback {Function} Callback function to call when control value changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addRange: function(title, min, max, value, step, callback) {
 			return this._addNumber("range", title, min, max, value, step, callback);
 		},
 
+		/**
+		 * Adds a number control.
+		 * @param title {String} Title of the control.
+		 * @param min {Number} Minimum value of control.
+		 * @param max {Number} Maximum value of control.
+		 * @param value {Number} Initial value of control.
+		 * @param step {Number} Size of value increments.
+		 * @param callback {Function} Callback function to call when control value changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addNumber: function(title, min, max, value, step, callback) {
 			return this._addNumber("number", title, min, max, value, step, callback);
 		},
@@ -593,30 +750,72 @@
 			return this;
 		},
 
+		/**
+		 * Add a range slider control bound to an object.
+		 * @param title {String} Title of the control.
+		 * @param min {Number} Minimum value of control.
+		 * @param max {Number} Maximum value of control.
+		 * @param value {Number} Initial value of control.
+		 * @param step {Number} Size of value increments.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindRange: function(title, min, max, value, step, object) {
 			return this.addRange(title, min, max, value, step, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Add a number control bound to an object.
+		 * @param title {String} Title of the control.
+		 * @param min {Number} Minimum value of control.
+		 * @param max {Number} Maximum value of control.
+		 * @param value {Number} Initial value of control.
+		 * @param step {Number} Size of value increments.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindNumber: function(title, min, max, value, step, object) {
 			return this.addNumber(title, min, max, value, step, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Get the current value of a range control.
+		 * @param title {Number} The title of the control to get the value for.
+		 * @returns {Number}
+		 */
 		getRangeValue: function(title) {
 			return this.getNumberValue(title);
 		},
 
+		/**
+		 * Gets the current value of a number control.
+		 * @param title {Number} The title of the control to get the value for.
+		 * @returns {Number}
+		 */
 		getNumberValue: function(title) {
 			return parseFloat(this._controls[title].control.value);
 		},
 
+		/**
+		 * Sets the value of a range control.
+		 * @param title {Number} The title of the control to set the value on.
+		 * @param value {Number} The value to set.
+		 * @returns {module:QuickSettings}
+		 */
 		setRangeValue: function(title, value) {
 			return this.setNumberValue(title, value);
 		},
 
+		/**
+		 * Sets the value of a number control.
+		 * @param title {Number} The title of the control to set the value on.
+		 * @param value {Number} The value to set.
+		 * @returns {module:QuickSettings}
+		 */
 		setNumberValue: function(title, value) {
 			var control = this._controls[title];
 			control.control.value = value;
@@ -628,10 +827,26 @@
 			return this;
 		},
 
+		/**
+		 * Sets the parameters of a range control.
+		 * @param title {Number} The title of the control to set the parameters on.
+		 * @param min {Number} The minimum value of the control.
+		 * @param max {Number} The maximum value of the control.
+		 * @param step {Number} Size of value increments.
+		 * @returns {module:QuickSettings}
+		 */
 		setRangeParameters: function(title, min, max, step) {
 			return this.setNumberParameters(title, min, max, step);
 		},
 
+		/**
+		 * Sets the parameters of a number control.
+		 * @param title {Number} The title of the control to set the parameters on.
+		 * @param min {Number} The minimum value of the control.
+		 * @param max {Number} The maximum value of the control.
+		 * @param step {Number} Size of value increments.
+		 * @returns {module:QuickSettings}
+		 */
 		setNumberParameters: function(title, min, max, step) {
 			var control = this._controls[title];
 			control.control.min = min;
@@ -644,6 +859,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// BOOLEAN (CHECKBOX)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a checkbox to the panel.
+		 * @param title {String} The title of this control.
+		 * @param value {Boolean} The initial value of this control.
+		 * @param callback {Function} A callback function that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
@@ -679,16 +901,34 @@
 			return this;
 		},
 
+		/**
+		 * Adds a checkbox to the panel, bound to an object
+		 * @param title {String} The title of this control.
+		 * @param value {Boolean} The initial value of this control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindBoolean: function(title, value, object) {
 			return this.addBoolean(title, value, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Gets the current value of a boolean (checkbox) control.
+		 * @param title {String} The title of the control to get the value for.
+		 * @returns {Boolean}
+		 */
 		getBoolean: function(title) {
 			return this._controls[title].control.checked;
 		},
 
+		/**
+		 * Sets the value of a boolean (checkbox) control.
+		 * @param title {String} The title of the control to set the value of.
+		 * @param value {Boolean} The new value of the control.
+		 * @returns {module:QuickSettings}
+		 */
 		setBoolean: function(title, value) {
 			this._controls[title].control.checked = value;
 			if(this._controls[title].callback) {
@@ -701,6 +941,12 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// BUTTON
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a button to the panel.
+		 * @param title {String} The title of the control.
+		 * @param callback {Function} Callback function to be called when the button is clicked.
+		 * @returns {module:QuickSettings}
+		 */
 		addButton: function(title, callback) {
 			var container = this._createContainer();
 
@@ -728,6 +974,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// COLOR
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a color picker control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of this control.
+		 * @param color {String} The initial color value for this control.
+		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addColor: function(title, color, callback) {
 			if(this._isSafari() || this._isEdge() || this._isIE()) {
 				return this.addText(title, color, callback);
@@ -764,16 +1017,34 @@
 			return this;
 		},
 
+		/**
+		 * Adds a color picker control bound to an object. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of this control.
+		 * @param color {String} The initial color value for this control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindColor: function(title, color, object) {
 			return this.addColor(title, color, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Returns the current value of a color chooser control.
+		 * @param title {String} The title of the control to get the value for.
+		 * @returns {String}
+		 */
 		getColor: function(title) {
 			return this._controls[title].control.value;
 		},
 
+		/**
+		 * Sets the value of a color chooser control.
+		 * @param title {String} The title of the control to set the value for.
+		 * @param value {String} The new value to set on the control.
+		 * @returns {module:QuickSettings}
+		 */
 		setColor: function(title, value) {
 			var control = this._controls[title];
 			control.control.value = value;
@@ -788,6 +1059,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// TEXT (INPUT TEXT)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a text input field.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addText: function(title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
@@ -816,16 +1094,34 @@
 			return this;
 		},
 
+		/**
+		 * Adds a text input field bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindText: function(title, text, object) {
 			return this.addText(title, text, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Gets the text value of a text, password or text area control.
+		 * @param title {String} The title of the control to get the value of.
+		 * @returns {String}
+		 */
 		getText: function(title) {
 			return this._controls[title].control.value;
 		},
 
+		/**
+		 * Sets the text value of a text, password or text area control.
+		 * @param title {String} The title of the control to set the text value on.
+		 * @param text {String} The new text value to set.
+		 * @returns {module:QuickSettings}
+		 */
 		setText: function(title, text) {
 			var control = this._controls[title];
 			control.control.value = text;
@@ -841,6 +1137,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// PASSWORD (INPUT TEXT HIDDEN VALUES)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a password input field.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addPassword: function(title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
@@ -866,8 +1169,15 @@
 				self._callGCH();
 			});
 			return this;
-		}, 
+		},
 
+		/**
+		 * Adds a password input field bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindPassword: function(title, text, object) {
 			return this.addPassword(title, text, function(value) {
 				object[title] = value;
@@ -879,6 +1189,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// TEXT AREA
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a text area control.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
 		addTextArea: function(title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
@@ -905,13 +1222,26 @@
 				self._callGCH();
 			});
 			return this;
-		}, 
+		},
 
+		/**
+		 * Sets the number of rows in a text area control.
+		 * @param title {String} The control to set the number of rows on.
+		 * @param rows {Integer} The number of rows in the text area.
+		 * @returns {module:QuickSettings}
+		 */
 		setTextAreaRows: function(title, rows) {
 			this._controls[title].control.rows = rows;
 			return this;
 		},
 
+		/**
+		 * Adds a text area control bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindTextArea: function(title, text, object) {
 			return this.addTextArea(title, text, function(value) {
 				object[title] = value;
@@ -922,6 +1252,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// DATE INPUT
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
+		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @returns {*}
+		 */
 		addDate: function(title, date, callback) {
 			var dateStr;
 			if(date instanceof Date) {
@@ -964,6 +1301,12 @@
 			return this;
 		},
 
+		/**
+		 * Sets the date value of a date input control.
+		 * @param title {String} The title of the control to set the date on.
+		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
+		 * @returns {module:QuickSettings}
+		 */
 		setDate: function(title, date) {
 			var control = this._controls[title];
 
@@ -987,12 +1330,24 @@
 			return this;
 		},
 
+		/**
+		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {*}
+		 */
 		bindDate: function(title, date, object) {
 			return this.addDate(title, date, function(value) {
 				object[title] = value;
 			});
 		},
 
+		/**
+		 * Returns the date value of a date input control.
+		 * @param title {String} The title of the control to get the value of.
+		 * @returns {String}
+		 */
 		getDate: function(title) {
 			var control = this._controls[title];
 			return control.control.value;
@@ -1003,6 +1358,13 @@
 		// TIME INPUT
 		////////////////////////////////////////////////////////////////////////////////
 
+		/**
+		 * Adds a time input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param time {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
+		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @returns {*}
+		 */
 		addTime: function(title, time, callback) {
 			var timeStr;
 			if(time instanceof Date) {
@@ -1048,6 +1410,12 @@
 			return this;
 		},
 
+		/**
+		 * Sets the time value of a time input control.
+		 * @param title {String} The title of the control to set the date on.
+		 * @param time {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
+		 * @returns {module:QuickSettings}
+		 */
 		setTime: function(title, time) {
 			var control = this._controls[title];
 
@@ -1073,11 +1441,23 @@
 			return this;
 		},
 
+		/**
+		 * Returns the time value of a time input control.
+		 * @param title {String} The title of the control to get the value of.
+		 * @returns {String}
+		 */
 		getTime: function(title) {
 			var control = this._controls[title];
 			return control.control.value;
 		},
 
+		/**
+		 * Adds a time input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param date {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {*}
+		 */
 		bindTime: function(title, time, object) {
 			return this.addTime(title, time, function(value) {
 				object[title] = value;
@@ -1089,6 +1469,12 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// INFO (READ ONLY TEXT DISPLAY)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a simple control to display some read-only information.
+		 * @param title {String} The title of the control.
+		 * @param info {String} The information to display.
+		 * @returns {module:QuickSettings}
+		 */
 		addInfo: function(title, info) {
 			var container = this._createContainer();
 			container.innerHTML = info;
@@ -1099,10 +1485,21 @@
 			return this;
 		},
 
+		/**
+		 * Gets the text in an info control.
+		 * @param title {String} The title of the control to get the text from.
+		 * @returns {String}
+		 */
 		getInfo: function(title) {
 			return this._controls[title].container.innerHTML;
 		},
 
+		/**
+		 * Sets the text in an info control.
+		 * @param title {String} The title of the control to set the text in.
+		 * @param info {String} The new text for the control.
+		 * @returns {module:QuickSettings}
+		 */
 		setInfo: function(title, info) {
 			this._controls[title].container.innerHTML = info;
 			return this;
@@ -1111,6 +1508,13 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// DROPDOWN (SELECT ELEMENT)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a dropdown (select) control.
+		 * @param title {String} The title of the control.
+		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
+		 * @param callback {Function} Callback function that will be called when a new option is chosen.
+		 * @returns {module:QuickSettings}
+		 */
 		addDropDown: function(title, items, callback) {
 			var container = this._createContainer();
 
@@ -1147,12 +1551,24 @@
 			return this;
 		},
 
+		/**
+		 * Adds a dropdown (select) control bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
 		bindDropDown: function(title, items, object) {
 			return this.addDropDown(title, items, function(value) {
 				object[title] = value.value;
 			});
 		},
 
+		/**
+		 * Gets the value of the currently selected option in a dropdown (select) control. The return value will be an object consisting of a integer property, "index" and a string property, "value".
+		 * @param title {String} The title of the control.
+		 * @returns {Object}
+		 */
 		getDropDownValue: function(title) {
 			var control = this._controls[title],
 				select = control.control,
@@ -1164,6 +1580,12 @@
 			}
 		},
 
+		/**
+		 * Sets the currently selected index of a dropdown (select) control.
+		 * @param title {String} The title of the control to set the selected index of.
+		 * @param index {Integer} The index of the option array to set as selected.
+		 * @returns {module:QuickSettings}
+		 */
 		setDropDownIndex: function(title, index) {
 			var control = this._controls[title],
 				options = control.control.options;
@@ -1181,6 +1603,12 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// IMAGE
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds an image control.
+		 * @param title {String} The title of the control.
+		 * @param imageURL {String} The URL to the image.
+		 * @returns {module:QuickSettings}
+		 */
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
 				label = this._createLabel("<b>" + title + "</b>", container);
@@ -1196,6 +1624,12 @@
 			return this;
 		},
 
+		/**
+		 * Sets a new URL for an image control.
+		 * @param title {String} The title of the control to set a new image URL for.
+		 * @param imageURL {String} The new URL.
+		 * @returns {module:QuickSettings}
+		 */
 		setImageURL: function(title, imageURL) {
 			this._controls[title].control.src = imageURL;
 			return this;
@@ -1204,6 +1638,14 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// PROGRESS BAR
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds a progress bar control.
+		 * @param title {String} The title of the control.
+		 * @param max (Number} The maximum value of the control.
+		 * @param value (Number} The initial value of the control.
+		 * @param valueDisplay {String} How to display the value. Valid values: "percent" displays percent of max, "numbers" displays value and max as fraction. Anything else, value is not shown.
+		 * @returns {module:QuickSettings}
+		 */
 		addProgressBar: function(title, max, value, valueDisplay) {
 			var container = this._createContainer(),
 				label = this._createLabel("", container),
@@ -1235,10 +1677,22 @@
 			return this;
 		},
 
+		/**
+		 * Gets the current progress value of a progress bar control.
+		 * @param title {String} The control to get the progress for.
+		 * @returns {Number}
+		 */
 		getProgress: function(title) {
 			return this._controls[title].control.value;
 		},
 
+		/**
+		 * Sets the  progress value of a progress bar control.
+		 * @param title {String} The title of the control to set progress on.
+		 * @param value {Number} The progress value to set.
+		 * @param max {Number} The max value of the control. (Defaults to the previously set max value)
+		 * @returns {module:QuickSettings}
+		 */
 		setProgress: function(title, value, max) {
 			var control = this._controls[title];
 			control.value = value;
@@ -1259,6 +1713,12 @@
 		// ELEMENT (RAW HTML ELEMENT)
 		////////////////////////////////////////////////////////////////////////////////
 
+		/**
+		 * Adds an existing HTML Element to the panel.
+		 * @param title {String} The title of the control.
+		 * @param element {HTMLElement} The element to add.
+		 * @returns {module:QuickSettings}
+		 */
 		addElement: function(title, element) {
 			var container = this._createContainer(),
 				label = this._createLabel("<b>" + title + "</b>", container);
@@ -1276,6 +1736,12 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// HTML (HTML STRING)
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Adds arbitrary HTML to the panel.
+		 * @param title {String} The title of the control.
+		 * @param html {String} The HTML to add.
+		 * @returns {module:QuickSettings}
+		 */
 		addHTML: function(title, html) {
 			var div = this._createElement("div");
 			div.innerHTML = html;

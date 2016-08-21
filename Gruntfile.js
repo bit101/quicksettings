@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
+    grunt.loadNpmTasks("grunt-jsdoc");
 
 
     grunt.initConfig({
@@ -62,10 +63,18 @@ module.exports = function(grunt) {
                     "quicksettings.min.js": "quicksettings.js"
                 }
             }
+        },
+        jsdoc: {
+            main: {
+                src: ["quicksettings.js"],
+                options: {
+                    destination: "doc"
+                }
+            }
         }
     });
 
-    grunt.registerTask("default", ["less", "copy", "uglify"]);
+    grunt.registerTask("default", ["less", "copy", "uglify", "jsdoc"]);
 
 
 };
