@@ -22,6 +22,7 @@
 	/**
 	 *
 	 * @alias module:QuickSettings
+	 * @lends module:QuickSettings.prototype
 	 */
 	var QuickSettings = {
 		_version: "2.1",
@@ -46,17 +47,22 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// GENERAL INIT FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+		/**
+		 * Static method. Causes QuickSettings to ignore its default styles and instead use whatever QuickSettings stylesheet is on the page. This must be called before creating any panel in order to have any effect.
+		 * @static
+		 */
 		useExtStyleSheet: function() {
 			cssInjected = true;
 		},
 
 		/**
-		 * Creates a new QuickSettings Panel
+		 * Static method. Creates a new QuickSettings Panel
 		 * @param x			{Number}		x position of panel (default 0)
 		 * @param y			{Number}		y position of panel (default 0)
 		 * @param title		{String}		title of panel (default "QuickSettings")
 		 * @param parent	{HTMLElement}	parent element (default document.body)
 		 * @returns {module:QuickSettings}	New QuickSettings Panel
+		 * @static
 		 */
 		create: function(x, y, title, parent) {
 			var obj = Object.create(this);
