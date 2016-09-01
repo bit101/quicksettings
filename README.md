@@ -1,7 +1,12 @@
 # quicksettings
 QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.
 
+
 ![QuickSettings Panel](images/master_demo.png)
+
+## API Docs
+
+- https://htmlpreview.github.io/?https://raw.githubusercontent.com/bit101/quicksettings/master/doc/module-QuickSettings.html
 
 ## Setup
 
