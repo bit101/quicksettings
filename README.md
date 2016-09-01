@@ -85,6 +85,8 @@ It's also possible to get an object containing all of the value for all user-int
 
 This will give you an object containing the title and value of each object that can be changed by a user. Passing `true` for the `asString` parameter will give you a JSON-formatted string instead of an object.
 
+For the file chooser, the Object version will include the actual File object representing the chosen file. The string version will stringify this to an empty object though: `"{}"`.
+
 ## Setting Values Programatically    
 
 And set values of controls with:
@@ -254,7 +256,9 @@ Control object format:
         "min": 0,               // optional number (range and number only)
         "max": 100,             // optional number (range, number, progressbar only)
         "step": 1,              // optional number (range and number only)
-        "callback": "onRange"   // optional string - maps to function name on scope object
+        "callback": "onRange",  // optional string - maps to function name on scope object,
+        "labelStr": "choose",   // optional string (file chooser)
+        "filter": "image/*"     // optional string (file chooser)
     }
 
 All controls are supported except `addElement`.
