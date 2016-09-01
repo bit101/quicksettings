@@ -551,6 +551,10 @@
 			}
 		},
 
+		/**
+		 * Hides the title label of a given control.
+		 * @param title {String} The title of the control.
+		 */
 		hideTitle: function(title) {
 			var label = this._controls[title].label;
 			if(label) {
@@ -558,6 +562,10 @@
 			}
 		},
 
+		/**
+		 * Shows the title label of a given control.
+		 * @param title {String} The title of the control.
+		 */
 		showTitle: function(title) {
 			var label = this._controls[title].label;
 			if(label) {
@@ -565,6 +573,9 @@
 			}
 		},
 
+		/**
+		 * Hides the title labels of all controls.
+		 */
 		hideAllTitles: function() {
 			for(var title in this._controls) {
 				var label = this._controls[title].label;
@@ -574,6 +585,9 @@
 			}
 		},
 
+		/**
+		 * Shows the title labels of all controls. Button and booleans have no title labels.
+		 */
 		showAllTitles: function() {
 			for(var title in this._controls) {
 				var label = this._controls[title].label;

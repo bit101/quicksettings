@@ -160,6 +160,15 @@
 						json[title] = control.control.checked;
 						break;
 
+					case "fileChooser":
+						if(control.control.files) {
+							json[title] = control.control.files[0];
+						}
+						else {
+							json[title] = undefined;
+						}
+						break;
+
 					case "dropdown":
 						var select = control.control,
 							options = select.options,
@@ -570,6 +579,51 @@
 			}
 		},
 
+		/**
+		 * Hides the title label of a given control.
+		 * @param title {String} The title of the control.
+		 */
+		hideTitle: function(title) {
+			var label = this._controls[title].label;
+			if(label) {
+				label.style.display = "none";
+			}
+		},
+
+		/**
+		 * Shows the title label of a given control.
+		 * @param title {String} The title of the control.
+		 */
+		showTitle: function(title) {
+			var label = this._controls[title].label;
+			if(label) {
+				label.style.display = "block";
+			}
+		},
+
+		/**
+		 * Hides the title labels of all controls.
+		 */
+		hideAllTitles: function() {
+			for(var title in this._controls) {
+				var label = this._controls[title].label;
+				if(label) {
+					label.style.display = "none";
+				}
+			}
+		},
+
+		/**
+		 * Shows the title labels of all controls. Button and booleans have no title labels.
+		 */
+		showAllTitles: function() {
+			for(var title in this._controls) {
+				var label = this._controls[title].label;
+				if(label) {
+					label.style.display = "block";
+				}
+			}
+		},
 
 		////////////////////////////////////////////////////////////////////////////////
 		// JSON PARSER
@@ -643,7 +697,7 @@
 						break;
 
 					case "info":
-						panel.addInfo(control.title, control.value);
+						panel.addHTML(control.title, control.value);
 						break;
 
 					case "dropdown":
@@ -662,6 +716,11 @@
 
 					case "html":
 						panel.addHTML(control.title, control.value);
+						break;
+
+					case "filechooser":
+					case "fileChooser":
+						panel.addFileChooser(control.title, control.labelStr, control.filter, scope[control.callback]);
 						break;
 
 				}
@@ -1504,39 +1563,24 @@
 		// INFO (READ ONLY TEXT DISPLAY)
 		////////////////////////////////////////////////////////////////////////////////
 		/**
-		 * Adds a simple control to display some read-only information.
-		 * @param title {String} The title of the control.
-		 * @param info {String} The information to display.
-		 * @returns {module:QuickSettings}
+		 * Deprecated. Alias to addHTML.
 		 */
 		addInfo: function(title, info) {
-			var container = this._createContainer();
-			container.innerHTML = info;
-			this._controls[title] = {
-				type: "info",
-				container: container
-			};
-			return this;
+			return this.addHTML(title, info);
 		},
 
 		/**
-		 * Gets the text in an info control.
-		 * @param title {String} The title of the control to get the text from.
-		 * @returns {String}
+		 * Deprecated. Alias to getHTML.
 		 */
 		getInfo: function(title) {
-			return this._controls[title].container.innerHTML;
+			return this.getHTML(title);
 		},
 
 		/**
-		 * Sets the text in an info control.
-		 * @param title {String} The title of the control to set the text in.
-		 * @param info {String} The new text for the control.
-		 * @returns {module:QuickSettings}
+		 * Deprecated. Alias to setHTML.
 		 */
 		setInfo: function(title, info) {
-			this._controls[title].container.innerHTML = info;
-			return this;
+			return this.setHTML(title, info);
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1750,7 +1794,7 @@
 		/**
 		 * Adds a file input control to the panel.
 		 * Filter accepts standard media types such as "image/*", "video/*", "audio/*", a file extension, such as ".doc", ".jpg", or mime types.
-		 * Multiple filters can be added, comma separated.
+		 * Multiple filters can be added, comma separated. See standard HTML docs for file input "accept" attribute.
 		 * @param title {String} The title of the control.
 		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
 		 * @param filter {String} Species what file types the chooser will accept. See below.
@@ -1832,11 +1876,38 @@
 		 * @returns {module:QuickSettings}
 		 */
 		addHTML: function(title, html) {
-			var div = this._createElement("div");
+			var container = this._createContainer();
+			var label = this._createLabel("&lt;b>" + title + ":&lt;/b> ", container);
+
+			var div = this._createElement("div", null, container);
 			div.innerHTML = html;
-			this.addElement(title, div);
+			this._controls[title] = {
+				type: "html",
+				label: label,
+				control: div
+			};
 			return this;
 		},
+
+		/**
+		 * Gets the HTML in an HTML control.
+		 * @param title {String} The title of the control to get the HTML from.
+		 * @returns {String}
+		 */
+		getHTML: function(title) {
+			return this._controls[title].control.innerHTML;
+		},
+
+		/**
+		 * Sets the HTML in an HTML control.
+		 * @param title {String} The title of the control to set the HTML in.
+		 * @param html {String} The new HTML for the control.
+		 * @returns {module:QuickSettings}
+		 */
+		setHTML: function(title, html) {
+			this._controls[title].control.innerHTML = html;
+			return this;
+		}
 
 	};
 
@@ -1866,7 +1937,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Sep 01 2016 12:50:42 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Thu Sep 01 2016 17:51:01 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
