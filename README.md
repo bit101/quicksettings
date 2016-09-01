@@ -47,7 +47,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
     settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
     settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
-    settings.addInfo(title, text);                              // creates informational text
+    settings.addInfo(title, text);                              // deprecated. Identical to addHTML
     settings.addImage(title, imageURL);                         // creates and image element with the specified URL
     settings.addNumber(title, min, max, value, step, callback); // creates a number input
     settings.addPassword(title, text, callback);                // adds a password text field
@@ -76,7 +76,8 @@ You can also query the value of controls at any time with:
     settings.getColor(title);
     settings.getDate(title);
     settings.getDropDownValue(title);
-    settings.getInfo(title);
+    settings.getHTML(title);
+    settings.getInfo(title);        // deprecated. Identical to getHTML
     settings.getNumberValue(title);
     settings.getProgressValue(title);
     settings.getRangeValue(title);
@@ -101,7 +102,8 @@ And set values of controls with:
     settings.setDate(title, date);
     settings.setDropDownIndex(title, index);
     settings.setImageURL(title, imageURL);
-    settings.setInfo(title, text);
+    settings.setInfo(title, text);  // deprecated. identical to setHTML.
+    settings.setHTML(title, html);
     settings.setNumberValue(title, value);
     settings.setProgressValue(title, value);
     settings.setRangeValue(title, value);
@@ -128,7 +130,7 @@ Or disable and reenable any controls that can be enabled/disabled with:
     settings.disableControl(title);
     settings.enableControl(title);
     
-Or hide and show andy control:
+Or hide and show any control:
 
     settings.hideControl(title);
     settings.showControl(title);
@@ -141,15 +143,15 @@ For example, to change the font size in an intput text field named "text":
 
     settings.overrideStyle("text", "fontSize", "20px");
     
-Most controls, except for the boolean (checkbox) and button controls show a label above the actual control. You can turn this on and off for any specific control:
+Most controls, except for the boolean (checkbox) and button controls show a title label above the actual control. You can turn this on and off for any specific control:
 
-    settings.hideLabel(title);
-    settings.showLabel(title);
+    settings.hideTitle(title);
+    settings.showTitle(title);
     
 Or for all of the controls at once:
 
-    settings.hideAllLabels();
-    settings.showAllLabels();
+    settings.hideAllTitles();
+    settings.showAllTitles();
 
 ## Panel Settings
 
