@@ -51,10 +51,11 @@ Now you can add controls to the panel. Supported controls are:
     settings.addText(title, text, callback);                    // creates an input text field
     settings.addTextArea(title, text, callback);                // creates a resizable text area
     settings.addTime(title, time, callback);                    // adds a time input
+    settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
     
 See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
     
-For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item).
+For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.
 
 The color control implementation will vary on platforms. On some platforms, this will be the same as a text input. Color input is any valid color string such as "#f00", "#ff0000", "red", "rgb(255, 0, 0)", "rgba(255, 0, 0, 1)".
 
@@ -76,6 +77,7 @@ You can also query the value of controls at any time with:
     settings.getRangeValue(title);
     settings.getText(title);        // text, textarea, password
     settings.getTime(title);
+    settings.getFile(title);
 
 It's also possible to get an object containing all of the value for all user-interactive controls.
 
@@ -268,6 +270,7 @@ See Parse Demos below.
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/styles_demo.html
+- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/filedemo.html
 
 Parse demos:
 
