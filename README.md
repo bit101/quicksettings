@@ -140,6 +140,16 @@ Finally, you can override most existing style properties for controls with:
 For example, to change the font size in an intput text field named "text":
 
     settings.overrideStyle("text", "fontSize", "20px");
+    
+Most controls, except for the boolean (checkbox) and button controls show a label above the actual control. You can turn this on and off for any specific control:
+
+    settings.hideLabel(title);
+    settings.showLabel(title);
+    
+Or for all of the controls at once:
+
+    settings.hideAllLabels();
+    settings.showAllLabels();
 
 ## Panel Settings
 
