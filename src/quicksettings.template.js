@@ -1716,6 +1716,50 @@
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
+		// FILE CHOOSER
+		////////////////////////////////////////////////////////////////////////////////
+		addFileChooser: function(title, labelStr, filter, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>", container);
+
+			var fileChooser = this._createElement("input", "qs_file_chooser", container);
+			fileChooser.type = "file";
+			fileChooser.id = title;
+			if(filter) {
+				fileChooser.accept = filter;
+			}
+
+			var fcLabel = this._createElement("label", "qs_file_chooser_label", container);
+			fcLabel.setAttribute("for", title);
+			fcLabel.textContent = labelStr || "Choose a file...";
+
+
+			this._controls[title] = {
+				type: "fileChooser",
+				container: container,
+				control: fileChooser,
+				label: label,
+				callback: callback
+			}
+
+			var self = this;
+			fileChooser.addEventListener("change", function() {
+				if(!fileChooser.files || !fileChooser.files.length) return;
+				fcLabel.textContent = fileChooser.files[0].name;
+				if(callback) {
+					callback(fileChooser.files[0]);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+
+		getFile: function(title) {
+			return this._controls[title].control.files[0];
+		},
+
+
+		////////////////////////////////////////////////////////////////////////////////
 		// ELEMENT (RAW HTML ELEMENT)
 		////////////////////////////////////////////////////////////////////////////////
 

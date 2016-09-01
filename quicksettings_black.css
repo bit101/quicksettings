@@ -268,3 +268,24 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+.qs_file_chooser {
+  position: absolute;
+  left: -999999px;
+}
+.qs_file_chooser_label {
+  background-color: #000000;
+  color: #bbbbbb;
+  height: 30px;
+  border: 1px solid #666666;
+  font: 12px sans-serif;
+  width: 100%;
+  display: block;
+  cursor: pointer;
+  padding: 7px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
