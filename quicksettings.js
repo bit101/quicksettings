@@ -544,37 +544,44 @@
 		 * @param title {String} The title of the control.
 		 * @param style {String} The name of the style.
 		 * @param value {Various} The new value of the style.
+		 * @returns {module:QuickSettings}
 		 */
 		overrideStyle: function(title, style, value) {
 			if(this._controls[title]) {
 				this._controls[title].control.style[style] = value;
 			}
+			return this;
 		},
 
 		/**
 		 * Hides the title label of a given control.
 		 * @param title {String} The title of the control.
+		 * @returns {module:QuickSettings}
 		 */
 		hideTitle: function(title) {
 			var label = this._controls[title].label;
 			if(label) {
 				label.style.display = "none";
 			}
+			return this;
 		},
 
 		/**
 		 * Shows the title label of a given control.
 		 * @param title {String} The title of the control.
+		 * @returns {module:QuickSettings}
 		 */
 		showTitle: function(title) {
 			var label = this._controls[title].label;
 			if(label) {
 				label.style.display = "block";
 			}
+			return this;
 		},
 
 		/**
 		 * Hides the title labels of all controls.
+		 * @returns {module:QuickSettings}
 		 */
 		hideAllTitles: function() {
 			for(var title in this._controls) {
@@ -583,10 +590,12 @@
 					label.style.display = "none";
 				}
 			}
+			return this;
 		},
 
 		/**
 		 * Shows the title labels of all controls. Button and booleans have no title labels.
+		 * @returns {module:QuickSettings}
 		 */
 		showAllTitles: function() {
 			for(var title in this._controls) {
@@ -595,6 +604,7 @@
 					label.style.display = "block";
 				}
 			}
+			return this;
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
