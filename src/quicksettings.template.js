@@ -132,6 +132,15 @@
 						json[title] = control.control.checked;
 						break;
 
+					case "fileChooser":
+						if(control.control.files) {
+							json[title] = control.control.files[0];
+						}
+						else {
+							json[title] = undefined;
+						}
+						break;
+
 					case "dropdown":
 						var select = control.control,
 							options = select.options,
@@ -634,6 +643,11 @@
 
 					case "html":
 						panel.addHTML(control.title, control.value);
+						break;
+
+					case "filechooser":
+					case "fileChooser":
+						panel.addFileChooser(control.title, control.labelStr, control.filter, scope[control.callback]);
 						break;
 
 				}
