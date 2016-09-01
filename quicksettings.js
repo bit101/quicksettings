@@ -1718,6 +1718,17 @@
 		////////////////////////////////////////////////////////////////////////////////
 		// FILE CHOOSER
 		////////////////////////////////////////////////////////////////////////////////
+
+		/**
+		 * Adds a file input control to the panel.
+		 * Filter accepts standard media types such as "image/*", "video/*", "audio/*", a file extension, such as ".doc", ".jpg", or mime types.
+		 * Multiple filters can be added, comma separated.
+		 * @param title {String} The title of the control.
+		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
+		 * @param filter {String} Species what file types the chooser will accept. See below.
+		 * @param callback {Function} Callback function that will be called when a file is chosen.
+		 * @returns {module:QuickSettings}
+		 */
 		addFileChooser: function(title, labelStr, filter, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
