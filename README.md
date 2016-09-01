@@ -128,7 +128,7 @@ Or disable and reenable any controls that can be enabled/disabled with:
     settings.disableControl(title);
     settings.enableControl(title);
     
-Or hide and show andy control:
+Or hide and show any control:
 
     settings.hideControl(title);
     settings.showControl(title);
@@ -141,15 +141,15 @@ For example, to change the font size in an intput text field named "text":
 
     settings.overrideStyle("text", "fontSize", "20px");
     
-Most controls, except for the boolean (checkbox) and button controls show a label above the actual control. You can turn this on and off for any specific control:
+Most controls, except for the boolean (checkbox) and button controls show a title label above the actual control. You can turn this on and off for any specific control:
 
-    settings.hideLabel(title);
-    settings.showLabel(title);
+    settings.hideTitle(title);
+    settings.showTitle(title);
     
 Or for all of the controls at once:
 
-    settings.hideAllLabels();
-    settings.showAllLabels();
+    settings.hideAllTitles();
+    settings.showAllTitles();
 
 ## Panel Settings
 
