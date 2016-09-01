@@ -551,6 +551,37 @@
 			}
 		},
 
+		hideTitle: function(title) {
+			var label = this._controls[title].label;
+			if(label) {
+				label.style.display = "none";
+			}
+		},
+
+		showTitle: function(title) {
+			var label = this._controls[title].label;
+			if(label) {
+				label.style.display = "block";
+			}
+		},
+
+		hideAllTitles: function() {
+			for(var title in this._controls) {
+				var label = this._controls[title].label;
+				if(label) {
+					label.style.display = "none";
+				}
+			}
+		},
+
+		showAllTitles: function() {
+			for(var title in this._controls) {
+				var label = this._controls[title].label;
+				if(label) {
+					label.style.display = "block";
+				}
+			}
+		},
 
 		////////////////////////////////////////////////////////////////////////////////
 		// JSON PARSER
@@ -624,7 +655,7 @@
 						break;
 
 					case "info":
-						panel.addInfo(control.title, control.value);
+						panel.addHTML(control.title, control.value);
 						break;
 
 					case "dropdown":
@@ -1490,39 +1521,24 @@
 		// INFO (READ ONLY TEXT DISPLAY)
 		////////////////////////////////////////////////////////////////////////////////
 		/**
-		 * Adds a simple control to display some read-only information.
-		 * @param title {String} The title of the control.
-		 * @param info {String} The information to display.
-		 * @returns {module:QuickSettings}
+		 * Deprecated. Alias to addHTML.
 		 */
 		addInfo: function(title, info) {
-			var container = this._createContainer();
-			container.innerHTML = info;
-			this._controls[title] = {
-				type: "info",
-				container: container
-			};
-			return this;
+			return this.addHTML(title, info);
 		},
 
 		/**
-		 * Gets the text in an info control.
-		 * @param title {String} The title of the control to get the text from.
-		 * @returns {String}
+		 * Deprecated. Alias to getHTML.
 		 */
 		getInfo: function(title) {
-			return this._controls[title].container.innerHTML;
+			return this.getHTML(title);
 		},
 
 		/**
-		 * Sets the text in an info control.
-		 * @param title {String} The title of the control to set the text in.
-		 * @param info {String} The new text for the control.
-		 * @returns {module:QuickSettings}
+		 * Deprecated. Alias to setHTML.
 		 */
 		setInfo: function(title, info) {
-			this._controls[title].container.innerHTML = info;
-			return this;
+			return this.setHTML(title, info);
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1818,11 +1834,38 @@
 		 * @returns {module:QuickSettings}
 		 */
 		addHTML: function(title, html) {
-			var div = this._createElement("div");
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + ":</b> ", container);
+
+			var div = this._createElement("div", null, container);
 			div.innerHTML = html;
-			this.addElement(title, div);
+			this._controls[title] = {
+				type: "html",
+				label: label,
+				control: div
+			};
 			return this;
 		},
+
+		/**
+		 * Gets the HTML in an HTML control.
+		 * @param title {String} The title of the control to get the HTML from.
+		 * @returns {String}
+		 */
+		getHTML: function(title) {
+			return this._controls[title].control.innerHTML;
+		},
+
+		/**
+		 * Sets the HTML in an HTML control.
+		 * @param title {String} The title of the control to set the HTML in.
+		 * @param html {String} The new HTML for the control.
+		 * @returns {module:QuickSettings}
+		 */
+		setHTML: function(title, html) {
+			this._controls[title].control.innerHTML = html;
+			return this;
+		}
 
 	};
 
