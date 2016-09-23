@@ -1124,6 +1124,7 @@
 			var control = this._controls[title];
 			control.control.value = value;
 			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
+			control.container.getElementsByClassName("qs_color_label")[0].style.backgroundColor = control.control.value;
 			if(control.callback) {
 				control.callback(control.control.value);
 			}
