@@ -105,7 +105,7 @@ And set values of controls with:
     settings.setInfo(title, text);  // deprecated. identical to setHTML.
     settings.setHTML(title, html);
     settings.setNumberValue(title, value);
-    settings.setProgressValue(title, value);
+    settings.setProgress(title, value);
     settings.setRangeValue(title, value);
     settings.setText(title, text);  // text, textarea, password
     settings.setTime(title, time);
