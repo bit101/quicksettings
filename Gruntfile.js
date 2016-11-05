@@ -68,7 +68,7 @@ module.exports = function(grunt) {
             main: {
                 src: ["quicksettings.js"],
                 options: {
-                    destination: "doc"
+                    destination: "docs/doc"
                 }
             }
         }
