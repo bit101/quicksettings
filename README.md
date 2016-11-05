@@ -56,7 +56,6 @@ Now you can add controls to the panel. Supported controls are:
     settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
     settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
     settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
-    settings.addInfo(title, text);                              // deprecated. Identical to addHTML
     settings.addImage(title, imageURL);                         // creates and image element with the specified URL
     settings.addNumber(title, min, max, value, step, callback); // creates a number input
     settings.addPassword(title, text, callback);                // adds a password text field
@@ -80,18 +79,7 @@ The time control implementation will vary on platforms. On some platforms, this 
 
 You can also query the value of controls at any time with:
 
-    settings.getBoolean(title);
-    settings.getColor(title);
-    settings.getDate(title);
-    settings.getDropDownValue(title);
-    settings.getHTML(title);
-    settings.getInfo(title);        // deprecated. Identical to getHTML
-    settings.getNumberValue(title);
-    settings.getProgressValue(title);
-    settings.getRangeValue(title);
-    settings.getText(title);        // text, textarea, password
-    settings.getTime(title);
-    settings.getFile(title);
+    settings.getValue(title);
 
 It's also possible to get an object containing all of the value for all user-interactive controls.
 
@@ -105,19 +93,8 @@ For the file chooser, the Object version will include the actual File object rep
 
 And set values of controls with:
 
-    settings.setBoolean(title, value);
-    settings.setColor(title, color);
-    settings.setDate(title, date);
-    settings.setDropDownIndex(title, index);
-    settings.setImageURL(title, imageURL);
-    settings.setInfo(title, text);  // deprecated. identical to setHTML.
-    settings.setHTML(title, html);
-    settings.setNumberValue(title, value);
-    settings.setProgressValue(title, value);
-    settings.setRangeValue(title, value);
-    settings.setText(title, text);  // text, textarea, password
-    settings.setTime(title, time);
-    
+    settings.setValue(title, value);
+
 If, for some reason, you need to change the min, max or step of a range input or number input, use:
 
     settings.setRangeParameters(title, min, max, step);
@@ -126,6 +103,20 @@ If, for some reason, you need to change the min, max or step of a range input or
 Set the number of rows in a text area (defaults to 5) with:
 
     settings.setTextAreasRows(title, rows);
+
+You can also use the JSON you got by calling `getValuesAsJSON` in the method:
+
+    settings.setValuesFromJSON(json);
+
+This will set all any controls named in the JSON with the values defined there.
+
+## Persisting Controls with localStorage
+
+Once you've set up your panel, you can call:
+
+    settings.saveInLocalStorage(name);
+
+passing in a unique string to store the panel settings. Doing so causes a few things to happen. First, QuickSettings will immediatedly check to see if settings have been previously saved under this name. If so, they will be loaded and applied to the existing panel. After that, whenever any changes are made to any controls in the panel, the current state of the panel will be saved in localStorage. The ideal place to call this method is after you have added and set up all other controls in the panel.
     
 ## Managing Controls
 
@@ -230,7 +221,7 @@ These function the same as their "add" counterparts, but instead of a callback, 
     
 When the checkbox is clicked, it will set `model.visible` to true or false.
 
-These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for info and button, as these do not have changing values. The global change handler will be called when a button is pressed though.
+These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for button, and several other controls that do not have changing values. The global change handler will be called when a button is pressed though.
 
 ## Misc.
 
