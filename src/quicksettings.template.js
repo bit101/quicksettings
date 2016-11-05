@@ -3,7 +3,7 @@
  */
 (function() {
 	////////////////////////////////////////////////////////////////////////////////
-	// PRIVATE/STATIC DATA AND FUNCTIONS
+	// region PRIVATE/STATIC DATA AND FUNCTIONS
 	////////////////////////////////////////////////////////////////////////////////
 	var cssInjected = false,
 		css = "${css}"; // will be injected with default css
@@ -14,9 +14,10 @@
 		document.head.appendChild(styleTag);
 		cssInjected = true;
 	}
+	// endregion
 
 	////////////////////////////////////////////////////////////////////////////////
-	// MAIN MODULE DEFINITION
+	// region MAIN MODULE DEFINITION
 	////////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -43,10 +44,10 @@
 		_gridSize: 40,
 		_globalChangeHandler: null,
 
-
 		////////////////////////////////////////////////////////////////////////////////
-		// GENERAL INIT FUNCTIONS
+		// region GENERAL INIT FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Static method. Causes QuickSettings to ignore its default styles and instead use whatever QuickSettings stylesheet is on the page. This must be called before creating any panel in order to have any effect.
 		 * @static
@@ -100,10 +101,12 @@
 			this._doubleClickTitle = this._doubleClickTitle.bind(this);
 			this._onKeyUp = this._onKeyUp.bind(this);
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// VALUE FUNCTIONS
+		// region VALUE FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Returns an object containing the titles and values of all user-interactive controls in this panel.
 		 * @param asString    {Boolean}    If true, returns a JSON formatted string of these values.
@@ -171,10 +174,12 @@
                 this.setValuesFromJSON(str);
             }
         },
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// CREATION FUNCTIONS
+		// region CREATION FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		_createPanel: function(x, y, parent) {
 			this._panel = this._createElement("div", "qs_main", parent || document.body);
 			this._panel.style.zIndex = ++QuickSettings._topZ;
@@ -227,10 +232,12 @@
 			label.innerHTML = title;
 			return label;
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// SIZE AND POSITION FUNCTIONS
+		// region SIZE AND POSITION FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Positions the panel at the given location.
 		 * @param x    {Number} The x position.
@@ -276,10 +283,12 @@
 			this._content.style.height = (h - this._titleBar.offsetHeight) + "px";
 			return this;
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// DRAG AND DROP FUNCTIONS
+		// region DRAG AND DROP FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Sets whether or not the panel can be dragged.
 		 * @param draggable {Boolean} Whether or not the panel can be dragged.
@@ -356,10 +365,12 @@
 			this._gridSize = size;
 			return this;
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// CHANGE HANDLER FUNCTIONS
+		// region CHANGE HANDLER FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Sets a function that will be called whenever any value in the panel is changed.
 		 * @param handler {Function}
@@ -378,10 +389,12 @@
 				this._globalChangeHandler();
 			}
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// VISIBILITY FUNCTIONS
+		// region VISIBILITY FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Hides the panel.
 		 * @returns {module:QuickSettings}
@@ -489,11 +502,12 @@
 				this.toggleCollapsed();
 			}
 		},
-
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// CONTROL FUNCTIONS
+		// region CONTROL FUNCTIONS
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Removes a given control from the panel.
 		 * @param title {String} The title of the control to remove.
@@ -625,10 +639,12 @@
 			}
 			return this;
 		},
+        // endregion
 
+        ////////////////////////////////////////////////////////////////////////////////
+		// region JSON PARSER
 		////////////////////////////////////////////////////////////////////////////////
-		// JSON PARSER
-		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Creates a new QuickSettings Panel from a JSON string or object.
 		 * @param json {Object|String} The JSON string or object to parse.
@@ -728,11 +744,12 @@
 			}
 			return panel;
 		},
+        // endregion
 
-
+        ////////////////////////////////////////////////////////////////////////////////
+		// region PLATFORM TESTS
 		////////////////////////////////////////////////////////////////////////////////
-		// PLATFORM TESTS
-		////////////////////////////////////////////////////////////////////////////////
+        
 		_isIE: function() {
 			if(navigator.userAgent.indexOf("rv:11") != -1) {
 				return true;
@@ -760,11 +777,12 @@
 			var userAgent = navigator.userAgent.toLowerCase();
 			return userAgent.indexOf("edge") > -1;
 		},
+        // endregion
 
-
+        ////////////////////////////////////////////////////////////////////////////////
+		// region GET/SET VALUES
 		////////////////////////////////////////////////////////////////////////////////
-		// GET/SET VALUES
-		////////////////////////////////////////////////////////////////////////////////
+        
 
 		getValue: function(title) {
 			return this._controls[title].getValue();
@@ -775,16 +793,511 @@
 			this._callGCH();
 			return this;
 		},
+        // endregion
 
-		//==========================================================================================
+        //==========================================================================================
 		//==========================================================================================
 		// CONTROL CREATION AND MANAGEMENT FUNCTIONS
 		//==========================================================================================
 		//==========================================================================================
 
 		////////////////////////////////////////////////////////////////////////////////
-		// RANGE (SLIDER)
+		// region BOOLEAN
 		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a checkbox to the panel.
+		 * @param title {String} The title of this control.
+		 * @param value {Boolean} The initial value of this control.
+		 * @param callback {Function} A callback function that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
+		addBoolean: function(title, value, callback) {
+			var container = this._createContainer();
+
+			var label = this._createElement("label", "qs_checkbox_label", container);
+			label.textContent = title;
+			label.setAttribute("for", title);
+
+			var checkbox = this._createElement("label", "qs_checkbox", container);
+			checkbox.setAttribute("for", title);
+
+			var input = this._createElement("input", null, checkbox);
+			input.type = "checkbox";
+			input.id = title;
+			input.checked = value;
+
+
+			var span = this._createElement("span", null, checkbox);
+
+			this._controls[title] = {
+				type: "boolean",
+				container: container,
+				control: input,
+				getValue: function() {
+					return this.control.checked;
+				},
+				setValue: function(value) {
+					this.control.checked = value;
+					if(callback) {
+						callback(value);
+					}
+				},
+			};
+
+			var self = this;
+			input.addEventListener("change", function() {
+				if(callback) {
+					callback(input.checked);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+
+		/**
+		 * Adds a checkbox to the panel, bound to an object
+		 * @param title {String} The title of this control.
+		 * @param value {Boolean} The initial value of this control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
+		bindBoolean: function(title, value, object) {
+			return this.addBoolean(title, value, function(value) {
+				object[title] = value;
+			});
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region BUTTON
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a button to the panel.
+		 * @param title {String} The title of the control.
+		 * @param callback {Function} Callback function to be called when the button is clicked.
+		 * @returns {module:QuickSettings}
+		 */
+		addButton: function(title, callback) {
+			var container = this._createContainer();
+
+			var button = this._createElement("input", "qs_button", container);
+			button.type = "button";
+			button.id = title;
+			button.value = title;
+
+			this._controls[title] = {
+				type: "button",
+				container: container,
+				control: button
+			}
+
+			var self = this;
+			button.addEventListener("click", function() {
+				if(callback) {
+					callback(button);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region COLOR
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a color picker control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of this control.
+		 * @param color {String} The initial color value for this control.
+		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @returns {module:QuickSettings}
+		 */
+		addColor: function(title, color, callback) {
+			if(this._isSafari() || this._isEdge() || this._isIE()) {
+				return this.addText(title, color, callback);
+			}
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + ":</b> " + color, container);
+
+			var colorInput = this._createElement("input", "qs_color", container);
+			colorInput.type = "color";
+			colorInput.id = title;
+			colorInput.value = color || "#ff0000";
+
+			var colorLabel = this._createElement("label", "qs_color_label", container);
+			colorLabel.setAttribute("for", title);
+			colorLabel.style.backgroundColor = colorInput.value;
+
+			this._controls[title] = {
+				type: "color",
+				container: container,
+				control: colorInput,
+                colorLabel:  colorLabel,
+				label: label,
+				title: title,
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(value) {
+					this.control.value = value;
+                    this.colorLabel.style.backgroundColor = colorInput.value;
+					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
+					if(callback) {
+						callback(value);
+					}
+				}
+			};
+
+			var self = this;
+			colorInput.addEventListener("input", function() {
+				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
+				colorLabel.style.backgroundColor = colorInput.value;
+				if(callback) {
+					callback(colorInput.value);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+
+		/**
+		 * Adds a color picker control bound to an object. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of this control.
+		 * @param color {String} The initial color value for this control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
+		bindColor: function(title, color, object) {
+			return this.addColor(title, color, function(value) {
+				object[title] = value;
+			});
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region DATE INPUT
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
+		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @returns {*}
+		 */
+		addDate: function(title, date, callback) {
+			var dateStr;
+			if(date instanceof Date) {
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				if(month < 10) month = "0" + month;
+				var day = date.getDate();
+				dateStr = year + "-" + month + "-" + day;
+			}
+			else {
+				dateStr = date;
+			}
+
+			if(this._isIE()) {
+				return this.addText(title, dateStr, callback);
+			}
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>", container);
+
+			var dateInput = this._createElement("input", "qs_text_input", container);
+			dateInput.type = "date";
+			dateInput.id = title;
+			dateInput.value = dateStr || "";
+
+			this._controls[title] = {
+				type: "date",
+				container: container,
+				control: dateInput,
+				label: label,
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(date) {
+					var dateStr;
+					if(date instanceof Date) {
+						var year = date.getFullYear();
+						var month = date.getMonth() + 1;
+						if(month < 10) month = "0" + month;
+						var day = date.getDate();
+                        if(day < 10)  day = "0" + day;
+						dateStr = year + "-" + month + "-" + day;
+					}
+					else {
+						dateStr = date;
+					}
+
+					this.control.value = dateStr || "";
+					if(callback) {
+						callback(dateStr);
+					}
+				}
+			}
+
+			var self = this;
+			dateInput.addEventListener("input", function() {
+				if(callback) {
+					callback(dateInput.value);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+
+		/**
+		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
+		 * @param title {String} The title of the control.
+		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {*}
+		 */
+		bindDate: function(title, date, object) {
+			return this.addDate(title, date, function(value) {
+				object[title] = value;
+			});
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region DROPDOWN
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a dropdown (select) control.
+		 * @param title {String} The title of the control.
+		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
+		 * @param callback {Function} Callback function that will be called when a new option is chosen.
+		 * @returns {module:QuickSettings}
+		 */
+		addDropDown: function(title, items, callback) {
+			var container = this._createContainer();
+
+			var label = this._createLabel("<b>" + title + "</b>", container);
+			var select = this._createElement("select", "qs_select", container);
+			for(var i = 0; i < items.length; i++) {
+				var option = this._createElement("option");
+				option.label = items[i];
+				option.innerText = items[i];
+				select.add(option);
+			}
+			;
+
+			var self = this;
+			select.addEventListener("change", function() {
+				var index = select.selectedIndex,
+					options = select.options;
+
+				if(callback) {
+					callback({
+						index: index,
+						value: options[index].label
+					});
+				}
+				self._callGCH();
+			});
+
+			this._controls[title] = {
+				type: "dropdown",
+				container: container,
+				control: select,
+				label: label,
+				getValue: function() {
+                    var index = this.control.selectedIndex;
+					return {
+						index: index,
+						value: this.control.options[index].label
+					}
+				},
+				setValue: function(value) {
+                    var index
+                    if(value.index != null) {
+                        index = value.index;
+                    }
+                    else {
+                        index = value;
+                    }
+					var options = this.control.options;
+					this.control.selectedIndex = index;
+					if(callback) {
+						callback({
+							index: index,
+							value: options[index].label
+						});
+					}
+				},
+			};
+			return this;
+		},
+
+		/**
+		 * Adds a dropdown (select) control bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
+		bindDropDown: function(title, items, object) {
+			return this.addDropDown(title, items, function(value) {
+				object[title] = value.value;
+			});
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region ELEMENT
+		////////////////////////////////////////////////////////////////////////////////
+        
+
+		/**
+		 * Adds an existing HTML Element to the panel.
+		 * @param title {String} The title of the control.
+		 * @param element {HTMLElement} The element to add.
+		 * @returns {module:QuickSettings}
+		 */
+		addElement: function(title, element) {
+			var container = this._createContainer(),
+				label = this._createLabel("<b>" + title + "</b>", container);
+
+			container.appendChild(element);
+
+			this._controls[title] = {
+				type: "element",
+				container: container,
+				label: label
+			};
+			return this;
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region FILE CHOOSER
+		////////////////////////////////////////////////////////////////////////////////
+        
+
+		/**
+		 * Adds a file input control to the panel.
+		 * Filter accepts standard media types such as "image/*", "video/*", "audio/*", a file extension, such as ".doc", ".jpg", or mime types.
+		 * Multiple filters can be added, comma separated. See standard HTML docs for file input "accept" attribute.
+		 * @param title {String} The title of the control.
+		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
+		 * @param filter {String} Species what file types the chooser will accept. See below.
+		 * @param callback {Function} Callback function that will be called when a file is chosen.
+		 * @returns {module:QuickSettings}
+		 */
+		addFileChooser: function(title, labelStr, filter, callback) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + "</b>", container);
+
+			var fileChooser = this._createElement("input", "qs_file_chooser", container);
+			fileChooser.type = "file";
+			fileChooser.id = title;
+			if(filter) {
+				fileChooser.accept = filter;
+			}
+
+			var fcLabel = this._createElement("label", "qs_file_chooser_label", container);
+			fcLabel.setAttribute("for", title);
+			fcLabel.textContent = labelStr || "Choose a file...";
+
+
+			this._controls[title] = {
+				type: "fileChooser",
+				container: container,
+				control: fileChooser,
+				label: label,
+				getValue: function() {
+					return this.control.files[0];
+				}
+			}
+
+			var self = this;
+			fileChooser.addEventListener("change", function() {
+				if(!fileChooser.files || !fileChooser.files.length) return;
+				fcLabel.textContent = fileChooser.files[0].name;
+				if(callback) {
+					callback(fileChooser.files[0]);
+				}
+				self._callGCH();
+			});
+			return this;
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region HTML
+		////////////////////////////////////////////////////////////////////////////////
+        
+
+		/**
+		 * Adds arbitrary HTML to the panel.
+		 * @param title {String} The title of the control.
+		 * @param html {String} The HTML to add.
+		 * @returns {module:QuickSettings}
+		 */
+		addHTML: function(title, html) {
+			var container = this._createContainer();
+			var label = this._createLabel("<b>" + title + ":</b> ", container);
+
+			var div = this._createElement("div", null, container);
+			div.innerHTML = html;
+			this._controls[title] = {
+				type: "html",
+				label: label,
+				control: div,
+				getValue: function() {
+					return this.control.innerHTML;
+				},
+				setValue: function(html) {
+					this.control.innerHTML = html;
+				}
+			};
+			return this;
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region IMAGE
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds an image control.
+		 * @param title {String} The title of the control.
+		 * @param imageURL {String} The URL to the image.
+		 * @returns {module:QuickSettings}
+		 */
+		addImage: function(title, imageURL) {
+			var container = this._createContainer(),
+				label = this._createLabel("<b>" + title + "</b>", container);
+			img = this._createElement("img", "qs_image", container);
+			img.src = imageURL;
+
+			this._controls[title] = {
+				type: "image",
+				container: container,
+				control: img,
+				label: label,
+				getValue: function() {
+					return this.control.src;
+				},
+				setValue: function(url) {
+					this.control.src = url;
+				}
+			};
+			return this;
+		},
+        // endregion
+
+		////////////////////////////////////////////////////////////////////////////////
+		// region NUMBER and RANGE (SLIDER)
+		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Adds a range slider control.
 		 * @param title {String} Title of the control.
@@ -928,181 +1441,123 @@
 			}
 			return this;
 		},
+        // endregion
 
-
+        ////////////////////////////////////////////////////////////////////////////////
+		// region PASSWORD
 		////////////////////////////////////////////////////////////////////////////////
-		// BOOLEAN (CHECKBOX)
-		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
-		 * Adds a checkbox to the panel.
-		 * @param title {String} The title of this control.
-		 * @param value {Boolean} The initial value of this control.
-		 * @param callback {Function} A callback function that will be called when the value of this control changes.
-		 * @returns {module:QuickSettings}
-		 */
-		addBoolean: function(title, value, callback) {
-			var container = this._createContainer();
-
-			var label = this._createElement("label", "qs_checkbox_label", container);
-			label.textContent = title;
-			label.setAttribute("for", title);
-
-			var checkbox = this._createElement("label", "qs_checkbox", container);
-			checkbox.setAttribute("for", title);
-
-			var input = this._createElement("input", null, checkbox);
-			input.type = "checkbox";
-			input.id = title;
-			input.checked = value;
-
-
-			var span = this._createElement("span", null, checkbox);
-
-			this._controls[title] = {
-				type: "boolean",
-				container: container,
-				control: input,
-				getValue: function() {
-					return this.control.checked;
-				},
-				setValue: function(value) {
-					this.control.checked = value;
-					if(callback) {
-						callback(value);
-					}
-				},
-			};
-
-			var self = this;
-			input.addEventListener("change", function() {
-				if(callback) {
-					callback(input.checked);
-				}
-				self._callGCH();
-			});
-			return this;
-		},
-
-		/**
-		 * Adds a checkbox to the panel, bound to an object
-		 * @param title {String} The title of this control.
-		 * @param value {Boolean} The initial value of this control.
-		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
-		 * @returns {module:QuickSettings}
-		 */
-		bindBoolean: function(title, value, object) {
-			return this.addBoolean(title, value, function(value) {
-				object[title] = value;
-			});
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// BUTTON
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a button to the panel.
+		 * Adds a password input field.
 		 * @param title {String} The title of the control.
-		 * @param callback {Function} Callback function to be called when the button is clicked.
-		 * @returns {module:QuickSettings}
-		 */
-		addButton: function(title, callback) {
-			var container = this._createContainer();
-
-			var button = this._createElement("input", "qs_button", container);
-			button.type = "button";
-			button.id = title;
-			button.value = title;
-
-			this._controls[title] = {
-				type: "button",
-				container: container,
-				control: button
-			}
-
-			var self = this;
-			button.addEventListener("click", function() {
-				if(callback) {
-					callback(button);
-				}
-				self._callGCH();
-			});
-			return this;
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// COLOR
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a color picker control. In some browsers this will just render as a text input field, but should still retain all other functionality.
-		 * @param title {String} The title of this control.
-		 * @param color {String} The initial color value for this control.
+		 * @param text {String} The initial text value to put in the control.
 		 * @param callback {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
-		addColor: function(title, color, callback) {
-			if(this._isSafari() || this._isEdge() || this._isIE()) {
-				return this.addText(title, color, callback);
+		addPassword: function(title, text, callback) {
+			return this._addText("password", title, text, callback);
+		},
+
+		/**
+		 * Adds a password input field bound to an object.
+		 * @param title {String} The title of the control.
+		 * @param text {String} The initial text value to put in the control.
+		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * @returns {module:QuickSettings}
+		 */
+		bindPassword: function(title, text, object) {
+			return this.addPassword(title, text, function(value) {
+				object[title] = value;
+			});
+		},
+        // endregion
+
+        ////////////////////////////////////////////////////////////////////////////////
+		// region PROGRESS BAR
+		////////////////////////////////////////////////////////////////////////////////
+        
+		/**
+		 * Adds a progress bar control.
+		 * @param title {String} The title of the control.
+		 * @param max (Number} The maximum value of the control.
+		 * @param value (Number} The initial value of the control.
+		 * @param valueDisplay {String} How to display the value. Valid values: "percent" displays percent of max, "numbers" displays value and max as fraction. Anything else, value is not shown.
+		 * @returns {module:QuickSettings}
+		 */
+		addProgressBar: function(title, max, value, valueDisplay) {
+			var container = this._createContainer(),
+				label = this._createLabel("", container),
+				progressDiv = this._createElement("div", "qs_progress", container),
+				valueDiv = this._createElement("div", "qs_progress_value", progressDiv);
+
+			valueDiv.style.width = (value / max * 100) + "%";
+
+			if(valueDisplay === "numbers") {
+				label.innerHTML = "<b>" + title + ":</b> " + value + " / " + max;
 			}
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + ":</b> " + color, container);
-
-			var colorInput = this._createElement("input", "qs_color", container);
-			colorInput.type = "color";
-			colorInput.id = title;
-			colorInput.value = color || "#ff0000";
-
-			var colorLabel = this._createElement("label", "qs_color_label", container);
-			colorLabel.setAttribute("for", title);
-			colorLabel.style.backgroundColor = colorInput.value;
+			else if(valueDisplay === "percent") {
+				label.innerHTML = "<b>" + title + ":</b> " + Math.round(value / max * 100) + "%";
+			}
+			else {
+				label.innerHTML = "<b>" + title + "</b>";
+			}
 
 			this._controls[title] = {
-				type: "color",
+				type: "progressbar",
 				container: container,
-				control: colorInput,
-                colorLabel:  colorLabel,
+				control: progressDiv,
+				valueDiv: valueDiv,
+				valueDisplay: valueDisplay,
 				label: label,
+				value: value,
+				max: max,
 				title: title,
 				getValue: function() {
-					return this.control.value;
+					return this.value;
 				},
 				setValue: function(value) {
-					this.control.value = value;
-                    this.colorLabel.style.backgroundColor = colorInput.value;
-					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
-					if(callback) {
-						callback(value);
+					this.value = Math.max(0, Math.min(value, this.max));
+					this.valueDiv.style.width = (this.value / this.max * 100) + "%";
+					if(this.valueDisplay === "numbers") {
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + this.value + " / " + this.max;
+					}
+					else if(this.valueDisplay === "percent") {
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + Math.round(this.value / this.max * 100) + "%";
 					}
 				}
 			};
-
-			var self = this;
-			colorInput.addEventListener("input", function() {
-				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
-				colorLabel.style.backgroundColor = colorInput.value;
-				if(callback) {
-					callback(colorInput.value);
-				}
-				self._callGCH();
-			});
 			return this;
 		},
 
 		/**
-		 * Adds a color picker control bound to an object. In some browsers this will just render as a text input field, but should still retain all other functionality.
-		 * @param title {String} The title of this control.
-		 * @param color {String} The initial color value for this control.
-		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
+		 * Sets the maximum value for a progress bar control.
+		 * @param title {String} The title of the control to change.
+		 * @param max {Number} The new maximum value for the control.
 		 * @returns {module:QuickSettings}
 		 */
-		bindColor: function(title, color, object) {
-			return this.addColor(title, color, function(value) {
-				object[title] = value;
-			});
+		setProgressMax: function(title, max) {
+			var control = this._controls[title];
+			control.max = max;
+			control.value = Math.min(control.value, control.max);
+			control.valueDiv.style.width = (control.value / control.max * 100) + "%";
+
+			if(control.valueDisplay === "numbers") {
+				control.label.innerHTML = "<b>" + control.title + ":</b> " + control.value + " / " + control.max;
+			}
+			else if(control.valueDisplay === "percent") {
+				control.label.innerHTML = "<b>" + control.title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
+			}
+			else {
+				control.label.innerHTML = "<b>" + control.title + "</b>";
+			}
+			return this;
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// TEXT (INPUT TEXT)
+		// region TEXT
 		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Adds a text input field.
 		 * @param title {String} The title of the control.
@@ -1111,17 +1566,27 @@
 		 * @returns {module:QuickSettings}
 		 */
 		addText: function(title, text, callback) {
+			return this._addText("text", title, text, callback);
+		},
+
+		_addText: function(type, title, text, callback) {
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
+			var textInput;
 
-			var textInput = this._createElement("input", "qs_text_input", container);
-			textInput.type = "text";
+			if(type === "textarea") {
+				textInput = this._createElement("textarea", "qs_textarea", container);
+				textInput.rows = 5;
+			}
+			else {
+				textInput = this._createElement("input", "qs_text_input", container);
+				textInput.type = type;
+			}
 			textInput.id = title;
 			textInput.value = text || "";
-			textInput.className = "qs_text_input";
 
 			this._controls[title] = {
-				type: "text",
+				type: type,
 				container: container,
 				control: textInput,
 				label: label,
@@ -1158,70 +1623,12 @@
 				object[title] = value;
 			});
 		},
+        // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
-		// PASSWORD (INPUT TEXT HIDDEN VALUES)
+		// region TEXT AREA
 		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a password input field.
-		 * @param title {String} The title of the control.
-		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
-		 * @returns {module:QuickSettings}
-		 */
-		addPassword: function(title, text, callback) {
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
-
-			var textInput = this._createElement("input", "qs_text_input", container);
-			textInput.type = "password";
-			textInput.id = title;
-			textInput.value = text || "";
-
-			this._controls[title] = {
-				type: "password",
-				container: container,
-				control: textInput,
-				label: label,
-				getValue: function() {
-					return this.control.value;
-				},
-				setValue: function(text) {
-					this.control.value = text;
-					if(callback) {
-						callback(text);
-					}
-				}
-			}
-
-			var self = this;
-			textInput.addEventListener("input", function() {
-				if(callback) {
-					callback(textInput.value);
-				}
-				self._callGCH();
-			});
-			return this;
-		},
-
-		/**
-		 * Adds a password input field bound to an object.
-		 * @param title {String} The title of the control.
-		 * @param text {String} The initial text value to put in the control.
-		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
-		 * @returns {module:QuickSettings}
-		 */
-		bindPassword: function(title, text, object) {
-			return this.addPassword(title, text, function(value) {
-				object[title] = value;
-			});
-		},
-
-
-
-		////////////////////////////////////////////////////////////////////////////////
-		// TEXT AREA
-		////////////////////////////////////////////////////////////////////////////////
+        
 		/**
 		 * Adds a text area control.
 		 * @param title {String} The title of the control.
@@ -1230,40 +1637,9 @@
 		 * @returns {module:QuickSettings}
 		 */
 		addTextArea: function(title, text, callback) {
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
-
-			var textInput = this._createElement("textarea", "qs_textarea", container);
-			textInput.id = title;
-			textInput.rows = 5;
-			textInput.value = text || "";
-			textInput.className = "qs_textarea";
-
-			this._controls[title] = {
-				type: "textarea",
-				container: container,
-				control: textInput,
-				label: label,
-				getValue: function() {
-					return this.control.value;
-				},
-				setValue: function(text) {
-					this.control.value = text;
-					if(callback) {
-						callback(text);
-					}
-				}
-			}
-
-			var self = this;
-			textInput.addEventListener("input", function() {
-				if(callback) {
-					callback(textInput.value);
-				}
-				self._callGCH();
-			});
-			return this;
+			return this._addText("textarea", title, text, callback);
 		},
+
 
 		/**
 		 * Sets the number of rows in a text area control.
@@ -1288,97 +1664,12 @@
 				object[title] = value;
 			});
 		},
+        // endregion
 
-
+        ////////////////////////////////////////////////////////////////////////////////
+		// region TIME INPUT
 		////////////////////////////////////////////////////////////////////////////////
-		// DATE INPUT
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
-		 * @param title {String} The title of the control.
-		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
-		 * @param callback {Function} Callback function that will be called when the value of this control changes.
-		 * @returns {*}
-		 */
-		addDate: function(title, date, callback) {
-			var dateStr;
-			if(date instanceof Date) {
-				var year = date.getFullYear();
-				var month = date.getMonth() + 1;
-				if(month < 10) month = "0" + month;
-				var day = date.getDate();
-				dateStr = year + "-" + month + "-" + day;
-			}
-			else {
-				dateStr = date;
-			}
-
-			if(this._isIE()) {
-				return this.addText(title, dateStr, callback);
-			}
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
-
-			var dateInput = this._createElement("input", "qs_text_input", container);
-			dateInput.type = "date";
-			dateInput.id = title;
-			dateInput.value = dateStr || "";
-
-			this._controls[title] = {
-				type: "date",
-				container: container,
-				control: dateInput,
-				label: label,
-				getValue: function() {
-					return this.control.value;
-				},
-				setValue: function(date) {
-					var dateStr;
-					if(date instanceof Date) {
-						var year = date.getFullYear();
-						var month = date.getMonth() + 1;
-						if(month < 10) month = "0" + month;
-						var day = date.getDate();
-                        if(day < 10)  day = "0" + day;
-						dateStr = year + "-" + month + "-" + day;
-					}
-					else {
-						dateStr = date;
-					}
-
-					this.control.value = dateStr || "";
-					if(callback) {
-						callback(dateStr);
-					}
-				}
-			}
-
-			var self = this;
-			dateInput.addEventListener("input", function() {
-				if(callback) {
-					callback(dateInput.value);
-				}
-				self._callGCH();
-			});
-			return this;
-		},
-
-		/**
-		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
-		 * @param title {String} The title of the control.
-		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
-		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
-		 * @returns {*}
-		 */
-		bindDate: function(title, date, object) {
-			return this.addDate(title, date, function(value) {
-				object[title] = value;
-			});
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// TIME INPUT
-		////////////////////////////////////////////////////////////////////////////////
+        
 
 		/**
 		 * Adds a time input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
@@ -1466,307 +1757,12 @@
 				object[title] = value;
 			});
 		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// DROPDOWN (SELECT ELEMENT)
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a dropdown (select) control.
-		 * @param title {String} The title of the control.
-		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
-		 * @param callback {Function} Callback function that will be called when a new option is chosen.
-		 * @returns {module:QuickSettings}
-		 */
-		addDropDown: function(title, items, callback) {
-			var container = this._createContainer();
-
-			var label = this._createLabel("<b>" + title + "</b>", container);
-			var select = this._createElement("select", "qs_select", container);
-			for(var i = 0; i < items.length; i++) {
-				var option = this._createElement("option");
-				option.label = items[i];
-				option.innerText = items[i];
-				select.add(option);
-			}
-			;
-
-			var self = this;
-			select.addEventListener("change", function() {
-				var index = select.selectedIndex,
-					options = select.options;
-
-				if(callback) {
-					callback({
-						index: index,
-						value: options[index].label
-					});
-				}
-				self._callGCH();
-			});
-
-			this._controls[title] = {
-				type: "dropdown",
-				container: container,
-				control: select,
-				label: label,
-				getValue: function() {
-                    var index = this.control.selectedIndex;
-					return {
-						index: index,
-						value: this.control.options[index].label
-					}
-				},
-				setValue: function(value) {
-                    var index
-                    if(value.index != null) {
-                        index = value.index;
-                    }
-                    else {
-                        index = value;
-                    }
-					var options = this.control.options;
-					this.control.selectedIndex = index;
-					if(callback) {
-						callback({
-							index: index,
-							value: options[index].label
-						});
-					}
-				},
-			};
-			return this;
-		},
-
-		/**
-		 * Adds a dropdown (select) control bound to an object.
-		 * @param title {String} The title of the control.
-		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
-		 * @param object {Object} Object the control is bound to. When the value of the control changes, a property on this object, with the name of the title of this control, will be set to the current value of this control.
-		 * @returns {module:QuickSettings}
-		 */
-		bindDropDown: function(title, items, object) {
-			return this.addDropDown(title, items, function(value) {
-				object[title] = value.value;
-			});
-		},
+        // endregion
 
 
-		////////////////////////////////////////////////////////////////////////////////
-		// IMAGE
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds an image control.
-		 * @param title {String} The title of the control.
-		 * @param imageURL {String} The URL to the image.
-		 * @returns {module:QuickSettings}
-		 */
-		addImage: function(title, imageURL) {
-			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "</b>", container);
-			img = this._createElement("img", "qs_image", container);
-			img.src = imageURL;
-
-			this._controls[title] = {
-				type: "image",
-				container: container,
-				control: img,
-				label: label,
-                getValue: function() {
-                    return this.control.src;
-                },
-                setValue: function(url) {
-                    this.control.src = url;
-                }
-			};
-			return this;
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// PROGRESS BAR
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds a progress bar control.
-		 * @param title {String} The title of the control.
-		 * @param max (Number} The maximum value of the control.
-		 * @param value (Number} The initial value of the control.
-		 * @param valueDisplay {String} How to display the value. Valid values: "percent" displays percent of max, "numbers" displays value and max as fraction. Anything else, value is not shown.
-		 * @returns {module:QuickSettings}
-		 */
-		addProgressBar: function(title, max, value, valueDisplay) {
-			var container = this._createContainer(),
-				label = this._createLabel("", container),
-				progressDiv = this._createElement("div", "qs_progress", container),
-				valueDiv = this._createElement("div", "qs_progress_value", progressDiv);
-
-			valueDiv.style.width = (value / max * 100) + "%";
-
-			if(valueDisplay === "numbers") {
-				label.innerHTML = "<b>" + title + ":</b> " + value + " / " + max;
-			}
-			else if(valueDisplay === "percent") {
-				label.innerHTML = "<b>" + title + ":</b> " + Math.round(value / max * 100) + "%";
-			}
-			else {
-				label.innerHTML = "<b>" + title + "</b>";
-			}
-
-			this._controls[title] = {
-				type: "progressbar",
-				container: container,
-				control: progressDiv,
-				valueDiv: valueDiv,
-				valueDisplay: valueDisplay,
-				label: label,
-				value: value,
-				max: max,
-				title: title,
-				getValue: function() {
-					return this.value;
-				},
-				setValue: function(value) {
-					this.value = Math.max(0, Math.min(value, this.max));
-					this.valueDiv.style.width = (this.value / this.max * 100) + "%";
-					if(this.valueDisplay === "numbers") {
-						this.label.innerHTML = "<b>" + this.title + ":</b> " + this.value + " / " + this.max;
-					}
-					else if(this.valueDisplay === "percent") {
-						this.label.innerHTML = "<b>" + this.title + ":</b> " + Math.round(this.value / this.max * 100) + "%";
-					}
-				}
-			};
-			return this;
-		},
-
-        /**
-         * Sets the maximum value for a progress bar control.
-         * @param title {String} The title of the control to change.
-         * @param max {Number} The new maximum value for the control.
-         * @returns {module:QuickSettings}
-         */
-        setProgressMax: function(title, max) {
-            var control = this._controls[title];
-            control.max = max;
-            control.value = Math.min(control.value, control.max);
-            control.valueDiv.style.width = (control.value / control.max * 100) + "%";
-
-            if(control.valueDisplay === "numbers") {
-                control.label.innerHTML = "<b>" + control.title + ":</b> " + control.value + " / " + control.max;
-            }
-            else if(control.valueDisplay === "percent") {
-                control.label.innerHTML = "<b>" + control.title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
-            }
-            else {
-                control.label.innerHTML = "<b>" + control.title + "</b>";
-            }
-            return this;
-        },
 
 
-		////////////////////////////////////////////////////////////////////////////////
-		// FILE CHOOSER
-		////////////////////////////////////////////////////////////////////////////////
-
-		/**
-		 * Adds a file input control to the panel.
-		 * Filter accepts standard media types such as "image/*", "video/*", "audio/*", a file extension, such as ".doc", ".jpg", or mime types.
-		 * Multiple filters can be added, comma separated. See standard HTML docs for file input "accept" attribute.
-		 * @param title {String} The title of the control.
-		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
-		 * @param filter {String} Species what file types the chooser will accept. See below.
-		 * @param callback {Function} Callback function that will be called when a file is chosen.
-		 * @returns {module:QuickSettings}
-		 */
-		addFileChooser: function(title, labelStr, filter, callback) {
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
-
-			var fileChooser = this._createElement("input", "qs_file_chooser", container);
-			fileChooser.type = "file";
-			fileChooser.id = title;
-			if(filter) {
-				fileChooser.accept = filter;
-			}
-
-			var fcLabel = this._createElement("label", "qs_file_chooser_label", container);
-			fcLabel.setAttribute("for", title);
-			fcLabel.textContent = labelStr || "Choose a file...";
-
-
-			this._controls[title] = {
-				type: "fileChooser",
-				container: container,
-				control: fileChooser,
-				label: label,
-				getValue: function() {
-					return this.control.files[0];
-				}
-			}
-
-			var self = this;
-			fileChooser.addEventListener("change", function() {
-				if(!fileChooser.files || !fileChooser.files.length) return;
-				fcLabel.textContent = fileChooser.files[0].name;
-				if(callback) {
-					callback(fileChooser.files[0]);
-				}
-				self._callGCH();
-			});
-			return this;
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// ELEMENT (RAW HTML ELEMENT)
-		////////////////////////////////////////////////////////////////////////////////
-
-		/**
-		 * Adds an existing HTML Element to the panel.
-		 * @param title {String} The title of the control.
-		 * @param element {HTMLElement} The element to add.
-		 * @returns {module:QuickSettings}
-		 */
-		addElement: function(title, element) {
-			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "</b>", container);
-
-			container.appendChild(element);
-
-			this._controls[title] = {
-				type: "element",
-				container: container,
-				label: label
-			};
-			return this;
-		},
-
-		////////////////////////////////////////////////////////////////////////////////
-		// HTML (HTML STRING)
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Adds arbitrary HTML to the panel.
-		 * @param title {String} The title of the control.
-		 * @param html {String} The HTML to add.
-		 * @returns {module:QuickSettings}
-		 */
-		addHTML: function(title, html) {
-			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + ":</b> ", container);
-
-			var div = this._createElement("div", null, container);
-			div.innerHTML = html;
-			this._controls[title] = {
-				type: "html",
-				label: label,
-				control: div,
-				getValue: function() {
-					return this.control.innerHTML;
-				},
-				setValue: function(html) {
-					this.control.innerHTML = html;
-				}
-			};
-			return this;
-		},
-	}
+    }
 	////////////////////////////////////////////////////////////////////////////////
 	// EXPORT
 	////////////////////////////////////////////////////////////////////////////////
