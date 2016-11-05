@@ -3,7 +3,7 @@ var panel,
     listener = function(value) { flag = value;};
 
 //////////////////////////////////
-//  BOOLEAN
+// region  BOOLEAN
 //////////////////////////////////
 
 QUnit.module("boolean", {
@@ -47,11 +47,10 @@ QUnit.test("listener", function(assert) {
     panel.setValue("boolean", false);
     assert.equal(flag, false, "listener set flag to false");
 });
-
-
+// endregion
 
 //////////////////////////////////
-//  BUTTON
+// region  BUTTON
 //////////////////////////////////
 QUnit.module("button", {
     before:  function() {
@@ -77,15 +76,10 @@ QUnit.test("listener", function(assert) {
     assert.ok(flag, "listener set flag to true");
 
 });
-
-
-
-
-
-
+// endregion
 
 //////////////////////////////////
-//  COLOR
+// region  COLOR
 //////////////////////////////////
 
 QUnit.module("color", {
@@ -107,10 +101,14 @@ QUnit.module("color", {
 QUnit.test("set and get", function(assert) {
     // initial value
     assert.equal(panel.getValue("color"), "#000000", "color initialized to black");
+    assert.equal(panel._controls["color"].label.innerHTML, "<b>color:</b> #000000", "label shows correct color");
+    assert.equal(panel._controls["color"].colorLabel.style.backgroundColor, "rgb(0, 0, 0)", "background of color label is black");
 
     // set red
     panel.setValue("color", "#ff0000");
     assert.equal(panel.getValue("color"), "#ff0000", "color set to red");
+    assert.equal(panel._controls["color"].colorLabel.style.backgroundColor, "rgb(255, 0, 0)", "background of color label changed to right color");
+    assert.equal(panel._controls["color"].label.innerHTML, "<b>color:</b> #ff0000", "label shows new color");
 });
 
 QUnit.test("listener", function(assert) {
@@ -122,12 +120,10 @@ QUnit.test("listener", function(assert) {
     assert.equal(flag, "#ffff00", "listener set flag to yellow");
 
 });
-
-
-
+// endregion
 
 //////////////////////////////////
-//  DATE
+// region  DATE
 //////////////////////////////////
 
 QUnit.module("date", {
@@ -177,12 +173,10 @@ QUnit.test("listener", function(assert) {
     assert.equal(flag.substr(5, 2), date.getMonth() + 1, "flag set with date object, today's date");
     assert.equal(flag.substr(8, 2), date.getDate(), "flag set with date object, today's date");
 });
-
-
-
+// endregion
 
 //////////////////////////////////
-//  DROPDOWN
+// region  DROPDOWN
 //////////////////////////////////
 
 QUnit.module("dropdown", {
@@ -230,31 +224,24 @@ QUnit.test("listener", function(assert) {
     assert.equal(flag.index, 2, "listener set flag.index to 2");
     assert.equal(flag.value, "three", "listener set flag.value to three");
 });
-
-
-
-
+// endregion
 
 //////////////////////////////////
-//  ELEMENT
+// region  ELEMENT
 //////////////////////////////////
 
 // NOTHING  YET
-
-
-
+// endregion
 
 //////////////////////////////////
-//  FILE CHOOSER
+// region  FILE CHOOSER
 //////////////////////////////////
 
 // NOTHING  YET
-
-
-
+// endregion
 
 //////////////////////////////////
-//  HTML
+// region  HTML
 //////////////////////////////////
 
 QUnit.module("html", {
@@ -278,12 +265,10 @@ QUnit.test("set and get", function(assert) {
     assert.equal(panel.getValue("html"), "some different html", "html value changed");
 
 });
-
-
-
+// endregion
 
 //////////////////////////////////
-//  IMAGE
+// region  IMAGE
 //////////////////////////////////
 
 QUnit.module("image", {
@@ -307,10 +292,10 @@ QUnit.test("set and get", function(assert) {
     assert.equal(panel.getValue("image"), "http://bit-101.com/image.png", "new url set");
 
 });
-
+// endregion
 
 //////////////////////////////////
-//  NUMBER
+// region  NUMBER
 //////////////////////////////////
 
 QUnit.module("number", {
@@ -373,12 +358,10 @@ QUnit.test("listener", function(assert) {
     panel.setNumberParameters("number", 40, 100, 1);
     assert.equal(flag, 40, "min caused listener to set flag to 40");
 });
-
-
-
+// endregion
 
 //////////////////////////////////
-//  PASSWORD
+// region  PASSWORD
 //////////////////////////////////
 
 QUnit.module("password", {
@@ -415,10 +398,10 @@ QUnit.test("listener", function(assert) {
     panel.setValue("password", "bar");
     assert.equal(flag, "bar", "listener changed flag to bar");
 });
-
+// endregion
 
 //////////////////////////////////
-//  PROGRESSBAR
+// region  PROGRESSBAR
 //////////////////////////////////
 
 QUnit.module("progress", {
@@ -454,13 +437,10 @@ QUnit.test("set and get", function(assert) {
     assert.equal(panel.getValue("progress"), 0, "value clamped to min");
 
 });
-
-
-
-
+// endregion
 
 //////////////////////////////////
-//  RANGE
+// region  RANGE
 //////////////////////////////////
 
 QUnit.module("range", {
@@ -523,11 +503,10 @@ QUnit.test("listener", function(assert) {
     panel.setNumberParameters("range", 40, 100, 1);
     assert.equal(flag, 40, "setting min changes value, listener fires", "min set flag to 40");
 });
-
-
+// endregion
 
 //////////////////////////////////
-//  TEXT
+// region  TEXT
 //////////////////////////////////
 
 QUnit.module("text", {
@@ -565,11 +544,10 @@ QUnit.test("listener", function(assert) {
     panel.setValue("text", "bar");
     assert.equal(flag, "bar", "listener changed flag to bar");
 });
-
-
+// endregion
 
 //////////////////////////////////
-//  TEXTAREA
+// region  TEXTAREA
 //////////////////////////////////
 
 QUnit.module("textArea", {
@@ -607,10 +585,10 @@ QUnit.test("listener", function(assert) {
     panel.setValue("textArea", "bar");
     assert.equal(flag, "bar", "listener changed flag to bar");
 });
-
+// endregion
 
 //////////////////////////////////
-//  TIME
+// region TIME
 //////////////////////////////////
 
 QUnit.module("time", {
@@ -661,6 +639,7 @@ QUnit.test("listener", function(assert) {
     assert.equal(flag.substr(6, 2), date.getSeconds(), "flag set with date object, seconds now");
 
 });
+// endregion
 
 
 
