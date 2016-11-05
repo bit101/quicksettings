@@ -4,6 +4,14 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 ![QuickSettings Panel](images/master_demo.png)
 
+## Version 3 changes:
+
+- All controls with settable values are now set with `panel.setValue(title, value)`
+- All controls with gettable values are now read with `panel.getValue(title)`
+- `panel.addInfo` and related methods are gone. These were just aliased to `panel.addHTML` anyway, so use that instead.
+- You can programattically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesWithJSON`.
+- Calling `saveToLocalStorage(name)` will cause all changes in the panel to be continuously synced to local storage and restored when the panel is restarted.
+
 ## API Docs
 
 - https://htmlpreview.github.io/?https://raw.githubusercontent.com/bit101/quicksettings/master/doc/module-QuickSettings.html
@@ -46,6 +54,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addDate(title, date, callback);                    // adds a date input
     settings.addDropDown(title, [items], callback);             // creates a dropdown list
     settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
+    settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
     settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
     settings.addInfo(title, text);                              // deprecated. Identical to addHTML
     settings.addImage(title, imageURL);                         // creates and image element with the specified URL
@@ -56,8 +65,7 @@ Now you can add controls to the panel. Supported controls are:
     settings.addText(title, text, callback);                    // creates an input text field
     settings.addTextArea(title, text, callback);                // creates a resizable text area
     settings.addTime(title, time, callback);                    // adds a time input
-    settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
-    
+
 See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
     
 For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.

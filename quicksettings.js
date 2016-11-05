@@ -57,11 +57,11 @@
 
 		/**
 		 * Static method. Creates a new QuickSettings Panel
-		 * @param x			{Number}		x position of panel (default 0)
-		 * @param y			{Number}		y position of panel (default 0)
-		 * @param title		{String}		title of panel (default "QuickSettings")
-		 * @param parent	{HTMLElement}	parent element (default document.body)
-		 * @returns {module:QuickSettings}	New QuickSettings Panel
+		 * @param x            {Number}        x position of panel (default 0)
+		 * @param y            {Number}        y position of panel (default 0)
+		 * @param title        {String}        title of panel (default "QuickSettings")
+		 * @param parent    {HTMLElement}    parent element (default document.body)
+		 * @returns {module:QuickSettings}    New QuickSettings Panel
 		 * @static
 		 */
 		create: function(x, y, title, parent) {
@@ -106,55 +106,71 @@
 		////////////////////////////////////////////////////////////////////////////////
 		/**
 		 * Returns an object containing the titles and values of all user-interactive controls in this panel.
-		 * @param asString	{Boolean}	If true, returns a JSON formatted string of these values.
-		 * @returns 		{Object}	An object or string containing the titles and values fo all user-interactive controls in this panel.
+		 * @param asString    {Boolean}    If true, returns a JSON formatted string of these values.
+		 * @returns        {Object}    An object or string containing the titles and values fo all user-interactive controls in this panel.
 		 */
 		getValuesAsJSON: function(asString) {
 			var json = {};
 			for(var title in this._controls) {
-				var control = this._controls[title];
-				switch(control.type) {
-					case "color":
-					case "date":
-					case "password":
-					case "text":
-					case "textarea":
-					case "time":
-						json[title] = control.control.value;
-						break;
-					
-					case "number":
-					case "range":
-						json[title] = parseFloat(control.control.value);
-						break;
-
-					case "boolean":
-						json[title] = control.control.checked;
-						break;
-
-					case "fileChooser":
-						if(control.control.files) {
-							json[title] = control.control.files[0];
-						}
-						else {
-							json[title] = undefined;
-						}
-						break;
-
-					case "dropdown":
-						var select = control.control,
-							options = select.options,
-							index = select.selectedIndex,
-							option = options[index];
-						json[title] = option.label;
-						break;
-				}
+                if(this._controls[title].getValue) {
+                    json[title] = this._controls[title].getValue();
+                }
 			}
 			if(asString) {
 				json = JSON.stringify(json);
 			}
 			return json;
 		},
+
+        /**
+         * Sets values of any controls from a JSON object or string. The JSON is one large object with title: value elements for each control you want to set.
+         * @param json {Object} A string or JS object containing the titles and values to set.
+         * @returns {module:QuickSettings}
+         */
+        setValuesFromJSON:  function(json) {
+            if(typeof json === "string") {
+                json = JSON.parse(json);
+            }
+            for(var title in json) {
+                if(this._controls[title].setValue) {
+                    this._controls[title].setValue(json[title]);
+                }
+            }
+            return this;
+        },
+
+        /**
+         * Sets up the panel to save all of its values to local storage. This will also immediately try to read in any saved values from local storage, if they exist.
+         * So the method should be called after all controls are created on the panel.
+         * @param name {String} A unique name to store the values under in localStorage.
+         * @return {model:QuickSettings}
+         */
+        saveInLocalStorage: function(name) {
+            this._localStorageName = name;
+            this._readFromLocalStorage(name);
+            return this;
+        },
+
+        /**
+         * Clears any saved values in local storage.
+         * @param name {String} The unique name in localStorage to clear.
+         * @return {module:QuickSettings}
+         */
+        clearLocalStorage: function(name) {
+            localStorage.removeItem(name);
+            return this;
+        },
+
+        _saveInLocalStorage: function(name) {
+            localStorage.setItem(name, this.getValuesAsJSON(true));
+        },
+
+        _readFromLocalStorage: function(name) {
+            var str = localStorage.getItem(name);
+            if(str) {
+                this.setValuesFromJSON(str);
+            }
+        },
 
 		////////////////////////////////////////////////////////////////////////////////
 		// CREATION FUNCTIONS
@@ -217,8 +233,8 @@
 		////////////////////////////////////////////////////////////////////////////////
 		/**
 		 * Positions the panel at the given location.
-		 * @param x	{Number} The x position.
-		 * @param y	{Number} The y position.
+		 * @param x    {Number} The x position.
+		 * @param y    {Number} The y position.
 		 * @returns {module:QuickSettings}
 		 */
 		setPosition: function(x, y) {
@@ -229,8 +245,8 @@
 
 		/**
 		 * Sets the size of the panel.
-		 * @param w	{Number} The width of the panel.
-		 * @param h	{Number} The height of the panel.
+		 * @param w    {Number} The width of the panel.
+		 * @param h    {Number} The height of the panel.
 		 * @returns {module:QuickSettings}
 		 */
 		setSize: function(w, h) {
@@ -242,7 +258,7 @@
 
 		/**
 		 * Sets the width of the panel.
-		 * @param w	{Number} The width of the panel.
+		 * @param w    {Number} The width of the panel.
 		 * @returns {module:QuickSettings}
 		 */
 		setWidth: function(w) {
@@ -253,7 +269,7 @@
 
 		/**
 		 * Sets the height of the panel.
-		 * @param h	{Number} The height of the panel.
+		 * @param h    {Number} The height of the panel.
 		 * @returns {module:QuickSettings}
 		 */
 		setHeight: function(h) {
@@ -355,6 +371,9 @@
 		},
 
 		_callGCH: function() {
+            if(this._localStorageName) {
+                this._saveInLocalStorage(this._localStorageName);
+            }
 			if(this._globalChangeHandler) {
 				this._globalChangeHandler();
 			}
@@ -646,7 +665,7 @@
 						break;
 
 					case "boolean":
-						panel.addBoolean(control.title, control.value,  scope[control.callback]);
+						panel.addBoolean(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "button":
@@ -654,28 +673,28 @@
 						break;
 
 					case "color":
-						panel.addColor(control.title, control.value,  scope[control.callback]);
+						panel.addColor(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "text":
-						panel.addText(control.title, control.value,  scope[control.callback]);
+						panel.addText(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "password":
-						panel.addPassword(control.title, control.value,  scope[control.callback]);
+						panel.addPassword(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "textarea":
 					case "textArea":
-						panel.addTextArea(control.title, control.value,  scope[control.callback]);
+						panel.addTextArea(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "date":
-						panel.addDate(control.title, control.value,  scope[control.callback]);
+						panel.addDate(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "time":
-						panel.addTime(control.title, control.value,  scope[control.callback]);
+						panel.addTime(control.title, control.value, scope[control.callback]);
 						break;
 
 					case "info":
@@ -743,10 +762,19 @@
 		},
 
 
+		////////////////////////////////////////////////////////////////////////////////
+		// GET/SET VALUES
+		////////////////////////////////////////////////////////////////////////////////
 
+		getValue: function(title) {
+			return this._controls[title].getValue();
+		},
 
-
-
+		setValue: function(title, value) {
+			this._controls[title].setValue(value);
+			this._callGCH();
+			return this;
+		},
 
 		//==========================================================================================
 		//==========================================================================================
@@ -807,7 +835,18 @@
 				container: container,
 				control: input,
 				label: label,
-				callback: callback
+				title: title,
+				callback: callback,
+				getValue: function() {
+					return parseFloat(this.control.value);
+				},
+				setValue: function(value) {
+					this.control.value = value;
+					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
+					if(callback) {
+						callback(parseFloat(value));
+					}
+				}
 			};
 
 			var eventName = "input";
@@ -858,51 +897,6 @@
 		},
 
 		/**
-		 * Get the current value of a range control.
-		 * @param title {Number} The title of the control to get the value for.
-		 * @returns {Number}
-		 */
-		getRangeValue: function(title) {
-			return this.getNumberValue(title);
-		},
-
-		/**
-		 * Gets the current value of a number control.
-		 * @param title {Number} The title of the control to get the value for.
-		 * @returns {Number}
-		 */
-		getNumberValue: function(title) {
-			return parseFloat(this._controls[title].control.value);
-		},
-
-		/**
-		 * Sets the value of a range control.
-		 * @param title {Number} The title of the control to set the value on.
-		 * @param value {Number} The value to set.
-		 * @returns {module:QuickSettings}
-		 */
-		setRangeValue: function(title, value) {
-			return this.setNumberValue(title, value);
-		},
-
-		/**
-		 * Sets the value of a number control.
-		 * @param title {Number} The title of the control to set the value on.
-		 * @param value {Number} The value to set.
-		 * @returns {module:QuickSettings}
-		 */
-		setNumberValue: function(title, value) {
-			var control = this._controls[title];
-			control.control.value = value;
-			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
-			if(control.callback) {
-				control.callback(parseFloat(control.control.value));
-			}
-			this._callGCH();
-			return this;
-		},
-
-		/**
 		 * Sets the parameters of a range control.
 		 * @param title {Number} The title of the control to set the parameters on.
 		 * @param min {Number} The minimum value of the control.
@@ -924,9 +918,14 @@
 		 */
 		setNumberParameters: function(title, min, max, step) {
 			var control = this._controls[title];
+			var origValue = control.control.value;
 			control.control.min = min;
 			control.control.max = max;
 			control.control.step = step;
+
+			if(control.control.value !== origValue && control.callback) {
+				control.callback(control.control.value);
+			}
 			return this;
 		},
 
@@ -963,7 +962,15 @@
 				type: "boolean",
 				container: container,
 				control: input,
-				callback: callback
+				getValue: function() {
+					return this.control.checked;
+				},
+				setValue: function(value) {
+					this.control.checked = value;
+					if(callback) {
+						callback(value);
+					}
+				},
 			};
 
 			var self = this;
@@ -987,30 +994,6 @@
 			return this.addBoolean(title, value, function(value) {
 				object[title] = value;
 			});
-		},
-
-		/**
-		 * Gets the current value of a boolean (checkbox) control.
-		 * @param title {String} The title of the control to get the value for.
-		 * @returns {Boolean}
-		 */
-		getBoolean: function(title) {
-			return this._controls[title].control.checked;
-		},
-
-		/**
-		 * Sets the value of a boolean (checkbox) control.
-		 * @param title {String} The title of the control to set the value of.
-		 * @param value {Boolean} The new value of the control.
-		 * @returns {module:QuickSettings}
-		 */
-		setBoolean: function(title, value) {
-			this._controls[title].control.checked = value;
-			if(this._controls[title].callback) {
-				this._controls[title].callback(value);
-			}
-			this._callGCH();
-			return this;
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1076,8 +1059,20 @@
 				type: "color",
 				container: container,
 				control: colorInput,
+                colorLabel:  colorLabel,
 				label: label,
-				callback: callback
+				title: title,
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(value) {
+					this.control.value = value;
+                    this.colorLabel.style.backgroundColor = colorInput.value;
+					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
+					if(callback) {
+						callback(value);
+					}
+				}
 			};
 
 			var self = this;
@@ -1105,32 +1100,6 @@
 			});
 		},
 
-		/**
-		 * Returns the current value of a color chooser control.
-		 * @param title {String} The title of the control to get the value for.
-		 * @returns {String}
-		 */
-		getColor: function(title) {
-			return this._controls[title].control.value;
-		},
-
-		/**
-		 * Sets the value of a color chooser control.
-		 * @param title {String} The title of the control to set the value for.
-		 * @param value {String} The new value to set on the control.
-		 * @returns {module:QuickSettings}
-		 */
-		setColor: function(title, value) {
-			var control = this._controls[title];
-			control.control.value = value;
-			control.label.innerHTML = "<b>" + title + ":</b> " + control.control.value;
-			if(control.callback) {
-				control.callback(control.control.value);
-			}
-			this._callGCH();
-			return this;
-		},
-
 		////////////////////////////////////////////////////////////////////////////////
 		// TEXT (INPUT TEXT)
 		////////////////////////////////////////////////////////////////////////////////
@@ -1156,8 +1125,16 @@
 				container: container,
 				control: textInput,
 				label: label,
-				callback: callback
-			}
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(text) {
+					this.control.value = text;
+					if(callback) {
+						callback(text);
+					}
+				}
+			};
 
 			var self = this;
 			textInput.addEventListener("input", function() {
@@ -1181,33 +1158,6 @@
 				object[title] = value;
 			});
 		},
-
-		/**
-		 * Gets the text value of a text, password or text area control.
-		 * @param title {String} The title of the control to get the value of.
-		 * @returns {String}
-		 */
-		getText: function(title) {
-			return this._controls[title].control.value;
-		},
-
-		/**
-		 * Sets the text value of a text, password or text area control.
-		 * @param title {String} The title of the control to set the text value on.
-		 * @param text {String} The new text value to set.
-		 * @returns {module:QuickSettings}
-		 */
-		setText: function(title, text) {
-			var control = this._controls[title];
-			control.control.value = text;
-			if(control.callback) {
-				control.callback(text);
-			}
-			this._callGCH();
-			return this;
-		},
-
-
 
 		////////////////////////////////////////////////////////////////////////////////
 		// PASSWORD (INPUT TEXT HIDDEN VALUES)
@@ -1233,7 +1183,15 @@
 				container: container,
 				control: textInput,
 				label: label,
-				callback: callback
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(text) {
+					this.control.value = text;
+					if(callback) {
+						callback(text);
+					}
+				}
 			}
 
 			var self = this;
@@ -1286,7 +1244,15 @@
 				container: container,
 				control: textInput,
 				label: label,
-				callback: callback
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(text) {
+					this.control.value = text;
+					if(callback) {
+						callback(text);
+					}
+				}
 			}
 
 			var self = this;
@@ -1363,7 +1329,28 @@
 				container: container,
 				control: dateInput,
 				label: label,
-				callback: callback
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(date) {
+					var dateStr;
+					if(date instanceof Date) {
+						var year = date.getFullYear();
+						var month = date.getMonth() + 1;
+						if(month < 10) month = "0" + month;
+						var day = date.getDate();
+                        if(day < 10)  day = "0" + day;
+						dateStr = year + "-" + month + "-" + day;
+					}
+					else {
+						dateStr = date;
+					}
+
+					this.control.value = dateStr || "";
+					if(callback) {
+						callback(dateStr);
+					}
+				}
 			}
 
 			var self = this;
@@ -1373,35 +1360,6 @@
 				}
 				self._callGCH();
 			});
-			return this;
-		},
-
-		/**
-		 * Sets the date value of a date input control.
-		 * @param title {String} The title of the control to set the date on.
-		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
-		 * @returns {module:QuickSettings}
-		 */
-		setDate: function(title, date) {
-			var control = this._controls[title];
-
-			var dateStr;
-			if(date instanceof Date) {
-				var year = date.getFullYear();
-				var month = date.getMonth() + 1;
-				if(month < 10) month = "0" + month;
-				var day = date.getDate();
-				dateStr = year + "-" + month + "-" + day;
-			}
-			else {
-				dateStr = date;
-			}
-
-			control.control.value = dateStr || "";
-			if(control.callback) {
-				control.callback(text);
-			}
-			this._callGCH();
 			return this;
 		},
 
@@ -1417,17 +1375,6 @@
 				object[title] = value;
 			});
 		},
-
-		/**
-		 * Returns the date value of a date input control.
-		 * @param title {String} The title of the control to get the value of.
-		 * @returns {String}
-		 */
-		getDate: function(title) {
-			var control = this._controls[title];
-			return control.control.value;
-		},
-
 
 		////////////////////////////////////////////////////////////////////////////////
 		// TIME INPUT
@@ -1445,7 +1392,7 @@
 			if(time instanceof Date) {
 				var hours = time.getHours();
 				if(hours < 10) hours = "0" + hours;
-				var minutes = time.getMinutes() + 1;
+				var minutes = time.getMinutes();
 				if(minutes < 10) minutes = "0" + minutes;
 				var seconds = time.getSeconds();
 				if(seconds < 10) seconds = "0" + seconds;
@@ -1472,8 +1419,30 @@
 				container: container,
 				control: timeInput,
 				label: label,
-				callback: callback
-			}
+				getValue: function() {
+					return this.control.value;
+				},
+				setValue: function(time) {
+					var timeStr;
+					if(time instanceof Date) {
+						var hours = time.getHours();
+						if(hours < 10) hours = "0" + hours;
+						var minutes = time.getMinutes();
+						if(minutes < 10) minutes = "0" + minutes;
+						var seconds = time.getSeconds();
+						if(seconds < 10) seconds = "0" + seconds;
+						timeStr = hours + ":" + minutes + ":" + seconds;
+					}
+					else {
+						timeStr = time;
+					}
+
+					this.control.value = timeStr || "";
+					if(callback) {
+						callback(timeStr);
+					}
+				}
+			};
 
 			var self = this;
 			timeInput.addEventListener("input", function() {
@@ -1483,47 +1452,6 @@
 				self._callGCH();
 			});
 			return this;
-		},
-
-		/**
-		 * Sets the time value of a time input control.
-		 * @param title {String} The title of the control to set the date on.
-		 * @param time {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
-		 * @returns {module:QuickSettings}
-		 */
-		setTime: function(title, time) {
-			var control = this._controls[title];
-
-			var timeStr;
-			if(time instanceof Date) {
-				var hours = time.getHours();
-				if(hours < 10) hours = "0" + hours;
-				var minutes = time.getMinutes() + 1;
-				if(minutes < 10) minutes = "0" + minutes;
-				var seconds = time.getSeconds();
-				if(seconds < 10) seconds = "0" + seconds;
-				timeStr = hours + ":" + minutes + ":" + seconds;
-			}
-			else {
-				timeStr = time;
-			}
-
-			control.control.value = timeStr || "";
-			if(control.callback) {
-				control.callback(text);
-			}
-			this._callGCH();
-			return this;
-		},
-
-		/**
-		 * Returns the time value of a time input control.
-		 * @param title {String} The title of the control to get the value of.
-		 * @returns {String}
-		 */
-		getTime: function(title) {
-			var control = this._controls[title];
-			return control.control.value;
 		},
 
 		/**
@@ -1537,32 +1465,6 @@
 			return this.addTime(title, time, function(value) {
 				object[title] = value;
 			});
-		},
-
-
-
-		////////////////////////////////////////////////////////////////////////////////
-		// INFO (READ ONLY TEXT DISPLAY)
-		////////////////////////////////////////////////////////////////////////////////
-		/**
-		 * Deprecated. Alias to addHTML.
-		 */
-		addInfo: function(title, info) {
-			return this.addHTML(title, info);
-		},
-
-		/**
-		 * Deprecated. Alias to getHTML.
-		 */
-		getInfo: function(title) {
-			return this.getHTML(title);
-		},
-
-		/**
-		 * Deprecated. Alias to setHTML.
-		 */
-		setInfo: function(title, info) {
-			return this.setHTML(title, info);
 		},
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -1585,7 +1487,8 @@
 				option.label = items[i];
 				option.innerText = items[i];
 				select.add(option);
-			};
+			}
+			;
 
 			var self = this;
 			select.addEventListener("change", function() {
@@ -1606,7 +1509,30 @@
 				container: container,
 				control: select,
 				label: label,
-				callback: callback
+				getValue: function() {
+                    var index = this.control.selectedIndex;
+					return {
+						index: index,
+						value: this.control.options[index].label
+					}
+				},
+				setValue: function(value) {
+                    var index
+                    if(value.index != null) {
+                        index = value.index;
+                    }
+                    else {
+                        index = value;
+                    }
+					var options = this.control.options;
+					this.control.selectedIndex = index;
+					if(callback) {
+						callback({
+							index: index,
+							value: options[index].label
+						});
+					}
+				},
 			};
 			return this;
 		},
@@ -1624,41 +1550,6 @@
 			});
 		},
 
-		/**
-		 * Gets the value of the currently selected option in a dropdown (select) control. The return value will be an object consisting of a integer property, "index" and a string property, "value".
-		 * @param title {String} The title of the control.
-		 * @returns {Object}
-		 */
-		getDropDownValue: function(title) {
-			var control = this._controls[title],
-				select = control.control,
-				index = select.selectedIndex,
-				options = select.options;
-			return {
-				index: index,
-				value: options[index].label
-			}
-		},
-
-		/**
-		 * Sets the currently selected index of a dropdown (select) control.
-		 * @param title {String} The title of the control to set the selected index of.
-		 * @param index {Integer} The index of the option array to set as selected.
-		 * @returns {module:QuickSettings}
-		 */
-		setDropDownIndex: function(title, index) {
-			var control = this._controls[title],
-				options = control.control.options;
-			control.control.selectedIndex = index;
-			if(control.callback) {
-				control.callback({
-					index: index,
-					value: options[index].label
-				});
-			}
-			this._callGCH();
-			return this;
-		},
 
 		////////////////////////////////////////////////////////////////////////////////
 		// IMAGE
@@ -1672,26 +1563,21 @@
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
 				label = this._createLabel("<b>" + title + "</b>", container);
-				img = this._createElement("img", "qs_image", container);
+			img = this._createElement("img", "qs_image", container);
 			img.src = imageURL;
 
 			this._controls[title] = {
 				type: "image",
 				container: container,
 				control: img,
-				label: label
+				label: label,
+                getValue: function() {
+                    return this.control.src;
+                },
+                setValue: function(url) {
+                    this.control.src = url;
+                }
 			};
-			return this;
-		},
-
-		/**
-		 * Sets a new URL for an image control.
-		 * @param title {String} The title of the control to set a new image URL for.
-		 * @param imageURL {String} The new URL.
-		 * @returns {module:QuickSettings}
-		 */
-		setImageURL: function(title, imageURL) {
-			this._controls[title].control.src = imageURL;
 			return this;
 		},
 
@@ -1732,42 +1618,49 @@
 				valueDisplay: valueDisplay,
 				label: label,
 				value: value,
-				max: max
+				max: max,
+				title: title,
+				getValue: function() {
+					return this.value;
+				},
+				setValue: function(value) {
+					this.value = Math.max(0, Math.min(value, this.max));
+					this.valueDiv.style.width = (this.value / this.max * 100) + "%";
+					if(this.valueDisplay === "numbers") {
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + this.value + " / " + this.max;
+					}
+					else if(this.valueDisplay === "percent") {
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + Math.round(this.value / this.max * 100) + "%";
+					}
+				}
 			};
 			return this;
 		},
 
-		/**
-		 * Gets the current progress value of a progress bar control.
-		 * @param title {String} The control to get the progress for.
-		 * @returns {Number}
-		 */
-		getProgress: function(title) {
-			return this._controls[title].control.value;
-		},
+        /**
+         * Sets the maximum value for a progress bar control.
+         * @param title {String} The title of the control to change.
+         * @param max {Number} The new maximum value for the control.
+         * @returns {module:QuickSettings}
+         */
+        setProgressMax: function(title, max) {
+            var control = this._controls[title];
+            control.max = max;
+            control.value = Math.min(control.value, control.max);
+            control.valueDiv.style.width = (control.value / control.max * 100) + "%";
 
-		/**
-		 * Sets the  progress value of a progress bar control.
-		 * @param title {String} The title of the control to set progress on.
-		 * @param value {Number} The progress value to set.
-		 * @param max {Number} The max value of the control. (Defaults to the previously set max value)
-		 * @returns {module:QuickSettings}
-		 */
-		setProgress: function(title, value, max) {
-			var control = this._controls[title];
-			control.value = value;
-			if(max) {
-				control.max = max;
-			}
-			control.valueDiv.style.width = (control.value / control.max * 100) + "%";
-			if(control.valueDisplay === "numbers") {
-				control.label.innerHTML = "<b>" + title + ":</b> " + control.value + " / " + control.max;
-			}
-			else if(control.valueDisplay === "percent") {
-				control.label.innerHTML = "<b>" + title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
-			}
-			return this;
-		},
+            if(control.valueDisplay === "numbers") {
+                control.label.innerHTML = "<b>" + control.title + ":</b> " + control.value + " / " + control.max;
+            }
+            else if(control.valueDisplay === "percent") {
+                control.label.innerHTML = "<b>" + control.title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
+            }
+            else {
+                control.label.innerHTML = "<b>" + control.title + "</b>";
+            }
+            return this;
+        },
+
 
 		////////////////////////////////////////////////////////////////////////////////
 		// FILE CHOOSER
@@ -1804,7 +1697,9 @@
 				container: container,
 				control: fileChooser,
 				label: label,
-				callback: callback
+				getValue: function() {
+					return this.control.files[0];
+				}
 			}
 
 			var self = this;
@@ -1818,11 +1713,6 @@
 			});
 			return this;
 		},
-
-		getFile: function(title) {
-			return this._controls[title].control.files[0];
-		},
-
 
 		////////////////////////////////////////////////////////////////////////////////
 		// ELEMENT (RAW HTML ELEMENT)
@@ -1866,37 +1756,21 @@
 			this._controls[title] = {
 				type: "html",
 				label: label,
-				control: div
+				control: div,
+				getValue: function() {
+					return this.control.innerHTML;
+				},
+				setValue: function(html) {
+					this.control.innerHTML = html;
+				}
 			};
 			return this;
 		},
-
-		/**
-		 * Gets the HTML in an HTML control.
-		 * @param title {String} The title of the control to get the HTML from.
-		 * @returns {String}
-		 */
-		getHTML: function(title) {
-			return this._controls[title].control.innerHTML;
-		},
-
-		/**
-		 * Sets the HTML in an HTML control.
-		 * @param title {String} The title of the control to set the HTML in.
-		 * @param html {String} The new HTML for the control.
-		 * @returns {module:QuickSettings}
-		 */
-		setHTML: function(title, html) {
-			this._controls[title].control.innerHTML = html;
-			return this;
-		}
-
-	};
-
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	// EXPORT
 	////////////////////////////////////////////////////////////////////////////////
-	if (typeof define === "function" && define.amd) {
+	if(typeof define === "function" && define.amd) {
 	    define(QuickSettings);
 	} else {
 	   window.QuickSettings = QuickSettings;
