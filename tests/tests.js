@@ -2,6 +2,8 @@ var panel,
     flag,
     listener = function(value) { flag = value;};
 
+QUnit.config.hidepassed = true;
+
 //////////////////////////////////
 // region  BOOLEAN
 //////////////////////////////////
@@ -322,6 +324,9 @@ QUnit.test("set and get", function(assert) {
     // set value
     panel.setValue("number", 50);
     assert.equal(panel.getValue("number"), 50, "value set to 50");
+});
+
+QUnit.test("max and min",function(assert) {
 
     // set value beyond max
     panel.setValue("number", 101);
@@ -467,7 +472,9 @@ QUnit.test("set and get", function(assert) {
     // set value
     panel.setValue("range", 50);
     assert.equal(panel.getValue("range"), 50, "value set to 50");
+});
 
+QUnit.test("minand max", function(assert) {
     // set value beyond max
     panel.setValue("range", 101);
     assert.equal(panel.getValue("range"), 100, "value clamped to max");
@@ -641,8 +648,68 @@ QUnit.test("listener", function(assert) {
 });
 // endregion
 
+//////////////////////////////////
+// region LOCAL STORAGE
+//////////////////////////////////
+QUnit.module("local storage", {});
 
+QUnit.test("save and read", function(assert) {
+    var panel = QuickSettings.create()
+        .addRange("range", 0, 100, 0, 1)
+        .saveInLocalStorage("ls_test");
+    panel.setValue("range", 39);
+    panel.destroy();
+    panel = null
 
+    panel = QuickSettings.create()
+        .addRange("range", 0, 100, 0, 1)
+        .saveInLocalStorage("ls_test");
 
+    assert.equal(panel.getValue("range"), 39, "39 should  be read from previous instance.");
 
+    panel.clearLocalStorage("ls_test");
+    panel.destroy();
 
+    panel = QuickSettings.create()
+        .addRange("range", 0, 100, 0, 1)
+        .saveInLocalStorage("ls_test");
+
+    assert.equal(panel.getValue("range"), 0, "initial value not changed");
+    panel.destroy();
+});
+// endregion
+
+//////////////////////////////////
+// region JSON
+//////////////////////////////////
+QUnit.module("json", {
+    beforeEach:  function() {
+        panel = QuickSettings.create()
+            .addRange("range", 0, 100, 0, 1);
+    },
+
+    afterEach: function() {
+        panel.destroy();
+        panel = null;
+    }
+});
+
+QUnit.test("get json", function(assert) {
+    panel.setValue("range", 50);
+    var json = panel.getValuesAsJSON(false);
+    assert.equal(json.range, 50, "get json, range property has 50");
+
+    var jsonString = panel.getValuesAsJSON(true);
+    assert.equal(jsonString, '{"range":50}', "get json as string. range = 50");
+
+});
+
+QUnit.test("set json", function(assert) {
+    panel.setValuesFromJSON({range: 99});
+    assert.equal(panel.getValue("range"), 99, "set values with json, range = 99");
+
+    panel.setValuesFromJSON('{"range":73}');
+    assert.equal(panel.getValue("range"), 73, "set values with json string. range = 73");
+});
+
+// endregion
