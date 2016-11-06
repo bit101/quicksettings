@@ -181,14 +181,14 @@
 		////////////////////////////////////////////////////////////////////////////////
         
 		_createPanel: function(x, y, parent) {
-			this._panel = this._createElement("div", "qs_main", parent || document.body);
+			this._panel = this._createElement("div", null, "qs_main", parent || document.body);
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			this.setPosition(x || 0, y || 0);
 			this._controls = {};
 		},
 
 		_createTitleBar: function(text) {
-			this._titleBar = this._createElement("div", "qs_title_bar", this._panel);
+			this._titleBar = this._createElement("div", null, "qs_title_bar", this._panel);
 			this._titleBar.textContent = text;
 
 			this._titleBar.addEventListener("mousedown", this._startDrag);
@@ -197,12 +197,19 @@
 		},
 
 		_createContent: function() {
-			this._content = this._createElement("div", "qs_content", this._panel);
+			this._content = this._createElement("div", null, "qs_content", this._panel);
 		},
 
-		_createElement: function(type, className, parent) {
+        _createInput: function(type, id, className, parent) {
+            var input = this._createElement("input", id, className, parent);
+            input.type = type;
+            return input;
+        },
+
+		_createElement: function(type, id, className, parent) {
 			var element = document.createElement(type);
 			if(!element) return;
+            element.id = id;
 			if(className) {
 				element.className = className;
 			}
@@ -213,7 +220,7 @@
 		},
 
 		_createContainer: function() {
-			var container = this._createElement("div", "qs_container");
+			var container = this._createElement("div", null, "qs_container");
 			container.addEventListener("focus", function() {
 				this.className += " qs_container_selected";
 			}, true);
@@ -228,7 +235,7 @@
 		},
 
 		_createLabel: function(title, container) {
-			var label = this._createElement("div", "qs_label", container);
+			var label = this._createElement("div", null, "qs_label", container);
 			label.innerHTML = title;
 			return label;
 		},
@@ -801,6 +808,29 @@
 		//==========================================================================================
 		//==========================================================================================
 
+        addPlugin:  function(title, plugin, value, callback) {
+            var container = this._createContainer(),
+                label = this._createLabel(plugin.getLabel(title), container);
+            container.appendChild(plugin.getElement());
+            plugin.setValue(value);
+
+            this._controls[title] = {
+                container: container,
+                control: plugin,
+                label: label,
+                getValue: function() {
+                    return this.plugin.getValue();
+                },
+                setValue: function(value) {
+                    this.plugin.setValue(value);
+                    if(callback) {
+                        callback(value);
+                    }
+                },
+            };
+            return this;
+        },
+
 		////////////////////////////////////////////////////////////////////////////////
 		// region BOOLEAN
 		////////////////////////////////////////////////////////////////////////////////
@@ -815,23 +845,19 @@
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
-			var label = this._createElement("label", "qs_checkbox_label", container);
+			var label = this._createElement("label", null, "qs_checkbox_label", container);
 			label.textContent = title;
 			label.setAttribute("for", title);
 
-			var checkbox = this._createElement("label", "qs_checkbox", container);
+			var checkbox = this._createElement("label", null, "qs_checkbox", container);
 			checkbox.setAttribute("for", title);
 
-			var input = this._createElement("input", null, checkbox);
-			input.type = "checkbox";
-			input.id = title;
+			var input = this._createInput("checkbox", title, null, checkbox);
 			input.checked = value;
 
-
-			var span = this._createElement("span", null, checkbox);
+			var span = this._createElement("span", null, null, checkbox);
 
 			this._controls[title] = {
-				type: "boolean",
 				container: container,
 				control: input,
 				getValue: function() {
@@ -882,13 +908,10 @@
 		addButton: function(title, callback) {
 			var container = this._createContainer();
 
-			var button = this._createElement("input", "qs_button", container);
-			button.type = "button";
-			button.id = title;
+			var button = this._createInput("button", title, "qs_button", container);
 			button.value = title;
 
 			this._controls[title] = {
-				type: "button",
 				container: container,
 				control: button
 			}
@@ -922,17 +945,14 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + ":</b> " + color, container);
 
-			var colorInput = this._createElement("input", "qs_color", container);
-			colorInput.type = "color";
-			colorInput.id = title;
+			var colorInput = this._createInput("color", title, "qs_color", container);
 			colorInput.value = color || "#ff0000";
 
-			var colorLabel = this._createElement("label", "qs_color_label", container);
+			var colorLabel = this._createElement("label", null, "qs_color_label", container);
 			colorLabel.setAttribute("for", title);
 			colorLabel.style.backgroundColor = colorInput.value;
 
 			this._controls[title] = {
-				type: "color",
 				container: container,
 				control: colorInput,
                 colorLabel:  colorLabel,
@@ -1007,13 +1027,10 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
 
-			var dateInput = this._createElement("input", "qs_text_input", container);
-			dateInput.type = "date";
-			dateInput.id = title;
+			var dateInput = this._createInput("date", title, "qs_text_input", container);
 			dateInput.value = dateStr || "";
 
 			this._controls[title] = {
-				type: "date",
 				container: container,
 				control: dateInput,
 				label: label,
@@ -1080,7 +1097,7 @@
 			var container = this._createContainer();
 
 			var label = this._createLabel("<b>" + title + "</b>", container);
-			var select = this._createElement("select", "qs_select", container);
+			var select = this._createElement("select", null, "qs_select", container);
 			for(var i = 0; i < items.length; i++) {
 				var option = this._createElement("option");
 				option.label = items[i];
@@ -1104,7 +1121,6 @@
 			});
 
 			this._controls[title] = {
-				type: "dropdown",
 				container: container,
 				control: select,
 				label: label,
@@ -1168,7 +1184,6 @@
 			container.appendChild(element);
 
 			this._controls[title] = {
-				type: "element",
 				container: container,
 				label: label
 			};
@@ -1195,20 +1210,17 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
 
-			var fileChooser = this._createElement("input", "qs_file_chooser", container);
-			fileChooser.type = "file";
-			fileChooser.id = title;
+			var fileChooser = this._createInput("file", title, "qs_file_chooser", container);
 			if(filter) {
 				fileChooser.accept = filter;
 			}
 
-			var fcLabel = this._createElement("label", "qs_file_chooser_label", container);
+			var fcLabel = this._createElement("label", null, "qs_file_chooser_label", container);
 			fcLabel.setAttribute("for", title);
 			fcLabel.textContent = labelStr || "Choose a file...";
 
 
 			this._controls[title] = {
-				type: "fileChooser",
 				container: container,
 				control: fileChooser,
 				label: label,
@@ -1245,10 +1257,9 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + ":</b> ", container);
 
-			var div = this._createElement("div", null, container);
+			var div = this._createElement("div", null, null, container);
 			div.innerHTML = html;
 			this._controls[title] = {
-				type: "html",
 				label: label,
 				control: div,
 				getValue: function() {
@@ -1275,11 +1286,10 @@
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
 				label = this._createLabel("<b>" + title + "</b>", container);
-			img = this._createElement("img", "qs_image", container);
+			img = this._createElement("img", null, "qs_image", container);
 			img.src = imageURL;
 
 			this._controls[title] = {
-				type: "image",
 				container: container,
 				control: img,
 				label: label,
@@ -1332,9 +1342,7 @@
 			var label = this._createLabel("", container);
 
 			var className = type === "range" ? "qs_range" : "qs_text_input qs_number";
-			var input = this._createElement("input", className, container);
-			input.type = type;
-			input.id = title;
+			var input = this._createInput(type, title, className, container);
 			input.min = min || 0;
 			input.max = max || 100;
 			input.step = step || 1;
@@ -1344,7 +1352,6 @@
 
 
 			this._controls[title] = {
-				type: type,
 				container: container,
 				control: input,
 				label: label,
@@ -1487,8 +1494,8 @@
 		addProgressBar: function(title, max, value, valueDisplay) {
 			var container = this._createContainer(),
 				label = this._createLabel("", container),
-				progressDiv = this._createElement("div", "qs_progress", container),
-				valueDiv = this._createElement("div", "qs_progress_value", progressDiv);
+				progressDiv = this._createElement("div", null, "qs_progress", container),
+				valueDiv = this._createElement("div", null, "qs_progress_value", progressDiv);
 
 			valueDiv.style.width = (value / max * 100) + "%";
 
@@ -1503,7 +1510,6 @@
 			}
 
 			this._controls[title] = {
-				type: "progressbar",
 				container: container,
 				control: progressDiv,
 				valueDiv: valueDiv,
@@ -1575,18 +1581,15 @@
 			var textInput;
 
 			if(type === "textarea") {
-				textInput = this._createElement("textarea", "qs_textarea", container);
+				textInput = this._createElement("textarea", title, "qs_textarea", container);
 				textInput.rows = 5;
 			}
 			else {
-				textInput = this._createElement("input", "qs_text_input", container);
-				textInput.type = type;
+				textInput = this._createInput(type, title, "qs_text_input", container);
 			}
-			textInput.id = title;
 			textInput.value = text || "";
 
 			this._controls[title] = {
-				type: type,
 				container: container,
 				control: textInput,
 				label: label,
@@ -1700,13 +1703,10 @@
 			var container = this._createContainer();
 			var label = this._createLabel("<b>" + title + "</b>", container);
 
-			var timeInput = this._createElement("input", "qs_text_input", container);
-			timeInput.type = "time";
-			timeInput.id = title;
+			var timeInput = this._createInput("time", title, "qs_text_input", container);
 			timeInput.value = timeStr || "";
 
 			this._controls[title] = {
-				type: "time",
 				container: container,
 				control: timeInput,
 				label: label,
