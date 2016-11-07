@@ -24,7 +24,9 @@ When you create your first panel, QuickSettings will automatically inject its ow
 
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
 
-    var settings = QuickSettings.create(x, y, panelTitle, parent);
+``` js
+var settings = QuickSettings.create(x, y, panelTitle, parent);
+```
     
 The `x` and `y` parameters control the initial position of the panel and default to 0, 0.
 
@@ -34,29 +36,33 @@ The `parent` parameter lets you specify where on the DOM you want to add the pan
     
 Destroying a panel removes it from the page and nulls out all methods and properties.
 
-    settings.destroy();
+``` js
+settings.destroy();
+```
 
 ## Adding Controls
 
 Now you can add controls to the panel. Supported controls are:
 
-    settings.addBoolean(title, value, callback);                // creates a checkbox
-    settings.addButton(title, callback);                        // creates a button
-    settings.addColor(title, color, callback);                  // creates a color input
-    settings.addDate(title, date, callback);                    // adds a date input
-    settings.addDropDown(title, [items], callback);             // creates a dropdown list
-    settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
-    settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
-    settings.addInfo(title, text);                              // deprecated. Identical to addHTML
-    settings.addImage(title, imageURL);                         // creates and image element with the specified URL
-    settings.addNumber(title, min, max, value, step, callback); // creates a number input
-    settings.addPassword(title, text, callback);                // adds a password text field
-    settings.addProgressBar(title, max, value, valueDisplay);   // creates a progress bar
-    settings.addRange(title, min, max, value, step, callback);  // creates a range slider
-    settings.addText(title, text, callback);                    // creates an input text field
-    settings.addTextArea(title, text, callback);                // creates a resizable text area
-    settings.addTime(title, time, callback);                    // adds a time input
-    settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
+``` js
+settings.addBoolean(title, value, callback);                // creates a checkbox
+settings.addButton(title, callback);                        // creates a button
+settings.addColor(title, color, callback);                  // creates a color input
+settings.addDate(title, date, callback);                    // adds a date input
+settings.addDropDown(title, [items], callback);             // creates a dropdown list
+settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
+settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
+settings.addInfo(title, text);                              // deprecated. Identical to addHTML
+settings.addImage(title, imageURL);                         // creates and image element with the specified URL
+settings.addNumber(title, min, max, value, step, callback); // creates a number input
+settings.addPassword(title, text, callback);                // adds a password text field
+settings.addProgressBar(title, max, value, valueDisplay);   // creates a progress bar
+settings.addRange(title, min, max, value, step, callback);  // creates a range slider
+settings.addText(title, text, callback);                    // creates an input text field
+settings.addTextArea(title, text, callback);                // creates a resizable text area
+settings.addTime(title, time, callback);                    // adds a time input
+settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
+  ```
     
 See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
     
@@ -72,22 +78,26 @@ The time control implementation will vary on platforms. On some platforms, this 
 
 You can also query the value of controls at any time with:
 
-    settings.getBoolean(title);
-    settings.getColor(title);
-    settings.getDate(title);
-    settings.getDropDownValue(title);
-    settings.getHTML(title);
-    settings.getInfo(title);        // deprecated. Identical to getHTML
-    settings.getNumberValue(title);
-    settings.getProgressValue(title);
-    settings.getRangeValue(title);
-    settings.getText(title);        // text, textarea, password
-    settings.getTime(title);
-    settings.getFile(title);
+``` js
+settings.getBoolean(title);
+settings.getColor(title);
+settings.getDate(title);
+settings.getDropDownValue(title);
+settings.getHTML(title);
+settings.getInfo(title);        // deprecated. Identical to getHTML
+settings.getNumberValue(title);
+settings.getProgressValue(title);
+settings.getRangeValue(title);
+settings.getText(title);        // text, textarea, password
+settings.getTime(title);
+settings.getFile(title);
+```
 
 It's also possible to get an object containing all of the value for all user-interactive controls.
 
-    settings.getValuesAsJSON(asString);
+``` js
+settings.getValuesAsJSON(asString);
+```
 
 This will give you an object containing the title and value of each object that can be changed by a user. Passing `true` for the `asString` parameter will give you a JSON-formatted string instead of an object.
 
@@ -97,128 +107,169 @@ For the file chooser, the Object version will include the actual File object rep
 
 And set values of controls with:
 
-    settings.setBoolean(title, value);
-    settings.setColor(title, color);
-    settings.setDate(title, date);
-    settings.setDropDownIndex(title, index);
-    settings.setImageURL(title, imageURL);
-    settings.setInfo(title, text);  // deprecated. identical to setHTML.
-    settings.setHTML(title, html);
-    settings.setNumberValue(title, value);
-    settings.setProgress(title, value);
-    settings.setRangeValue(title, value);
-    settings.setText(title, text);  // text, textarea, password
-    settings.setTime(title, time);
+``` js
+settings.setBoolean(title, value);
+settings.setColor(title, color);
+settings.setDate(title, date);
+settings.setDropDownIndex(title, index);
+settings.setImageURL(title, imageURL);
+settings.setInfo(title, text);  // deprecated. identical to setHTML.
+settings.setHTML(title, html);
+settings.setNumberValue(title, value);
+settings.setProgress(title, value);
+settings.setRangeValue(title, value);
+settings.setText(title, text);  // text, textarea, password
+settings.setTime(title, time);
+```
     
 If, for some reason, you need to change the min, max or step of a range input or number input, use:
 
-    settings.setRangeParameters(title, min, max, step);
-    settings.setNumberParameters(title, min, max, step);
+``` js
+settings.setRangeParameters(title, min, max, step);
+settings.setNumberParameters(title, min, max, step);
+```
     
 Set the number of rows in a text area (defaults to 5) with:
 
-    settings.setTextAreasRows(title, rows);
+``` js
+settings.setTextAreasRows(title, rows);
+```
     
 ## Managing Controls
 
 You can remove any control with:
 
-    settings.removeControl(title);
+``` js
+settings.removeControl(title);
+```
     
 Or disable and reenable any controls that can be enabled/disabled with:
 
-    settings.disableControl(title);
-    settings.enableControl(title);
+``` js
+settings.disableControl(title);
+settings.enableControl(title);
+```
     
 Or hide and show any control:
 
-    settings.hideControl(title);
-    settings.showControl(title);
+``` js
+settings.hideControl(title);
+settings.showControl(title);
+```
     
 Finally, you can override most existing style properties for controls with:
 
-    settings.overrideStyle(title, styleName, value);
+``` js
+settings.overrideStyle(title, styleName, value);
+```
 
 For example, to change the font size in an intput text field named "text":
 
-    settings.overrideStyle("text", "fontSize", "20px");
+``` js
+settings.overrideStyle("text", "fontSize", "20px");
+```
     
 Most controls, except for the boolean (checkbox) and button controls show a title label above the actual control. You can turn this on and off for any specific control:
 
-    settings.hideTitle(title);
-    settings.showTitle(title);
+``` js
+settings.hideTitle(title);
+settings.showTitle(title);
+```
     
 Or for all of the controls at once:
 
-    settings.hideAllTitles();
-    settings.showAllTitles();
+``` js
+settings.hideAllTitles();
+settings.showAllTitles();
+```
 
 ## Panel Settings
 
 The panel is draggable and collapsible/expandable by a double click on the title bar by default. The following methods affect this behavior:
 
-    settings.setDraggable(bool);
-    settings.setCollapsible(bool);
-    settings.collapse();
-    settings.expand();
-    settings.toggleCollapsed():
+``` js
+settings.setDraggable(bool);
+settings.setCollapsible(bool);
+settings.collapse();
+settings.expand();
+settings.toggleCollapsed():
+```
 
 You can show and hide the panel with the following:
 
-    settings.show();
-    settings.hide();
-    settings.toggleVisibility();
+``` js
+settings.show();
+settings.hide();
+settings.toggleVisibility();
+```
   
 Or, you can set a keyboard key that will show and hide the panel when pressed:
 
-    settings.setKey(char);
+``` js
+settings.setKey(char);
+```
   
 You can set the position of the panel with:
 
-    settings.setPosition(x, y);
+``` js
+settings.setPosition(x, y);
+```
     
 If the panel is draggable, you can have it snap to a grid when dropped. And you can specify the size of that grid:
 
-    settings.setSnapToGrid(bool);
-    settings.setGridSize(number);
+``` js
+settings.setSnapToGrid(bool);
+settings.setGridSize(number);
+```
 
 By default, the panel will be 200px wide and grow in height to fit its content. You can set an explicit size with:
 
-    settings.setSize(w, h);
+``` js
+settings.setSize(w, h);
+```
 
 Or, perhaps more useful, you can set only the width and let the height continue to grow as normal:
 
-    settings.setWidth(w);
+``` js
+settings.setWidth(w);
+```
 
 You can also set a fixed height. If the controls do not fit in this height, they will scroll.
 
-    settings.setHeight(h);
-    
+``` js
+settings.setHeight(h);
+```
 
 ## Responding to changes
 
 In addition to adding a callback on each control, you can add a global change handler:
 
-    settings.setGlobalChangeHandler(callback);
+``` js
+settings.setGlobalChangeHandler(callback);
+```
     
 This callback will be called whenever any change is made to any control in this panel.
 
 There are also bind functions:
 
-    settings.bindBoolean(title, value, object);
-    settings.bindColor(title, color, object);
-    settings.bindDate(title, date, object);
-    settings.bindDropDown(title, [items], object);
-    settings.bindNumber(title, value, object);
-    settings.bindPassword(title, text, object);
-    settings.bindRange(title, min, max, value, step, object);
-    settings.bindText(title, text, object);
-    settings.bindTextArea(title, text, object);
-    settings.bindTime(title, time, object);    
+``` js
+settings.bindBoolean(title, value, object);
+settings.bindColor(title, color, object);
+settings.bindDate(title, date, object);
+settings.bindDropDown(title, [items], object);
+settings.bindNumber(title, value, object);
+settings.bindPassword(title, text, object);
+settings.bindRange(title, min, max, value, step, object);
+settings.bindText(title, text, object);
+settings.bindTextArea(title, text, object);
+settings.bindTime(title, time, object);
+```
     
 These function the same as their "add" counterparts, but instead of a callback, you pass in an object. When the control's value is changed, it will assign the new value to the property of that object that matches the title. For example:
 
-    settings.bindBoolean("visible", true, model);
+``` js
+settings.bindBoolean("visible", true, model);
+```
     
 When the checkbox is clicked, it will set `model.visible` to true or false.
 
@@ -228,18 +279,22 @@ These two changes allow you to have a single model object and a single change ha
 
 Pretty much every method that is not a getter will return a reference to the panel itself, allowing you to chain calls.
 
-    var panel = QuickSettings.create(10, 10, "Panel")
-        .addRange("x", 0, 100, 50, 1)
-        .addRange("y", 0, 100, 50, 1)
-        .addRange("w", 0, 100, 50, 1)
-        .addRange("h", 0, 100, 50, 1)
-        .setGlobalChangeHandler(myChangeHandler);
+``` js
+var panel = QuickSettings.create(10, 10, "Panel")
+    .addRange("x", 0, 100, 50, 1)
+    .addRange("y", 0, 100, 50, 1)
+    .addRange("w", 0, 100, 50, 1)
+    .addRange("h", 0, 100, 50, 1)
+    .setGlobalChangeHandler(myChangeHandler);
+```
         
 ## JSON Parser
 
 You can also create your panel with a JavaScript object or JSON string. Just call:
 
-    var panel = QuickSettings.parse(json, parent, scope);
+``` js
+var panel = QuickSettings.parse(json, parent, scope);
+```
     
 The `json` parameter is a JSON string or JavaScript object.
 
@@ -249,39 +304,42 @@ And `scope` is the object on which callbacks will be looked for, as callbacks wi
 
 JSON format:
 
-    {
-      "title": "Panel name",    // optional string, default "QuickSettings"
-      "x": 400,                 // optional number, default 0
-      "y": 30,                  // optional number, default 0
-      "draggable": true,        // optional bool,   default true
-      "collapsible": true,      // optional bool,   default true
-      "snapToGrid": true,       // optional bool,   default false
-      "gridSize": 40,           // optional number  default 0
-      "controls": []            // optional array of control objects
-    }
+``` js
+{
+    "title": "Panel name",    // optional string, default "QuickSettings"
+    "x": 400,                 // optional number, default 0
+    "y": 30,                  // optional number, default 0
+    "draggable": true,        // optional bool,   default true
+    "collapsible": true,      // optional bool,   default true
+    "snapToGrid": true,       // optional bool,   default false
+    "gridSize": 40,           // optional number  default 0
+    "controls": []            // optional array of control objects
+}
+```
     
 Control object format:
 
-    {
-        "type": "range",        // required string
-        "title": "my range",    // required string
-        "value": 100,           // optional value:
-                                    // number or string for most controls.
-                                    // bool for boolean
-                                    // array of option labels for dropdown
-                                    // not used for button
-        "min": 0,               // optional number (range and number only)
-        "max": 100,             // optional number (range, number, progressbar only)
-        "step": 1,              // optional number (range and number only)
-        "callback": "onRange",  // optional string - maps to function name on scope object,
-        "labelStr": "choose",   // optional string (file chooser)
-        "filter": "image/*"     // optional string (file chooser)
-    }
+``` js
+{
+    "type": "range",        // required string
+    "title": "my range",    // required string
+    "value": 100,           // optional value:
+                                // number or string for most controls.
+                                // bool for boolean
+                                // array of option labels for dropdown
+                                // not used for button
+    "min": 0,               // optional number (range and number only)
+    "max": 100,             // optional number (range, number, progressbar only)
+    "step": 1,              // optional number (range and number only)
+    "callback": "onRange",  // optional string - maps to function name on scope object,
+    "labelStr": "choose",   // optional string (file chooser)
+    "filter": "image/*"     // optional string (file chooser)
+}
+```
 
 All controls are supported except `addElement`.
 
 See Parse Demos below.
-
 
 ## Demos
 
