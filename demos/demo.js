@@ -69,7 +69,7 @@ window.onload = function() {
 	var settings2 = QuickSettings.create(width - 250, 20, "Other Stuff");
 
 	settings2.addText("Random Text", "hello world");
-	settings2.addInfo("info", "Turn it off and back on again");
+	settings2.addHTML("info", "Turn it off and back on again");
 	settings2.setKey("s");
 
 	settings2.addDropDown("Choices", ["Cat", "Dog", "Iguana"], function(value) {
@@ -78,7 +78,7 @@ window.onload = function() {
 		"http://www.dogster.com/wp-content/uploads/2015/05/Cute%20dog%20listening%20to%20music%201_1.jpg",
 		"http://www.thepetmatchmaker.com/wp-content/uploads/2014/02/Grumpy_green_iguana_by_GlobalGraphic-1.jpg"
 		];
-		settings2.setImageURL("Random Animal Image", images[value.index]);
+		settings2.setValue("Random Animal Image", images[value.index]);
 	});
 	settings2.addBoolean("Dropdown enabled", true, function(value) {
 		if(value) {
@@ -94,7 +94,7 @@ window.onload = function() {
 	var progress = 0;
 	settings2.addProgressBar("Progress", 100, 0);
 	setInterval(function() {
-		settings2.setProgress("Progress", progress);
+		settings2.setValue("Progress", progress);
 		progress++;
 		progress %= 100;
 	}, 1000 / 15);

@@ -9,8 +9,8 @@
 
     function onFileChosen(file) {
         console.log(file);
-        panel.setText("file info", "name: " + file.name + "\n\nsize: " + file.size + " bytes\n\ndate: " + file.lastModifiedDate + "\n\ntype: " + file.type);
-        panel.setImageURL("image", window.URL.createObjectURL(file))
+        panel.setValue("file info", "name: " + file.name + "\n\nsize: " + file.size + " bytes\n\ndate: " + file.lastModifiedDate + "\n\ntype: " + file.type);
+        panel.setValue("image", window.URL.createObjectURL(file));
     }
 
 })();

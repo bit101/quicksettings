@@ -2,7 +2,69 @@
  * @module QuickSettings
  */
 (function() {
-	////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // region PRIVATE GENERIC UTILS
+    ////////////////////////////////////////////////////////////////////////////////
+
+
+    function createLabel(title, container) {
+        var label = createElement("div", null, "qs_label", container);
+        label.innerHTML = title;
+        return label;
+    }
+    
+    function createInput(type, id, className, parent) {
+        var input = createElement("input", id, className, parent);
+        input.type = type;
+        return input;
+    }
+
+    function createElement(type, id, className, parent) {
+        var element = document.createElement(type);
+        if(!element) return;
+        element.id = id;
+        if(className) {
+            element.className = className;
+        }
+        if(parent) {
+            parent.appendChild(element);
+        }
+        return element;
+    }
+
+    function isIE() {
+        if(navigator.userAgent.indexOf("rv:11") != -1) {
+            return true;
+        }
+        if(navigator.userAgent.indexOf("MSIE") != -1) {
+            return true;
+        }
+        return false;
+    }
+
+    function isSafari() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        if(userAgent.indexOf("chrome") > -1 ||
+            userAgent.indexOf("firefox") > -1 ||
+            userAgent.indexOf("epiphany") > -1) {
+            return false;
+        }
+        if(userAgent.indexOf('safari/') > -1) {
+            return true;
+        }
+        return false;
+    }
+
+    function isEdge() {
+        var userAgent = navigator.userAgent.toLowerCase();
+        return userAgent.indexOf("edge") > -1;
+    }
+    // endregion
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////
 	// region PRIVATE/STATIC DATA AND FUNCTIONS
 	////////////////////////////////////////////////////////////////////////////////
 	var cssInjected = false,
@@ -16,9 +78,6 @@
 	}
 	// endregion
 
-	////////////////////////////////////////////////////////////////////////////////
-	// region MAIN MODULE DEFINITION
-	////////////////////////////////////////////////////////////////////////////////
 
 	/**
 	 *
@@ -40,8 +99,6 @@
 		_keyCode: -1,
 		_draggable: true,
 		_collapsible: true,
-		_snapToGrid: false,
-		_gridSize: 40,
 		_globalChangeHandler: null,
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -181,14 +238,14 @@
 		////////////////////////////////////////////////////////////////////////////////
         
 		_createPanel: function(x, y, parent) {
-			this._panel = this._createElement("div", null, "qs_main", parent || document.body);
+			this._panel = createElement("div", null, "qs_main", parent || document.body);
 			this._panel.style.zIndex = ++QuickSettings._topZ;
 			this.setPosition(x || 0, y || 0);
 			this._controls = {};
 		},
 
 		_createTitleBar: function(text) {
-			this._titleBar = this._createElement("div", null, "qs_title_bar", this._panel);
+			this._titleBar = createElement("div", null, "qs_title_bar", this._panel);
 			this._titleBar.textContent = text;
 
 			this._titleBar.addEventListener("mousedown", this._startDrag);
@@ -197,30 +254,11 @@
 		},
 
 		_createContent: function() {
-			this._content = this._createElement("div", null, "qs_content", this._panel);
-		},
-
-        _createInput: function(type, id, className, parent) {
-            var input = this._createElement("input", id, className, parent);
-            input.type = type;
-            return input;
-        },
-
-		_createElement: function(type, id, className, parent) {
-			var element = document.createElement(type);
-			if(!element) return;
-            element.id = id;
-			if(className) {
-				element.className = className;
-			}
-			if(parent) {
-				parent.appendChild(element);
-			}
-			return element;
+			this._content = createElement("div", null, "qs_content", this._panel);
 		},
 
 		_createContainer: function() {
-			var container = this._createElement("div", null, "qs_container");
+			var container = createElement("div", null, "qs_container");
 			container.addEventListener("focus", function() {
 				this.className += " qs_container_selected";
 			}, true);
@@ -234,11 +272,6 @@
 			return container;
 		},
 
-		_createLabel: function(title, container) {
-			var label = this._createElement("div", null, "qs_label", container);
-			label.innerHTML = title;
-			return label;
-		},
         // endregion
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -336,41 +369,9 @@
 		},
 
 		_endDrag: function(event) {
-			if(this._snapToGrid) {
-				var x = parseInt(this._panel.style.left),
-					y = parseInt(this._panel.style.top),
-					mouseX = event.clientX,
-					mouseY = event.clientY;
-				x = x + mouseX - this._startX;
-				y = y + mouseY - this._startY;
-
-				x = Math.round(x / this._gridSize) * this._gridSize;
-				y = Math.round(y / this._gridSize) * this._gridSize;
-				this.setPosition(x, y);
-			}
 			document.removeEventListener("mousemove", this._drag);
 			document.removeEventListener("mouseup", this._endDrag);
 			event.preventDefault();
-		},
-
-		/**
-		 * Sets whether or not the panel will snap to a grid location when moved.
-		 * @param snap {Boolean} Whether or not the panel will snap to a grid location when moved.
-		 * @returns {module:QuickSettings}
-		 */
-		setSnapToGrid: function(snap) {
-			this._snapToGrid = snap;
-			return this;
-		},
-
-		/**
-		 * Sets the size of the grid that the panel will snap to if snapping is set to true.
-		 * @param size {Number} The size of the grid.
-		 * @returns {module:QuickSettings}
-		 */
-		setGridSize: function(size) {
-			this._gridSize = size;
-			return this;
 		},
         // endregion
 
@@ -649,147 +650,8 @@
         // endregion
 
         ////////////////////////////////////////////////////////////////////////////////
-		// region JSON PARSER
-		////////////////////////////////////////////////////////////////////////////////
-        
-		/**
-		 * Creates a new QuickSettings Panel from a JSON string or object.
-		 * @param json {Object|String} The JSON string or object to parse.
-		 * @param parent {HTMLElement} The parent element to attach the new panel to.
-		 * @param scope {Object} The object to look for any callbacks on.
-		 * @returns {module:QuickSettings}
-		 */
-		parse: function(json, parent, scope) {
-			if(typeof json === "string") {
-				json = JSON.parse(json);
-			}
-			var panel = QuickSettings.create(json.x, json.y, json.title, parent);
-			panel.setDraggable(json.draggable == null ? true : json.draggable);
-			panel.setCollapsible(json.collapsible == null ? true : json.collapsible);
-			panel.setGridSize(json.gridSize || 40);
-			panel.setSnapToGrid(json.snapToGrid == null ? false : json.snapToGrid);
-			if(json.width) {
-				panel.setWidth(json.width);
-			}
-			if(json.height) {
-				panel.setHeight(json.height);
-			}
-			scope = scope || {};
-
-			for(var i = 0; i < json.controls.length; i++) {
-				var control = json.controls[i];
-				switch(control.type) {
-					case "range":
-						panel.addRange(control.title, control.min || 0, control.max || 100, control.value || control.min || 0, control.step || 1, scope[control.callback]);
-						break;
-
-					case "number":
-						panel.addNumber(control.title, control.min || 0, control.max || 100, control.value || control.min || 0, control.step || 1, scope[control.callback]);
-						break;
-
-					case "boolean":
-						panel.addBoolean(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "button":
-						panel.addButton(control.title, scope[control.callback]);
-						break;
-
-					case "color":
-						panel.addColor(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "text":
-						panel.addText(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "password":
-						panel.addPassword(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "textarea":
-					case "textArea":
-						panel.addTextArea(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "date":
-						panel.addDate(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "time":
-						panel.addTime(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "info":
-						panel.addHTML(control.title, control.value);
-						break;
-
-					case "dropdown":
-					case "dropDown":
-						panel.addDropDown(control.title, control.value, scope[control.callback]);
-						break;
-
-					case "image":
-						panel.addImage(control.title, control.value);
-						break;
-
-					case "progressbar":
-					case "progressBar":
-						panel.addProgressBar(control.title, control.max || 100, control.value || 0, control.valueDisplay);
-						break;
-
-					case "html":
-						panel.addHTML(control.title, control.value);
-						break;
-
-					case "filechooser":
-					case "fileChooser":
-						panel.addFileChooser(control.title, control.labelStr, control.filter, scope[control.callback]);
-						break;
-
-				}
-			}
-			return panel;
-		},
-        // endregion
-
-        ////////////////////////////////////////////////////////////////////////////////
-		// region PLATFORM TESTS
-		////////////////////////////////////////////////////////////////////////////////
-        
-		_isIE: function() {
-			if(navigator.userAgent.indexOf("rv:11") != -1) {
-				return true;
-			}
-			if(navigator.userAgent.indexOf("MSIE") != -1) {
-				return true;
-			}
-			return false;
-		},
-
-		_isSafari: function() {
-			var userAgent = navigator.userAgent.toLowerCase();
-			if(userAgent.indexOf("chrome") > -1 ||
-				userAgent.indexOf("firefox") > -1 ||
-				userAgent.indexOf("epiphany") > -1) {
-				return false;
-			}
-			if(userAgent.indexOf('safari/') > -1) {
-				return true;
-			}
-			return false;
-		},
-
-		_isEdge: function() {
-			var userAgent = navigator.userAgent.toLowerCase();
-			return userAgent.indexOf("edge") > -1;
-		},
-        // endregion
-
-        ////////////////////////////////////////////////////////////////////////////////
 		// region GET/SET VALUES
 		////////////////////////////////////////////////////////////////////////////////
-        
 
 		getValue: function(title) {
 			return this._controls[title].getValue();
@@ -808,29 +670,6 @@
 		//==========================================================================================
 		//==========================================================================================
 
-        addPlugin:  function(title, plugin, value, callback) {
-            var container = this._createContainer(),
-                label = this._createLabel(plugin.getLabel(title), container);
-            container.appendChild(plugin.getElement());
-            plugin.setValue(value);
-
-            this._controls[title] = {
-                container: container,
-                control: plugin,
-                label: label,
-                getValue: function() {
-                    return this.plugin.getValue();
-                },
-                setValue: function(value) {
-                    this.plugin.setValue(value);
-                    if(callback) {
-                        callback(value);
-                    }
-                },
-            };
-            return this;
-        },
-
 		////////////////////////////////////////////////////////////////////////////////
 		// region BOOLEAN
 		////////////////////////////////////////////////////////////////////////////////
@@ -845,17 +684,17 @@
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
-			var label = this._createElement("label", null, "qs_checkbox_label", container);
+			var label = createElement("label", null, "qs_checkbox_label", container);
 			label.textContent = title;
 			label.setAttribute("for", title);
 
-			var checkbox = this._createElement("label", null, "qs_checkbox", container);
+			var checkbox = createElement("label", null, "qs_checkbox", container);
 			checkbox.setAttribute("for", title);
 
-			var input = this._createInput("checkbox", title, null, checkbox);
+			var input = createInput("checkbox", title, null, checkbox);
 			input.checked = value;
 
-			var span = this._createElement("span", null, null, checkbox);
+			var span = createElement("span", null, null, checkbox);
 
 			this._controls[title] = {
 				container: container,
@@ -908,7 +747,7 @@
 		addButton: function(title, callback) {
 			var container = this._createContainer();
 
-			var button = this._createInput("button", title, "qs_button", container);
+			var button = createInput("button", title, "qs_button", container);
 			button.value = title;
 
 			this._controls[title] = {
@@ -939,16 +778,16 @@
 		 * @returns {module:QuickSettings}
 		 */
 		addColor: function(title, color, callback) {
-			if(this._isSafari() || this._isEdge() || this._isIE()) {
+			if(isSafari() || isEdge() || isIE()) {
 				return this.addText(title, color, callback);
 			}
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + ":</b> " + color, container);
+			var label = createLabel("<b>" + title + ":</b> " + color, container);
 
-			var colorInput = this._createInput("color", title, "qs_color", container);
+			var colorInput = createInput("color", title, "qs_color", container);
 			colorInput.value = color || "#ff0000";
 
-			var colorLabel = this._createElement("label", null, "qs_color_label", container);
+			var colorLabel = createElement("label", null, "qs_color_label", container);
 			colorLabel.setAttribute("for", title);
 			colorLabel.style.backgroundColor = colorInput.value;
 
@@ -1021,13 +860,13 @@
 				dateStr = date;
 			}
 
-			if(this._isIE()) {
+			if(isIE()) {
 				return this.addText(title, dateStr, callback);
 			}
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
-			var dateInput = this._createInput("date", title, "qs_text_input", container);
+			var dateInput = createInput("date", title, "qs_text_input", container);
 			dateInput.value = dateStr || "";
 
 			this._controls[title] = {
@@ -1096,10 +935,10 @@
 		addDropDown: function(title, items, callback) {
 			var container = this._createContainer();
 
-			var label = this._createLabel("<b>" + title + "</b>", container);
-			var select = this._createElement("select", null, "qs_select", container);
+			var label = createLabel("<b>" + title + "</b>", container);
+			var select = createElement("select", null, "qs_select", container);
 			for(var i = 0; i < items.length; i++) {
-				var option = this._createElement("option");
+				var option = createElement("option");
 				option.label = items[i];
 				option.innerText = items[i];
 				select.add(option);
@@ -1179,7 +1018,7 @@
 		 */
 		addElement: function(title, element) {
 			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "</b>", container);
+				label = createLabel("<b>" + title + "</b>", container);
 
 			container.appendChild(element);
 
@@ -1208,14 +1047,14 @@
 		 */
 		addFileChooser: function(title, labelStr, filter, callback) {
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
-			var fileChooser = this._createInput("file", title, "qs_file_chooser", container);
+			var fileChooser = createInput("file", title, "qs_file_chooser", container);
 			if(filter) {
 				fileChooser.accept = filter;
 			}
 
-			var fcLabel = this._createElement("label", null, "qs_file_chooser_label", container);
+			var fcLabel = createElement("label", null, "qs_file_chooser_label", container);
 			fcLabel.setAttribute("for", title);
 			fcLabel.textContent = labelStr || "Choose a file...";
 
@@ -1255,9 +1094,9 @@
 		 */
 		addHTML: function(title, html) {
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + ":</b> ", container);
+			var label = createLabel("<b>" + title + ":</b> ", container);
 
-			var div = this._createElement("div", null, null, container);
+			var div = createElement("div", null, null, container);
 			div.innerHTML = html;
 			this._controls[title] = {
 				label: label,
@@ -1285,8 +1124,8 @@
 		 */
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
-				label = this._createLabel("<b>" + title + "</b>", container);
-			img = this._createElement("img", null, "qs_image", container);
+				label = createLabel("<b>" + title + "</b>", container);
+			img = createElement("img", null, "qs_image", container);
 			img.src = imageURL;
 
 			this._controls[title] = {
@@ -1339,10 +1178,10 @@
 		_addNumber: function(type, title, min, max, value, step, callback) {
 			var container = this._createContainer();
 
-			var label = this._createLabel("", container);
+			var label = createLabel("", container);
 
 			var className = type === "range" ? "qs_range" : "qs_text_input qs_number";
-			var input = this._createInput(type, title, className, container);
+			var input = createInput(type, title, className, container);
 			input.min = min || 0;
 			input.max = max || 100;
 			input.step = step || 1;
@@ -1370,7 +1209,7 @@
 			};
 
 			var eventName = "input";
-			if(type === "range" && this._isIE()) {
+			if(type === "range" && isIE()) {
 				eventName = "change";
 			}
 			var self = this;
@@ -1493,9 +1332,9 @@
 		 */
 		addProgressBar: function(title, max, value, valueDisplay) {
 			var container = this._createContainer(),
-				label = this._createLabel("", container),
-				progressDiv = this._createElement("div", null, "qs_progress", container),
-				valueDiv = this._createElement("div", null, "qs_progress_value", progressDiv);
+				label = createLabel("", container),
+				progressDiv = createElement("div", null, "qs_progress", container),
+				valueDiv = createElement("div", null, "qs_progress_value", progressDiv);
 
 			valueDiv.style.width = (value / max * 100) + "%";
 
@@ -1577,15 +1416,15 @@
 
 		_addText: function(type, title, text, callback) {
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 			var textInput;
 
 			if(type === "textarea") {
-				textInput = this._createElement("textarea", title, "qs_textarea", container);
+				textInput = createElement("textarea", title, "qs_textarea", container);
 				textInput.rows = 5;
 			}
 			else {
-				textInput = this._createInput(type, title, "qs_text_input", container);
+				textInput = createInput(type, title, "qs_text_input", container);
 			}
 			textInput.value = text || "";
 
@@ -1696,14 +1535,14 @@
 				timeStr = time;
 			}
 
-			if(this._isIE()) {
+			if(isIE()) {
 				return this.addText(title, timeStr, callback);
 			}
 
 			var container = this._createContainer();
-			var label = this._createLabel("<b>" + title + "</b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
-			var timeInput = this._createInput("time", title, "qs_text_input", container);
+			var timeInput = createInput("time", title, "qs_text_input", container);
 			timeInput.value = timeStr || "";
 
 			this._controls[title] = {

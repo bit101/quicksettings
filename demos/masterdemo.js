@@ -8,8 +8,7 @@ window.onload = function() {
 		.addText("Text", "some text", function(value) { output("Text", value)})
 		.addTextArea("TextArea", "a whole bunch of text can go here", function(value) { output("TextArea", value)})
 		.addButton("Button", function(value) { output("Button", "clicked")})
-		.addInfo("Info", "Info. This is a description...");
-
+;
 
 	var canvas = document.createElement("canvas"),
 		context = canvas.getContext("2d");
@@ -37,6 +36,6 @@ window.onload = function() {
 
 
 	function output(name, value) {
-		panel4.setText("Output", name + " : " + value);
+		panel4.setValue("Output", name + " : " + value);
 	}
 }

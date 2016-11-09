@@ -12,7 +12,7 @@
 			}
 		},
 		onRange: function(value) {
-			panel.setProgress("progressbar test", value);
+			panel.setValue("progress", value);
 		},
 
 		onColor: function(value) {
@@ -24,112 +24,30 @@
 		}
 	};
 
-	var json = {
-	    "title": "test",
-	    "x": 20,
-	    "y": 20,
-	    "draggable": true,
-	    "collapsible": true,
-	    "snapToGrid": true,
-	    "gridSize": 100,
-	    "controls": [
-			{
-				"type": "dropdown",
-				"title": "style",
-				"value": [
+	QuickSettings.useExtStyleSheet();
+	var panel = QuickSettings.create(20, 20, "test")
+		.setDraggable(true)
+		.setCollapsible(true)
+		.addDropDown("style", [
 					"defaultStyle",
 					"black",
 					"white",
 					"tiny",
 					"tiny_white",
 					"tiny_black"
-				],
-				"callback": "onStyle"
-			},
-	        {
-	            "type": "range",
-	            "title": "range test",
-	            "min": 0,
-	            "max": 100,
-	            "value": 50,
-	            "step": 1,
-	            "callback": "onRange"
-	        },
-	        {
-	            "type": "number",
-	            "title": "number test",
-	            "min": 0,
-	            "max": 100,
-	            "callback": "onRange"
-	        },
-	        {
-	            "type": "boolean",
-	            "title": "Boolean test",
-	            "value": true,
-	        },
-	        {
-	            "type": "button",
-	            "title": "button test",
-	            "callback": "onClick"
-	        },
-	        {
-	            "type": "color",
-	            "title": "color test",
-	            "value": "#ffff00",
-	            "callback": "onColor"
-	        },
-	        {
-	            "type": "text",
-	            "title": "text test",
-	            "value": "whatever"
-	        },
-	        {
-	            "type": "password",
-	            "title": "password test",
-	            "value": "whatever"
-	        },
-	        {
-	            "type": "textarea",
-	            "title": "text area test",
-	            "value": navigator.userAgent
-	        },
-	        {
-	            "type": "date",
-	            "title": "date test",
-	            "value": new Date()
-                // "value": "2016-08-14"
-	        },
-	        {
-	            "type": "time",
-	            "title": "time test",
-				// "value": "12:34"
-				"value": new Date()
-	        },
-	        {
-	            "type": "info",
-	            "title": "info test",
-	            "value": "some info"
-	        },
-	        {
-	            "type": "image",
-	            "title": "image test",
-	            "value": "http://d39kbiy71leyho.cloudfront.net/wp-content/uploads/2016/05/09170020/cats-politics-TN.jpg"
-	        },
-	        {
-	            "type": "progressbar",
-	            "title": "progressbar test",
-	            "max": 100,
-	            "value": 50,
-	            "valueDisplay": "percent"
-	        },
-	        {
-	            "type": "html",
-	            "title": "html test",
-	            "value": "<i>this</i> is <u>html</u><ul><li>one</li><li>two</li><li>three</li></ul>"
-	        }
-	    ]
-	};
-	QuickSettings.useExtStyleSheet();
-	var panel = QuickSettings.parse(json, null, controller);
+				], controller.onStyle)
+		.addRange("range", 0, 100, 50, 1, controller.onRange)
+		.addNumber("number", 0, 100, 50, 1, controller.onRange)
+		.addBoolean("boolean", true)
+		.addButton("button", controller.onClick)
+		.addColor("color", "#ffff00", controller.onColor)
+		.addText("text", "whatever")
+		.addPassword("password", "whatever")
+		.addTextArea("text area", "whatever")
+		.addDate("date", new Date())
+		.addTime("time", new Date())
+		.addImage("image", "http://d39kbiy71leyho.cloudfront.net/wp-content/uploads/2016/05/09170020/cats-politics-TN.jpg")
+		.addProgressBar("progress", 100, 50, "percent")
+		.addHTML("html", "<i>this</i> is <u>html</u><ul><li>one</li><li>two</li><li>three</li></ul>");
 
 })();

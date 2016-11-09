@@ -78,7 +78,7 @@ window.onload = function() {
 	}
 
 	for(var i = 1; i <= 4; i++ ){
-		infos.addInfo("Info " + i, "Info " + i);
+		infos.addHTML("Info " + i, "Info " + i);
 	}
 
 
