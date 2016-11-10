@@ -6,11 +6,18 @@ QuickSettings is a JavaScript library for making a quick settings panel to contr
 
 ## Version 3 changes:
 
-- All controls with settable values are now set with `panel.setValue(title, value)`
-- All controls with gettable values are now read with `panel.getValue(title)`
-- `panel.addInfo` and related methods are gone. These were just aliased to `panel.addHTML` anyway, so use that instead.
-- You can programattically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesWithJSON`.
-- Calling `saveToLocalStorage(name)` will cause all changes in the panel to be continuously synced to local storage and restored when the panel is restarted.
+Version 3 is mostly about simplifying the panel, removing little used features and making getting and setting values easier.
+
+- New features / changes:
+    - All controls with settable values are now set with `panel.setValue(title, value)`
+    - All controls with gettable values are now read with `panel.getValue(title)`
+    - You can programatically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesWithJSON`.
+    - Calling `saveToLocalStorage(name)` will cause all changes in the panel to be continuously synced to local storage and restored when the panel is restarted. See details below, and demo project.
+
+- Removed:
+    - `panel.addInfo` and related methods are gone. These were just aliased to `panel.addHTML` anyway, so use that instead.
+    - The functionality to parse an entire panel layout from JSON has been removed. This might be added in later as a separate module.
+    - The snap-to-grid functionality has been removed.
 
 ## API Docs
 
@@ -136,7 +143,7 @@ Once you've set up your panel, you can call:
 settings.saveInLocalStorage(name);
 ```
 
-passing in a unique string to store the panel settings. Doing so causes a few things to happen. First, QuickSettings will immediatedly check to see if settings have been previously saved under this name. If so, they will be loaded and applied to the existing panel. After that, whenever any changes are made to any controls in the panel, the current state of the panel will be saved in localStorage. The ideal place to call this method is after you have added and set up all other controls in the panel.
+passing in a unique string to store the panel settings. Doing so causes a few things to happen. First, QuickSettings will immediatedly check to see if settings have been previously saved under this name. If so, they will be loaded and applied to the existing panel, overwriting any values that were just set in the code. After that, whenever any changes are made to any controls in the panel, the current state of the panel will be saved in localStorage. The ideal place to call this method is after you have added and set up all other controls in the panel.
     
 ## Managing Controls
 
@@ -218,13 +225,6 @@ You can set the position of the panel with:
 settings.setPosition(x, y);
 ```
     
-If the panel is draggable, you can have it snap to a grid when dropped. And you can specify the size of that grid:
-
-``` js
-settings.setSnapToGrid(bool);
-settings.setGridSize(number);
-```
-
 By default, the panel will be 200px wide and grow in height to fit its content. You can set an explicit size with:
 
 ``` js
@@ -291,59 +291,6 @@ var panel = QuickSettings.create(10, 10, "Panel")
     .setGlobalChangeHandler(myChangeHandler);
 ```
         
-## JSON Parser
-
-You can also create your panel with a JavaScript object or JSON string. Just call:
-
-``` js
-var panel = QuickSettings.parse(json, parent, scope);
-```
-    
-The `json` parameter is a JSON string or JavaScript object.
-
-The `parent` is the parent element where the panel will be created, defaulting to `document.body`.
-
-And `scope` is the object on which callbacks will be looked for, as callbacks will need to be specified as strings. If you're not adding callbacks in the JSON, you don't need this.
-
-JSON format:
-
-``` js
-{
-    "title": "Panel name",    // optional string, default "QuickSettings"
-    "x": 400,                 // optional number, default 0
-    "y": 30,                  // optional number, default 0
-    "draggable": true,        // optional bool,   default true
-    "collapsible": true,      // optional bool,   default true
-    "snapToGrid": true,       // optional bool,   default false
-    "gridSize": 40,           // optional number  default 0
-    "controls": []            // optional array of control objects
-}
-```
-    
-Control object format:
-
-``` js
-{
-    "type": "range",        // required string
-    "title": "my range",    // required string
-    "value": 100,           // optional value:
-                                // number or string for most controls.
-                                // bool for boolean
-                                // array of option labels for dropdown
-                                // not used for button
-    "min": 0,               // optional number (range and number only)
-    "max": 100,             // optional number (range, number, progressbar only)
-    "step": 1,              // optional number (range and number only)
-    "callback": "onRange",  // optional string - maps to function name on scope object,
-    "labelStr": "choose",   // optional string (file chooser)
-    "filter": "image/*"     // optional string (file chooser)
-}
-```
-
-All controls are supported except `addElement`.
-
-See Parse Demos below.
-
 ## Demos
 
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
@@ -354,7 +301,3 @@ See Parse Demos below.
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/styles_demo.html
 - http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/filedemo.html
 
-Parse demos:
-
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/parse_demo_1.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/parse_demo_2.html
