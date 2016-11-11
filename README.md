@@ -18,6 +18,8 @@ Version 3 is mostly about simplifying the panel, removing little used features a
     - `panel.addInfo` and related methods are gone. These were just aliased to `panel.addHTML` anyway, so use that instead.
     - The functionality to parse an entire panel layout from JSON has been removed. This might be added in later as a separate module.
     - The snap-to-grid functionality has been removed.
+    
+Naturally, many of these changes will break backwards compatibility with version 2 or earlier. But the changes overall result in a cleaner, simpler API and are easy enough to migrate over to.
 
 ## Documentation and Demos
 
