@@ -19,6 +19,10 @@ Version 3 is mostly about simplifying the panel, removing little used features a
     - The functionality to parse an entire panel layout from JSON has been removed. This might be added in later as a separate module.
     - The snap-to-grid functionality has been removed.
 
+## Documentation and Demos
+
+See http://bit101.github.com/quicksettings
+
 ## Setup
 
 You can use the files from this repo in your project or directly link to the main minified js file at:
@@ -287,7 +291,3 @@ var panel = QuickSettings.create(10, 10, "Panel")
     .setGlobalChangeHandler(myChangeHandler);
 ```
         
-## Demos and Documentation
-
-See http://bit101.github.com/quicksettings
-
