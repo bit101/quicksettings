@@ -37,6 +37,8 @@ QuickSettings is fully require.js compatible. So add the script to your HTML or 
 
 When you create your first panel, QuickSettings will automatically inject its own default style sheet into the page. If you want to use a different style, call `QuickSettings.useExtStyleSheet()` prior to creating a panel. This will prevent the automatic css injection. You can then use one of the style sheets included in this repo or alter them to create your own styles.
 
+See the Styles Demo for examples of all the styles:  http://bit101.github.io/quicksettings/demos/styles_demo.html (source: http://bit101.github.io/quicksettings/demos/styles.js)
+
 ## Creating a Panel
 
 HTML UI controls are created within a QuickSettings panel on your page. Create the panel with:
@@ -80,7 +82,7 @@ settings.addTextArea(title, text, callback);                // creates a resizab
 settings.addTime(title, time, callback);                    // adds a time input
   ```
     
-See Master Demo for all of these examples: http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
+See Master Demo for all of these examples: http://bit101.github.io/quicksettings/demos/master_demo.html (source:  http://bit101.github.io/quicksettings/demos/masterdemo.js)
     
 For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.
 
@@ -135,7 +137,7 @@ You can also use the JSON you got by calling `getValuesAsJSON` in the method:
 settings.setValuesFromJSON(json);
 ```
 
-This will set all any controls named in the JSON with the values defined there.
+This will set all any controls named in the JSON with the values defined there. The Reset Demo has an example of using these methods to reset a panel to default values: http://bit101.github.io/quicksettings/demos/resetdemo.html (source: http://bit101.github.io/quicksettings/demos/resetdemo.js) 
 
 ## Persisting Controls with localStorage
 
@@ -146,6 +148,8 @@ settings.saveInLocalStorage(name);
 ```
 
 passing in a unique string to store the panel settings. Doing so causes a few things to happen. First, QuickSettings will immediatedly check to see if settings have been previously saved under this name. If so, they will be loaded and applied to the existing panel, overwriting any values that were just set in the code. After that, whenever any changes are made to any controls in the panel, the current state of the panel will be saved in localStorage. The ideal place to call this method is after you have added and set up all other controls in the panel.
+
+See the Local Storage Demo to view this in action: http://bit101.github.io/quicksettings/demos/localstoragedemo.html (source: http://bit101.github.io/quicksettings/demos/localstoragedemo.js)
     
 ## Managing Controls
 
@@ -278,7 +282,9 @@ settings.bindBoolean("visible", true, model);
     
 When the checkbox is clicked, it will set `model.visible` to true or false.
 
-These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See binddemo.js/html in the demo folder. Note that there are no bind functions for button, and several other controls that do not have changing values. The global change handler will be called when a button is pressed though.
+These two changes allow you to have a single model object and a single change handler, which can greatly simplify your code. See the Bind Demo: http://bit101.github.io/quicksettings/demos/binddemo.html (source: http://bit101.github.io/quicksettings/demos/binddemo.js).  
+
+Note that there are no bind functions for button, and several other controls that do not have changing values. The global change handler will be called when a button is pressed though.
 
 ## Misc.
 
