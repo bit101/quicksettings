@@ -1,32 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: quicksettings.js</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Source: quicksettings.js</h1>
-
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+/**
  * @module QuickSettings
  */
 (function() {
@@ -553,7 +525,7 @@
 			if(this._controls[title]){
 				var container = this._controls[title].container;
 			}
-			if(container &amp;&amp; container.parentElement) {
+			if(container && container.parentElement) {
 				container.parentElement.removeChild(container);
 			}
 			this._controls[title] = null;
@@ -810,7 +782,7 @@
 				return this.addText(title, color, callback);
 			}
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + ":&lt;/b> " + color, container);
+			var label = createLabel("<b>" + title + ":</b> " + color, container);
 
 			var colorInput = createInput("color", title, "qs_color", container);
 			colorInput.value = color || "#ff0000";
@@ -831,7 +803,7 @@
 				setValue: function(value) {
 					this.control.value = value;
                     this.colorLabel.style.backgroundColor = colorInput.value;
-					this.label.innerHTML = "&lt;b>" + this.title + ":&lt;/b> " + this.control.value;
+					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
 					if(callback) {
 						callback(value);
 					}
@@ -840,7 +812,7 @@
 
 			var self = this;
 			colorInput.addEventListener("input", function() {
-				label.innerHTML = "&lt;b>" + title + ":&lt;/b> " + colorInput.value;
+				label.innerHTML = "<b>" + title + ":</b> " + colorInput.value;
 				colorLabel.style.backgroundColor = colorInput.value;
 				if(callback) {
 					callback(colorInput.value);
@@ -880,7 +852,7 @@
 			if(date instanceof Date) {
 				var year = date.getFullYear();
 				var month = date.getMonth() + 1;
-				if(month &lt; 10) month = "0" + month;
+				if(month < 10) month = "0" + month;
 				var day = date.getDate();
 				dateStr = year + "-" + month + "-" + day;
 			}
@@ -892,7 +864,7 @@
 				return this.addText(title, dateStr, callback);
 			}
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
 			var dateInput = createInput("date", title, "qs_text_input", container);
 			dateInput.value = dateStr || "";
@@ -909,9 +881,9 @@
 					if(date instanceof Date) {
 						var year = date.getFullYear();
 						var month = date.getMonth() + 1;
-						if(month &lt; 10) month = "0" + month;
+						if(month < 10) month = "0" + month;
 						var day = date.getDate();
-                        if(day &lt; 10)  day = "0" + day;
+                        if(day < 10)  day = "0" + day;
 						dateStr = year + "-" + month + "-" + day;
 					}
 					else {
@@ -963,9 +935,9 @@
 		addDropDown: function(title, items, callback) {
 			var container = this._createContainer();
 
-			var label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 			var select = createElement("select", null, "qs_select", container);
-			for(var i = 0; i &lt; items.length; i++) {
+			for(var i = 0; i < items.length; i++) {
 				var option = createElement("option");
 				option.label = items[i];
 				option.innerText = items[i];
@@ -1046,7 +1018,7 @@
 		 */
 		addElement: function(title, element) {
 			var container = this._createContainer(),
-				label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+				label = createLabel("<b>" + title + "</b>", container);
 
 			container.appendChild(element);
 
@@ -1075,7 +1047,7 @@
 		 */
 		addFileChooser: function(title, labelStr, filter, callback) {
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
 			var fileChooser = createInput("file", title, "qs_file_chooser", container);
 			if(filter) {
@@ -1122,7 +1094,7 @@
 		 */
 		addHTML: function(title, html) {
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + ":&lt;/b> ", container);
+			var label = createLabel("<b>" + title + ":</b> ", container);
 
 			var div = createElement("div", null, null, container);
 			div.innerHTML = html;
@@ -1152,7 +1124,7 @@
 		 */
 		addImage: function(title, imageURL) {
 			var container = this._createContainer(),
-				label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+				label = createLabel("<b>" + title + "</b>", container);
 			img = createElement("img", null, "qs_image", container);
 			img.src = imageURL;
 
@@ -1215,7 +1187,7 @@
 			input.step = step || 1;
 			input.value = value || 0;
 
-			label.innerHTML = "&lt;b>" + title + ":&lt;/b> " + input.value;
+			label.innerHTML = "<b>" + title + ":</b> " + input.value;
 
 
 			this._controls[title] = {
@@ -1229,7 +1201,7 @@
 				},
 				setValue: function(value) {
 					this.control.value = value;
-					this.label.innerHTML = "&lt;b>" + this.title + ":&lt;/b> " + this.control.value;
+					this.label.innerHTML = "<b>" + this.title + ":</b> " + this.control.value;
 					if(callback) {
 						callback(parseFloat(value));
 					}
@@ -1237,12 +1209,12 @@
 			};
 
 			var eventName = "input";
-			if(type === "range" &amp;&amp; isIE()) {
+			if(type === "range" && isIE()) {
 				eventName = "change";
 			}
 			var self = this;
 			input.addEventListener(eventName, function() {
-				label.innerHTML = "&lt;b>" + title + ":&lt;/b> " + input.value;
+				label.innerHTML = "<b>" + title + ":</b> " + input.value;
 				if(callback) {
 					callback(parseFloat(input.value));
 				}
@@ -1310,7 +1282,7 @@
 			control.control.max = max;
 			control.control.step = step;
 
-			if(control.control.value !== origValue &amp;&amp; control.callback) {
+			if(control.control.value !== origValue && control.callback) {
 				control.callback(control.control.value);
 			}
 			return this;
@@ -1367,13 +1339,13 @@
 			valueDiv.style.width = (value / max * 100) + "%";
 
 			if(valueDisplay === "numbers") {
-				label.innerHTML = "&lt;b>" + title + ":&lt;/b> " + value + " / " + max;
+				label.innerHTML = "<b>" + title + ":</b> " + value + " / " + max;
 			}
 			else if(valueDisplay === "percent") {
-				label.innerHTML = "&lt;b>" + title + ":&lt;/b> " + Math.round(value / max * 100) + "%";
+				label.innerHTML = "<b>" + title + ":</b> " + Math.round(value / max * 100) + "%";
 			}
 			else {
-				label.innerHTML = "&lt;b>" + title + "&lt;/b>";
+				label.innerHTML = "<b>" + title + "</b>";
 			}
 
 			this._controls[title] = {
@@ -1392,10 +1364,10 @@
 					this.value = Math.max(0, Math.min(value, this.max));
 					this.valueDiv.style.width = (this.value / this.max * 100) + "%";
 					if(this.valueDisplay === "numbers") {
-						this.label.innerHTML = "&lt;b>" + this.title + ":&lt;/b> " + this.value + " / " + this.max;
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + this.value + " / " + this.max;
 					}
 					else if(this.valueDisplay === "percent") {
-						this.label.innerHTML = "&lt;b>" + this.title + ":&lt;/b> " + Math.round(this.value / this.max * 100) + "%";
+						this.label.innerHTML = "<b>" + this.title + ":</b> " + Math.round(this.value / this.max * 100) + "%";
 					}
 				}
 			};
@@ -1415,13 +1387,13 @@
 			control.valueDiv.style.width = (control.value / control.max * 100) + "%";
 
 			if(control.valueDisplay === "numbers") {
-				control.label.innerHTML = "&lt;b>" + control.title + ":&lt;/b> " + control.value + " / " + control.max;
+				control.label.innerHTML = "<b>" + control.title + ":</b> " + control.value + " / " + control.max;
 			}
 			else if(control.valueDisplay === "percent") {
-				control.label.innerHTML = "&lt;b>" + control.title + ":&lt;/b> " + Math.round(control.value / control.max * 100) + "%";
+				control.label.innerHTML = "<b>" + control.title + ":</b> " + Math.round(control.value / control.max * 100) + "%";
 			}
 			else {
-				control.label.innerHTML = "&lt;b>" + control.title + "&lt;/b>";
+				control.label.innerHTML = "<b>" + control.title + "</b>";
 			}
 			return this;
 		},
@@ -1444,7 +1416,7 @@
 
 		_addText: function(type, title, text, callback) {
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 			var textInput;
 
 			if(type === "textarea") {
@@ -1552,11 +1524,11 @@
 			var timeStr;
 			if(time instanceof Date) {
 				var hours = time.getHours();
-				if(hours &lt; 10) hours = "0" + hours;
+				if(hours < 10) hours = "0" + hours;
 				var minutes = time.getMinutes();
-				if(minutes &lt; 10) minutes = "0" + minutes;
+				if(minutes < 10) minutes = "0" + minutes;
 				var seconds = time.getSeconds();
-				if(seconds &lt; 10) seconds = "0" + seconds;
+				if(seconds < 10) seconds = "0" + seconds;
 				timeStr = hours + ":" + minutes + ":" + seconds;
 			}
 			else {
@@ -1568,7 +1540,7 @@
 			}
 
 			var container = this._createContainer();
-			var label = createLabel("&lt;b>" + title + "&lt;/b>", container);
+			var label = createLabel("<b>" + title + "</b>", container);
 
 			var timeInput = createInput("time", title, "qs_text_input", container);
 			timeInput.value = timeStr || "";
@@ -1584,11 +1556,11 @@
 					var timeStr;
 					if(time instanceof Date) {
 						var hours = time.getHours();
-						if(hours &lt; 10) hours = "0" + hours;
+						if(hours < 10) hours = "0" + hours;
 						var minutes = time.getMinutes();
-						if(minutes &lt; 10) minutes = "0" + minutes;
+						if(minutes < 10) minutes = "0" + minutes;
 						var seconds = time.getSeconds();
-						if(seconds &lt; 10) seconds = "0" + seconds;
+						if(seconds < 10) seconds = "0" + seconds;
 						timeStr = hours + ":" + minutes + ":" + seconds;
 					}
 					else {
@@ -1633,33 +1605,10 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// EXPORT
 	////////////////////////////////////////////////////////////////////////////////
-	if(typeof define === "function" &amp;&amp; define.amd) {
+	if(typeof define === "function" && define.amd) {
 	    define(QuickSettings);
 	} else {
 	   window.QuickSettings = QuickSettings;
 	}
 
 }());
-</code></pre>
-        </article>
-    </section>
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-QuickSettings.html">QuickSettings</a></li></ul>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Nov 10 2016 20:53:07 GMT-0500 (EST)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>

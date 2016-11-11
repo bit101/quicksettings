@@ -1,4 +1,4 @@
-require(["../quicksettings"], function (QuickSettings) {
+require(["quicksettings"], function (QuickSettings) {
 	var canvas = document.getElementById("canvas"),
 		context = canvas.getContext("2d"),
 		width = canvas.width = window.innerWidth,

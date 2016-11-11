@@ -5,10 +5,10 @@
 		onStyle: function(data) {
 			var styleTag = document.getElementById("qs_styles");
 			if(data.value === "defaultStyle") {
-				styleTag.href = "../quicksettings.css";
+				styleTag.href = "quicksettings.css";
 			}
 			else {
-				styleTag.href = "../quicksettings_" + data.value + ".css";
+				styleTag.href = "quicksettings_" + data.value + ".css";
 			}
 		},
 		onRange: function(value) {

@@ -291,13 +291,7 @@ var panel = QuickSettings.create(10, 10, "Panel")
     .setGlobalChangeHandler(myChangeHandler);
 ```
         
-## Demos
+## Demos and Documentation
 
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/master_demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/binddemo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/htmldemo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/weave/blob/master/demos/demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/styles_demo.html
-- http://htmlpreview.github.io/?https://github.com/bit101/quicksettings/blob/master/demos/filedemo.html
+See http://bit101.github.com/quicksettings
 
