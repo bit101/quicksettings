@@ -1605,9 +1605,13 @@
 	////////////////////////////////////////////////////////////////////////////////
 	// EXPORT
 	////////////////////////////////////////////////////////////////////////////////
-	if(typeof define === "function" && define.amd) {
+	if(typeof exports === "object" && typeof module === "object") {
+		module.exports = QuickSettings
+	}
+	else if(typeof define === "function" && define.amd) {
 	    define(QuickSettings);
-	} else {
+	}
+	else {
 	   window.QuickSettings = QuickSettings;
 	}
 
