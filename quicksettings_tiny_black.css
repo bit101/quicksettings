@@ -148,6 +148,7 @@
 }
 .qs_checkbox {
   cursor: pointer;
+  display: inline;
 }
 .qs_checkbox input {
   position: absolute;
