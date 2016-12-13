@@ -85,7 +85,7 @@
 	 * @lends module:QuickSettings.prototype
 	 */
 	var QuickSettings = {
-		_version: "2.1",
+		_version: "3.0",
 		_topZ: 1,
 
 		_panel: null,
