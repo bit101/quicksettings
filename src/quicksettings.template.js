@@ -495,7 +495,7 @@
 		 */
 		setKey: function(char) {
 			this._keyCode = char.toUpperCase().charCodeAt(0);
-			document.body.addEventListener("keyup", this.onKeyUp);
+			document.body.addEventListener("keyup", this._onKeyUp);
 			return this;
 		},
 
