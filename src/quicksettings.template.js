@@ -678,7 +678,7 @@
 		 * Adds a checkbox to the panel.
 		 * @param title {String} The title of this control.
 		 * @param value {Boolean} The initial value of this control.
-		 * @param callback {Function} A callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} A callback function that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addBoolean: function(title, value, callback) {
@@ -741,7 +741,7 @@
 		/**
 		 * Adds a button to the panel.
 		 * @param title {String} The title of the control.
-		 * @param callback {Function} Callback function to be called when the button is clicked.
+		 * @param [callback] {Function} Callback function to be called when the button is clicked.
 		 * @returns {module:QuickSettings}
 		 */
 		addButton: function(title, callback) {
@@ -774,7 +774,7 @@
 		 * Adds a color picker control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of this control.
 		 * @param color {String} The initial color value for this control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addColor: function(title, color, callback) {
@@ -844,7 +844,7 @@
 		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of the control.
 		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
-		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback function that will be called when the value of this control changes.
 		 * @returns {*}
 		 */
 		addDate: function(title, date, callback) {
@@ -929,7 +929,7 @@
 		 * Adds a dropdown (select) control.
 		 * @param title {String} The title of the control.
 		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
-		 * @param callback {Function} Callback function that will be called when a new option is chosen.
+		 * @param [callback] {Function} Callback function that will be called when a new option is chosen.
 		 * @returns {module:QuickSettings}
 		 */
 		addDropDown: function(title, items, callback) {
@@ -1042,7 +1042,7 @@
 		 * @param title {String} The title of the control.
 		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
 		 * @param filter {String} Species what file types the chooser will accept. See below.
-		 * @param callback {Function} Callback function that will be called when a file is chosen.
+		 * @param [callback] {Function} Callback function that will be called when a file is chosen.
 		 * @returns {module:QuickSettings}
 		 */
 		addFileChooser: function(title, labelStr, filter, callback) {
@@ -1154,7 +1154,7 @@
 		 * @param max {Number} Maximum value of control.
 		 * @param value {Number} Initial value of control.
 		 * @param step {Number} Size of value increments.
-		 * @param callback {Function} Callback function to call when control value changes.
+		 * @param [callback] {Function} Callback function to call when control value changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addRange: function(title, min, max, value, step, callback) {
@@ -1168,7 +1168,7 @@
 		 * @param max {Number} Maximum value of control.
 		 * @param value {Number} Initial value of control.
 		 * @param step {Number} Size of value increments.
-		 * @param callback {Function} Callback function to call when control value changes.
+		 * @param [callback] {Function} Callback function to call when control value changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addNumber: function(title, min, max, value, step, callback) {
@@ -1297,7 +1297,7 @@
 		 * Adds a password input field.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addPassword: function(title, text, callback) {
@@ -1407,7 +1407,7 @@
 		 * Adds a text input field.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addText: function(title, text, callback) {
@@ -1475,7 +1475,7 @@
 		 * Adds a text area control.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addTextArea: function(title, text, callback) {
@@ -1517,7 +1517,7 @@
 		 * Adds a time input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of the control.
 		 * @param time {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
-		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback function that will be called when the value of this control changes.
 		 * @returns {*}
 		 */
 		addTime: function(title, time, callback) {
