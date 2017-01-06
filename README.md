@@ -84,7 +84,7 @@ settings.addTime(title, time, callback);                    // adds a time input
     
 See Master Demo for all of these examples: http://bit101.github.io/quicksettings/demos/master_demo.html (source:  http://bit101.github.io/quicksettings/demos/masterdemo.js)
     
-For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown it passes and object that contains properties index and value (the selected index and the value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.
+For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown, it passes an object that contains properties index and value (the selected index and the value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.
 
 The color control implementation will vary on platforms. On some platforms, this will be the same as a text input. Color input is any valid color string such as "#f00", "#ff0000", "red", "rgb(255, 0, 0)", "rgba(255, 0, 0, 1)".
 
