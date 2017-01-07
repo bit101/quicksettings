@@ -85,7 +85,7 @@
 	 * @lends module:QuickSettings.prototype
 	 */
 	var QuickSettings = {
-		_version: "2.1",
+		_version: "3.0",
 		_topZ: 1,
 
 		_panel: null,
@@ -678,7 +678,7 @@
 		 * Adds a checkbox to the panel.
 		 * @param title {String} The title of this control.
 		 * @param value {Boolean} The initial value of this control.
-		 * @param callback {Function} A callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} A callback function that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addBoolean: function(title, value, callback) {
@@ -741,7 +741,7 @@
 		/**
 		 * Adds a button to the panel.
 		 * @param title {String} The title of the control.
-		 * @param callback {Function} Callback function to be called when the button is clicked.
+		 * @param [callback] {Function} Callback function to be called when the button is clicked.
 		 * @returns {module:QuickSettings}
 		 */
 		addButton: function(title, callback) {
@@ -774,7 +774,7 @@
 		 * Adds a color picker control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of this control.
 		 * @param color {String} The initial color value for this control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addColor: function(title, color, callback) {
@@ -844,7 +844,7 @@
 		 * Adds a date input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of the control.
 		 * @param date {String|Date} A string in the format "YYYY-MM-DD" or a Date object.
-		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback function that will be called when the value of this control changes.
 		 * @returns {*}
 		 */
 		addDate: function(title, date, callback) {
@@ -926,10 +926,10 @@
 		////////////////////////////////////////////////////////////////////////////////
         
 		/**
-		 * Adds a dropdown (select) control.
+		 * Adds a dropdown (select) control. Dropdown items can be strings ("one", "two", "three"), any other values that can be converted to strings (1, 2, 3), or an object that contains label and value properties ({label: "one", value: 77}).
 		 * @param title {String} The title of the control.
-		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
-		 * @param callback {Function} Callback function that will be called when a new option is chosen.
+		 * @param items {Array} An array of items.
+		 * @param [callback] {Function} Callback function that will be called when a new option is chosen. Callback will be passed an object containing "index", "label", and "value" properties. If the selected item is a simple value, then label and value will be the same.
 		 * @returns {module:QuickSettings}
 		 */
 		addDropDown: function(title, items, callback) {
@@ -938,12 +938,18 @@
 			var label = createLabel("<b>" + title + "</b>", container);
 			var select = createElement("select", null, "qs_select", container);
 			for(var i = 0; i < items.length; i++) {
-				var option = createElement("option");
-				option.label = items[i];
-				option.innerText = items[i];
+				var option = createElement("option"),
+					item = items[i];
+				if(item.label) {
+                	option.label = item.label;
+                	option.innerText = item.label;
+				}
+                else {
+                    option.label = item;
+                    option.innerText = item;
+                }
 				select.add(option);
-			}
-			;
+			};
 
 			var self = this;
 			select.addEventListener("change", function() {
@@ -953,7 +959,8 @@
 				if(callback) {
 					callback({
 						index: index,
-						value: options[index].label
+						label: options[index].label,
+						value: items[index].value || items[index]
 					});
 				}
 				self._callGCH();
@@ -967,7 +974,8 @@
                     var index = this.control.selectedIndex;
 					return {
 						index: index,
-						value: this.control.options[index].label
+                        label: this.control.options[index].label,
+						value: items[index].value || items[index]
 					}
 				},
 				setValue: function(value) {
@@ -982,8 +990,9 @@
 					this.control.selectedIndex = index;
 					if(callback) {
 						callback({
-							index: index,
-							value: options[index].label
+                            index: index,
+                            label: options[index].label,
+                            value: items[index].value || items[index]
 						});
 					}
 				},
@@ -1042,7 +1051,7 @@
 		 * @param title {String} The title of the control.
 		 * @param lableStr {String} The initial label on the file button. Defaults to "Choose a file...".
 		 * @param filter {String} Species what file types the chooser will accept. See below.
-		 * @param callback {Function} Callback function that will be called when a file is chosen.
+		 * @param [callback] {Function} Callback function that will be called when a file is chosen.
 		 * @returns {module:QuickSettings}
 		 */
 		addFileChooser: function(title, labelStr, filter, callback) {
@@ -1154,7 +1163,7 @@
 		 * @param max {Number} Maximum value of control.
 		 * @param value {Number} Initial value of control.
 		 * @param step {Number} Size of value increments.
-		 * @param callback {Function} Callback function to call when control value changes.
+		 * @param [callback] {Function} Callback function to call when control value changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addRange: function(title, min, max, value, step, callback) {
@@ -1168,7 +1177,7 @@
 		 * @param max {Number} Maximum value of control.
 		 * @param value {Number} Initial value of control.
 		 * @param step {Number} Size of value increments.
-		 * @param callback {Function} Callback function to call when control value changes.
+		 * @param [callback] {Function} Callback function to call when control value changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addNumber: function(title, min, max, value, step, callback) {
@@ -1297,7 +1306,7 @@
 		 * Adds a password input field.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addPassword: function(title, text, callback) {
@@ -1407,7 +1416,7 @@
 		 * Adds a text input field.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addText: function(title, text, callback) {
@@ -1475,7 +1484,7 @@
 		 * Adds a text area control.
 		 * @param title {String} The title of the control.
 		 * @param text {String} The initial text value to put in the control.
-		 * @param callback {Function} Callback that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback that will be called when the value of this control changes.
 		 * @returns {module:QuickSettings}
 		 */
 		addTextArea: function(title, text, callback) {
@@ -1517,7 +1526,7 @@
 		 * Adds a time input control. In some browsers this will just render as a text input field, but should still retain all other functionality.
 		 * @param title {String} The title of the control.
 		 * @param time {String|Date} A string in the format "HH:MM", "HH:MM:SS" or a Date object.
-		 * @param callback {Function} Callback function that will be called when the value of this control changes.
+		 * @param [callback] {Function} Callback function that will be called when the value of this control changes.
 		 * @returns {*}
 		 */
 		addTime: function(title, time, callback) {

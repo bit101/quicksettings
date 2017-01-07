@@ -926,10 +926,10 @@
 		////////////////////////////////////////////////////////////////////////////////
         
 		/**
-		 * Adds a dropdown (select) control.
+		 * Adds a dropdown (select) control. Dropdown items can be strings ("one", "two", "three"), any other values that can be converted to strings (1, 2, 3), or an object that contains label and value properties ({label: "one", value: 77}).
 		 * @param title {String} The title of the control.
-		 * @param items {Array} An array of strings or values that will be converted to string and displayed as options.
-		 * @param [callback] {Function} Callback function that will be called when a new option is chosen.
+		 * @param items {Array} An array of items.
+		 * @param [callback] {Function} Callback function that will be called when a new option is chosen. Callback will be passed an object containing "index", "label", and "value" properties. If the selected item is a simple value, then label and value will be the same.
 		 * @returns {module:QuickSettings}
 		 */
 		addDropDown: function(title, items, callback) {
@@ -938,12 +938,18 @@
 			var label = createLabel("<b>" + title + "</b>", container);
 			var select = createElement("select", null, "qs_select", container);
 			for(var i = 0; i < items.length; i++) {
-				var option = createElement("option");
-				option.label = items[i];
-				option.innerText = items[i];
+				var option = createElement("option"),
+					item = items[i];
+				if(item.label) {
+                	option.label = item.label;
+                	option.innerText = item.label;
+				}
+                else {
+                    option.label = item;
+                    option.innerText = item;
+                }
 				select.add(option);
-			}
-			;
+			};
 
 			var self = this;
 			select.addEventListener("change", function() {
@@ -953,7 +959,8 @@
 				if(callback) {
 					callback({
 						index: index,
-						value: options[index].label
+						label: options[index].label,
+						value: items[index].value || items[index]
 					});
 				}
 				self._callGCH();
@@ -967,7 +974,8 @@
                     var index = this.control.selectedIndex;
 					return {
 						index: index,
-						value: this.control.options[index].label
+                        label: this.control.options[index].label,
+						value: items[index].value || items[index]
 					}
 				},
 				setValue: function(value) {
@@ -982,8 +990,9 @@
 					this.control.selectedIndex = index;
 					if(callback) {
 						callback({
-							index: index,
-							value: options[index].label
+                            index: index,
+                            label: options[index].label,
+                            value: items[index].value || items[index]
 						});
 					}
 				},
