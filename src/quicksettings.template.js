@@ -941,7 +941,7 @@
 				var option = createElement("option"),
 					item = items[i];
 				if(item.label) {
-                	option.label = item.label;
+                	option.value = item.value;
                 	option.innerText = item.label;
 				}
                 else {
