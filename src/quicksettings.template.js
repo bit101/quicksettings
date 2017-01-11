@@ -501,7 +501,9 @@
 
 		_onKeyUp: function(event) {
 			if(event.keyCode === this._keyCode) {
-				this.toggleVisibility();
+				if (["INPUT", "SELECT", "TEXTAREA"].indexOf(event.target.tagName) < 0) {
+					this.toggleVisibility();
+				}
 			}
 		},
 
