@@ -389,12 +389,12 @@
 			return this;
 		},
 
-		_callGCH: function() {
+		_callGCH: function(title) {
             if(this._localStorageName) {
                 this._saveInLocalStorage(this._localStorageName);
             }
 			if(this._globalChangeHandler) {
-				this._globalChangeHandler();
+				this._globalChangeHandler(title);
 			}
 		},
         // endregion
@@ -661,7 +661,7 @@
 
 		setValue: function(title, value) {
 			this._controls[title].setValue(value);
-			this._callGCH();
+			this._callGCH(title);
 			return this;
 		},
         // endregion
@@ -717,7 +717,7 @@
 				if(callback) {
 					callback(input.checked);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -762,7 +762,7 @@
 				if(callback) {
 					callback(button);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -819,7 +819,7 @@
 				if(callback) {
 					callback(colorInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -904,7 +904,7 @@
 				if(callback) {
 					callback(dateInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -965,7 +965,7 @@
 						value: items[index].value || items[index]
 					});
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 
 			this._controls[title] = {
@@ -1086,7 +1086,7 @@
 				if(callback) {
 					callback(fileChooser.files[0]);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1229,7 +1229,7 @@
 				if(callback) {
 					callback(parseFloat(input.value));
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1459,7 +1459,7 @@
 				if(callback) {
 					callback(textInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1590,7 +1590,7 @@
 				if(callback) {
 					callback(timeInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
