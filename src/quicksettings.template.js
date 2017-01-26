@@ -192,7 +192,7 @@
                 json = JSON.parse(json);
             }
             for(var title in json) {
-                if(this._controls[title].setValue) {
+                if(this._controls[title] && this._controls[title].setValue) {
                     this._controls[title].setValue(json[title]);
                 }
             }
