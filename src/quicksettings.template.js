@@ -1130,10 +1130,11 @@
 		/**
 		 * Adds an image control.
 		 * @param title {String} The title of the control.
-		 * @param imageURL {String} The URL to the image.
+		 * @param imageURL {String} The URL to the image.     
+		 * @param [callback] {Function} Callback function to call when the image has fully loaded
 		 * @returns {module:QuickSettings}
 		 */
-		addImage: function(title, imageURL) {
+		addImage: function(title, imageURL, callback) {
 			var container = this._createContainer(),
 				label = createLabel("<b>" + title + "</b>", container);
 			img = createElement("img", null, "qs_image", container);
@@ -1148,6 +1149,12 @@
 				},
 				setValue: function(url) {
 					this.control.src = url;
+					if(callback) {
+						img.addEventListener("load", function _onLoad() {
+							img.removeEventListener("load", _onLoad)
+							callback(url);
+						})
+					}
 				}
 			};
 			return this;
