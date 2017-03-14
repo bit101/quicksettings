@@ -72,7 +72,7 @@ settings.addDropDown(title, [items], callback);             // creates a dropdow
 settings.addElement(title, htmlELement);                    // adds any arbitrary HTML element to the panel
 settings.addFileChooser(title, labelStr, filter, callback); // adds a file chooser
 settings.addHTML(title, htmlString);                        // adds any arbitrary HTML to the panel
-settings.addImage(title, imageURL);                         // creates and image element with the specified URL
+settings.addImage(title, imageURL, callback);               // creates and image element with the specified URL
 settings.addNumber(title, min, max, value, step, callback); // creates a number input
 settings.addPassword(title, text, callback);                // adds a password text field
 settings.addProgressBar(title, max, value, valueDisplay);   // creates a progress bar
@@ -84,7 +84,7 @@ settings.addTime(title, time, callback);                    // adds a time input
     
 See Master Demo for all of these examples: http://bit101.github.io/quicksettings/demos/master_demo.html (source:  http://bit101.github.io/quicksettings/demos/masterdemo.js)
     
-For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown, it passes an object that contains properties index, label and value (the selected index and the label and value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen.
+For most controls, the callback will get passed the current value of the control. For the button, it passes a reference to the button itself. For the dropdown, it passes an object that contains properties index, label and value (the selected index and the label and value of the selected item). For the file chooser, it gets passed a File object represending the file that was chosen. The `addImage` callback is called when the image finished loading.
 
 The color control implementation will vary on platforms. On some platforms, this will be the same as a text input. Color input is any valid color string such as "#f00", "#ff0000", "red", "rgb(255, 0, 0)", "rgba(255, 0, 0, 1)".
 

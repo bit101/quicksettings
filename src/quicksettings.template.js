@@ -192,7 +192,7 @@
                 json = JSON.parse(json);
             }
             for(var title in json) {
-                if(this._controls[title].setValue) {
+                if(this._controls[title] && this._controls[title].setValue) {
                     this._controls[title].setValue(json[title]);
                 }
             }
@@ -389,12 +389,12 @@
 			return this;
 		},
 
-		_callGCH: function() {
+		_callGCH: function(title) {
             if(this._localStorageName) {
                 this._saveInLocalStorage(this._localStorageName);
             }
 			if(this._globalChangeHandler) {
-				this._globalChangeHandler();
+				this._globalChangeHandler(title);
 			}
 		},
         // endregion
@@ -501,7 +501,9 @@
 
 		_onKeyUp: function(event) {
 			if(event.keyCode === this._keyCode) {
-				this.toggleVisibility();
+				if (["INPUT", "SELECT", "TEXTAREA"].indexOf(event.target.tagName) < 0) {
+					this.toggleVisibility();
+				}
 			}
 		},
 
@@ -659,7 +661,7 @@
 
 		setValue: function(title, value) {
 			this._controls[title].setValue(value);
-			this._callGCH();
+			this._callGCH(title);
 			return this;
 		},
         // endregion
@@ -715,7 +717,7 @@
 				if(callback) {
 					callback(input.checked);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -760,7 +762,7 @@
 				if(callback) {
 					callback(button);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -817,7 +819,7 @@
 				if(callback) {
 					callback(colorInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -902,7 +904,7 @@
 				if(callback) {
 					callback(dateInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -941,7 +943,7 @@
 				var option = createElement("option"),
 					item = items[i];
 				if(item.label) {
-                	option.label = item.label;
+                	option.value = item.value;
                 	option.innerText = item.label;
 				}
                 else {
@@ -963,7 +965,7 @@
 						value: items[index].value || items[index]
 					});
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 
 			this._controls[title] = {
@@ -1084,7 +1086,7 @@
 				if(callback) {
 					callback(fileChooser.files[0]);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1128,10 +1130,11 @@
 		/**
 		 * Adds an image control.
 		 * @param title {String} The title of the control.
-		 * @param imageURL {String} The URL to the image.
+		 * @param imageURL {String} The URL to the image.     
+		 * @param [callback] {Function} Callback function to call when the image has fully loaded
 		 * @returns {module:QuickSettings}
 		 */
-		addImage: function(title, imageURL) {
+		addImage: function(title, imageURL, callback) {
 			var container = this._createContainer(),
 				label = createLabel("<b>" + title + "</b>", container);
 			img = createElement("img", null, "qs_image", container);
@@ -1146,6 +1149,12 @@
 				},
 				setValue: function(url) {
 					this.control.src = url;
+					if(callback) {
+						img.addEventListener("load", function _onLoad() {
+							img.removeEventListener("load", _onLoad)
+							callback(url);
+						})
+					}
 				}
 			};
 			return this;
@@ -1227,7 +1236,7 @@
 				if(callback) {
 					callback(parseFloat(input.value));
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1457,7 +1466,7 @@
 				if(callback) {
 					callback(textInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
@@ -1588,7 +1597,7 @@
 				if(callback) {
 					callback(timeInput.value);
 				}
-				self._callGCH();
+				self._callGCH(title);
 			});
 			return this;
 		},
