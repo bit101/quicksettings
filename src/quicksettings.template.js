@@ -85,7 +85,7 @@
 	 * @lends module:QuickSettings.prototype
 	 */
 	var QuickSettings = {
-		_version: "3.0",
+		_version: "3.0.2",
 		_topZ: 1,
 
 		_panel: null,
@@ -1110,6 +1110,7 @@
 			var div = createElement("div", null, null, container);
 			div.innerHTML = html;
 			this._controls[title] = {
+				container: container,
 				label: label,
 				control: div,
 				getValue: function() {
