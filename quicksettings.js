@@ -6,7 +6,12 @@
     ////////////////////////////////////////////////////////////////////////////////
     // region PRIVATE GENERIC UTILS
     ////////////////////////////////////////////////////////////////////////////////
+		var nextID = 0;
 
+		function getNextID() {
+			nextID++;
+			return "qs_" + nextID;
+		}
 
     function createLabel(title, container) {
         var label = createElement("div", null, "qs_label", container);
@@ -686,14 +691,14 @@
 		addBoolean: function(title, value, callback) {
 			var container = this._createContainer();
 
+      var id = getNextID();
 			var label = createElement("label", null, "qs_checkbox_label", container);
 			label.textContent = title;
-			label.setAttribute("for", title);
+			label.setAttribute("for", id);
 
 			var checkbox = createElement("label", null, "qs_checkbox", container);
-			checkbox.setAttribute("for", title);
-
-			var input = createInput("checkbox", title, null, checkbox);
+			checkbox.setAttribute("for", id);
+			var input = createInput("checkbox", id, null, checkbox);
 			input.checked = value;
 
 			var span = createElement("span", null, null, checkbox);
@@ -749,7 +754,7 @@
 		addButton: function(title, callback) {
 			var container = this._createContainer();
 
-			var button = createInput("button", title, "qs_button", container);
+			var button = createInput("button", getNextID(), "qs_button", container);
 			button.value = title;
 
 			this._controls[title] = {
@@ -785,12 +790,11 @@
 			}
 			var container = this._createContainer();
 			var label = createLabel("<b>" + title + ":</b> " + color, container);
-
-			var colorInput = createInput("color", title, "qs_color", container);
+			var id = getNextID();
+			var colorInput = createInput("color", id, "qs_color", container);
 			colorInput.value = color || "#ff0000";
-
 			var colorLabel = createElement("label", null, "qs_color_label", container);
-			colorLabel.setAttribute("for", title);
+			colorLabel.setAttribute("for", id);
 			colorLabel.style.backgroundColor = colorInput.value;
 
 			this._controls[title] = {
@@ -868,7 +872,7 @@
 			var container = this._createContainer();
 			var label = createLabel("<b>" + title + "</b>", container);
 
-			var dateInput = createInput("date", title, "qs_text_input", container);
+			var dateInput = createInput("date", getNextID(), "qs_text_input", container);
 			dateInput.value = dateStr || "";
 
 			this._controls[title] = {
@@ -1059,14 +1063,14 @@
 		addFileChooser: function(title, labelStr, filter, callback) {
 			var container = this._createContainer();
 			var label = createLabel("<b>" + title + "</b>", container);
-
-			var fileChooser = createInput("file", title, "qs_file_chooser", container);
+			var id = getNextID();
+			var fileChooser = createInput("file", id, "qs_file_chooser", container);
 			if(filter) {
 				fileChooser.accept = filter;
 			}
 
 			var fcLabel = createElement("label", null, "qs_file_chooser_label", container);
-			fcLabel.setAttribute("for", title);
+			fcLabel.setAttribute("for", id);
 			fcLabel.textContent = labelStr || "Choose a file...";
 
 
@@ -1200,7 +1204,7 @@
 			var label = createLabel("", container);
 
 			var className = type === "range" ? "qs_range" : "qs_text_input qs_number";
-			var input = createInput(type, title, className, container);
+			var input = createInput(type, getNextID(), className, container);
 			input.min = min || 0;
 			input.max = max || 100;
 			input.step = step || 1;
@@ -1439,11 +1443,11 @@
 			var textInput;
 
 			if(type === "textarea") {
-				textInput = createElement("textarea", title, "qs_textarea", container);
+				textInput = createElement("textarea", getNextID(), "qs_textarea", container);
 				textInput.rows = 5;
 			}
 			else {
-				textInput = createInput(type, title, "qs_text_input", container);
+				textInput = createInput(type, getNextID(), "qs_text_input", container);
 			}
 			textInput.value = text || "";
 
@@ -1561,7 +1565,7 @@
 			var container = this._createContainer();
 			var label = createLabel("<b>" + title + "</b>", container);
 
-			var timeInput = createInput("time", title, "qs_text_input", container);
+			var timeInput = createInput("time", getNextID(), "qs_text_input", container);
 			timeInput.value = timeStr || "";
 
 			this._controls[title] = {
