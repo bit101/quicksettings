@@ -65,7 +65,6 @@ module.exports = function(grunt) {
             }
         },
         jsdoc: {
-
             main: {
                 src: ["quicksettings.js"],
                 options: {
