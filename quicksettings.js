@@ -102,7 +102,7 @@
         _hidden: false,
         _collapsed: false,
         _controls: null,
-        _keyCode: -1,
+		_keyCodeArray: new Array(),
         _draggable: true,
         _collapsible: true,
         _globalChangeHandler: null,
@@ -494,24 +494,28 @@
             return this;
         },
 
-        /**
-         * Sets a key that, when pressed, will show and hide the panel.
-         * @param char
-         * @returns {module:QuickSettings}
-         */
-        setKey: function (char) {
-            this._keyCode = char.toUpperCase().charCodeAt(0);
-            document.addEventListener("keyup", this._onKeyUp);
-            return this;
-        },
-
-        _onKeyUp: function (event) {
-            if (event.keyCode === this._keyCode) {
-                if (["INPUT", "SELECT", "TEXTAREA"].indexOf(event.target.tagName) < 0) {
-                    this.toggleVisibility();
-                }
-            }
-        },
+		/**
+		 * Sets a key that, when pressed, will show and hide the panel. More than one key may be set (allows use of keys on stylus as well as keyboard).
+		 * @param key  (accepts a string, e.g. 'a' or integer representing javascript character code)
+		 * @returns {module:QuickSettings}
+		 */
+		 				
+		setKey: function(key) {
+			if(Number.isInteger(key)) { 
+				this._keyCodeArray.push(key);
+			}else{
+				this._keyCodeArray.push(key.toUpperCase().charCodeAt(0));
+			}
+			document.addEventListener("keyup", this._onKeyUp);			
+			return this;
+		},		
+		
+		_onKeyUp: function(event) {	
+			if(this._keyCodeArray.includes(event.keyCode)) {
+				console.log('keycode found in array '+ event.keyCode);
+				this.toggleVisibility();
+			}			
+		},
 
         _doubleClickTitle: function () {
             if (this._collapsible) {
