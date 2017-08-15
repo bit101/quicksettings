@@ -102,7 +102,7 @@
         _hidden: false,
         _collapsed: false,
         _controls: null,
-		_keyCodeArray: new Array(),
+        _keyCodeArray: new Array(),
         _draggable: true,
         _collapsible: true,
         _globalChangeHandler: null,
@@ -500,22 +500,21 @@
 		 * @returns {module:QuickSettings}
 		 */
 		 				
-		setKey: function(key) {
-			if(Number.isInteger(key)) { 
-				this._keyCodeArray.push(key);
-			}else{
-				this._keyCodeArray.push(key.toUpperCase().charCodeAt(0));
-			}
-			document.addEventListener("keyup", this._onKeyUp);			
-			return this;
-		},		
+        setKey: function(key) {
+            if(Number.isInteger(key)) { 
+                this._keyCodeArray.push(key);
+            }else{
+                this._keyCodeArray.push(key.toUpperCase().charCodeAt(0));
+            }
+            document.addEventListener("keyup", this._onKeyUp);			
+            return this;
+        },		
 		
-		_onKeyUp: function(event) {	
-			if(this._keyCodeArray.includes(event.keyCode)) {
-				console.log('keycode found in array '+ event.keyCode);
-				this.toggleVisibility();
-			}			
-		},
+        _onKeyUp: function(event) {	
+            if(this._keyCodeArray.includes(event.keyCode)) {
+                this.toggleVisibility();
+            }			
+        },
 
         _doubleClickTitle: function () {
             if (this._collapsible) {
