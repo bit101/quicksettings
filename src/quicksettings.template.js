@@ -1282,7 +1282,7 @@
 
         /**
          * Sets the parameters of a range control.
-         * @param title {Number} The title of the control to set the parameters on.
+         * @param title {String} The title of the control to set the parameters on.
          * @param min {Number} The minimum value of the control.
          * @param max {Number} The maximum value of the control.
          * @param step {Number} Size of value increments.
@@ -1294,7 +1294,7 @@
 
         /**
          * Sets the parameters of a number control.
-         * @param title {Number} The title of the control to set the parameters on.
+         * @param title {String} The title of the control to set the parameters on.
          * @param min {Number} The minimum value of the control.
          * @param max {Number} The maximum value of the control.
          * @param step {Number} Size of value increments.
