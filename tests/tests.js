@@ -158,6 +158,13 @@ QUnit.test("set and get", function(assert) {
     assert.equal(panel.getValue("date").substr(0, 4), date.getFullYear(), "date set with date object, today's year");
     assert.equal(panel.getValue("date").substr(5, 2), date.getMonth() + 1, "date set with date object, today's month");
     assert.equal(panel.getValue("date").substr(8, 2), date.getDate(), "date set with date object, today's date");
+
+    // set date
+    var date = new Date("2000-01-01");
+    panel.setValue("date", date);
+    assert.equal(panel.getValue("date").substr(0, 4), date.getFullYear(), "date set with date object, year 2000");
+    assert.equal(panel.getValue("date").substr(5, 2), date.getMonth() + 1, "date set with date object, January");
+    assert.equal(panel.getValue("date").substr(8, 2), date.getDate(), "date set with date object, first day of month");
 });
 
 QUnit.test("listener", function(assert) {
