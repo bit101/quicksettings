@@ -858,17 +858,22 @@
          * @returns {*}
          */
         addDate: function (title, date, callback) {
-            var dateStr;
-            if (date instanceof Date) {
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                if (month < 10) month = "0" + month;
-                var day = date.getDate();
-                dateStr = year + "-" + month + "-" + day;
+            function _createDateString(date)
+            {
+                if (date instanceof Date) {
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    if (month < 10) month = "0" + month;
+                    var day = date.getDate();
+                    if (day < 10) day = "0" + day;
+                    return year + "-" + month + "-" + day;
+                }
+                else {
+                    return date;
+                }
             }
-            else {
-                dateStr = date;
-            }
+
+            var dateStr = _createDateString(date);
 
             if (isIE()) {
                 return this.addText(title, dateStr, callback);
@@ -887,18 +892,7 @@
                     return this.control.value;
                 },
                 setValue: function (date) {
-                    var dateStr;
-                    if (date instanceof Date) {
-                        var year = date.getFullYear();
-                        var month = date.getMonth() + 1;
-                        if (month < 10) month = "0" + month;
-                        var day = date.getDate();
-                        if (day < 10) day = "0" + day;
-                        dateStr = year + "-" + month + "-" + day;
-                    }
-                    else {
-                        dateStr = date;
-                    }
+                    var dateStr = _createDateString(date);
 
                     this.control.value = dateStr || "";
                     if (callback) {
