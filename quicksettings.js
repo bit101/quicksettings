@@ -102,7 +102,7 @@
         _hidden: false,
         _collapsed: false,
         _controls: null,
-        _keyCodeArray: new Array(),
+        _keyCode: -1,
         _draggable: true,
         _collapsible: true,
         _globalChangeHandler: null,
@@ -494,26 +494,23 @@
             return this;
         },
 
-		/**
-		 * Sets a key that, when pressed, will show and hide the panel. More than one key may be set (allows use of keys on stylus as well as keyboard).
-		 * @param key  (accepts a string, e.g. 'a' or integer representing javascript character code)
-		 * @returns {module:QuickSettings}
-		 */
-		 				
-        setKey: function(key) {
-            if(Number.isInteger(key)) { 
-                this._keyCodeArray.push(key);
-            }else{
-                this._keyCodeArray.push(key.toUpperCase().charCodeAt(0));
-            }
-            document.addEventListener("keyup", this._onKeyUp);			
+        /**
+         * Sets a key that, when pressed, will show and hide the panel.
+         * @param char
+         * @returns {module:QuickSettings}
+         */
+        setKey: function (char) {
+            this._keyCode = char.toUpperCase().charCodeAt(0);
+            document.addEventListener("keyup", this._onKeyUp);
             return this;
-        },		
-		
-        _onKeyUp: function(event) {	
-            if(this._keyCodeArray.includes(event.keyCode)) {
-                this.toggleVisibility();
-            }			
+        },
+
+        _onKeyUp: function (event) {
+            if (event.keyCode === this._keyCode) {
+                if (["INPUT", "SELECT", "TEXTAREA"].indexOf(event.target.tagName) < 0) {
+                    this.toggleVisibility();
+                }
+            }
         },
 
         _doubleClickTitle: function () {
@@ -539,7 +536,7 @@
             if (container && container.parentElement) {
                 container.parentElement.removeChild(container);
             }
-            this._controls[title] = null;
+            delete this._controls[title];
             return this;
         },
 
@@ -1279,7 +1276,7 @@
 
         /**
          * Sets the parameters of a range control.
-         * @param title {Number} The title of the control to set the parameters on.
+         * @param title {String} The title of the control to set the parameters on.
          * @param min {Number} The minimum value of the control.
          * @param max {Number} The maximum value of the control.
          * @param step {Number} Size of value increments.
@@ -1291,7 +1288,7 @@
 
         /**
          * Sets the parameters of a number control.
-         * @param title {Number} The title of the control to set the parameters on.
+         * @param title {String} The title of the control to set the parameters on.
          * @param min {Number} The minimum value of the control.
          * @param max {Number} The maximum value of the control.
          * @param step {Number} Size of value increments.

@@ -536,7 +536,7 @@
             if (container && container.parentElement) {
                 container.parentElement.removeChild(container);
             }
-            this._controls[title] = null;
+            delete this._controls[title];
             return this;
         },
 
