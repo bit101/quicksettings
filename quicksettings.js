@@ -665,6 +665,12 @@
             return this._controls[title].getValue();
         },
 
+        getValues: function (title) {
+            if (this._controls[title].hasOwnProperty('getValues')) {
+                return this._controls[title].getValues();
+            }
+        },
+
         setValue: function (title, value) {
             this._controls[title].setValue(value);
             this._callGCH(title);
@@ -979,6 +985,13 @@
                         label: this.control.options[index].label,
                         value: items[index].value || items[index]
                     }
+                },
+                getValues: function() {
+                    return Array
+                        .from(this.control.options)
+                        .map(function(option) {
+                            return option.label
+                        });
                 },
                 setValue: function (value) {
                     var index

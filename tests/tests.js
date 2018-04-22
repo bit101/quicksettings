@@ -218,6 +218,11 @@ QUnit.test("set and get", function(assert) {
     panel.setValue("dropdown", {index:  2, value: "whatever"});
     assert.equal(panel.getValue("dropdown").index, 2, "index changed to 2 with object");
     assert.equal(panel.getValue("dropdown").value, "three", "value changed to three");
+
+    // get current values
+    assert.equal(panel.getValues("dropdown")[0], "one", "first item is equal one");
+    assert.equal(panel.getValues("dropdown")[1], "two", "second item is equal two");
+    assert.equal(panel.getValues("dropdown")[2], "three", "third item is equal three");
 });
 
 QUnit.test("listener", function(assert) {
