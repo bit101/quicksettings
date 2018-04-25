@@ -536,7 +536,7 @@
             if (container && container.parentElement) {
                 container.parentElement.removeChild(container);
             }
-            this._controls[title] = null;
+            delete this._controls[title];
             return this;
         },
 
@@ -663,6 +663,12 @@
 
         getValue: function (title) {
             return this._controls[title].getValue();
+        },
+
+        getValues: function (title) {
+            if (this._controls[title].hasOwnProperty('getValues')) {
+                return this._controls[title].getValues();
+            }
         },
 
         setValue: function (title, value) {
@@ -979,6 +985,13 @@
                         label: this.control.options[index].label,
                         value: items[index].value || items[index]
                     }
+                },
+                getValues: function() {
+                    return Array
+                        .from(this.control.options)
+                        .map(function(option) {
+                            return option.label
+                        });
                 },
                 setValue: function (value) {
                     var index

@@ -12,6 +12,7 @@ Version 3 is mostly about simplifying the panel, removing little used features a
     - All controls with settable values are now set with `panel.setValue(title, value)`
     - All controls with gettable values are now read with `panel.getValue(title)`
     - You can programatically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesWithJSON`.
+    - You can get all current dropdown values using `panel.getValues(title)`.
     - Calling `saveInLocalStorage(name)` will cause all changes in the panel to be continuously synced to local storage and restored when the panel is restarted. See details below, and demo project.
 
 - Removed:
@@ -101,6 +102,12 @@ settings.getValue(title);
 ```
 
 It's also possible to get an object containing all of the value for all user-interactive controls.
+
+To get all dropdown's values, you can query it with:
+
+``` js
+settings.getValues(title);
+```
 
 ``` js
 settings.getValuesAsJSON(asString);
