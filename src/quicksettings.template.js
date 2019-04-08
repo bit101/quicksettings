@@ -121,11 +121,11 @@
 
         /**
          * Static method. Creates a new QuickSettings Panel
-         * @param x            {Number}        x position of panel (default 0)
-         * @param y            {Number}        y position of panel (default 0)
-         * @param title        {String}        title of panel (default "QuickSettings")
-         * @param parent    {HTMLElement}    parent element (default document.body)
-         * @returns {module:QuickSettings}    New QuickSettings Panel
+         * @param x            {Number}         x position of panel (default 0)
+         * @param y            {Number}         y position of panel (default 0)
+         * @param [title]      {String}         title of panel (default "QuickSettings")
+         * @param [parent]     {HTMLElement}    parent element (default document.body)
+         * @returns {module:QuickSettings}      New QuickSettings Panel
          * @static
          */
         create: function (x, y, title, parent) {
