@@ -11,7 +11,7 @@ Version 3 is mostly about simplifying the panel, removing little used features a
 - New features / changes:
     - All controls with settable values are now set with `panel.setValue(title, value)`
     - All controls with gettable values are now read with `panel.getValue(title)`
-    - You can programatically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesWithJSON`.
+    - You can programatically get and set control values with JSON using `panel.getValuesAsJSON` and `panel.setValuesFromJSON`.
     - Calling `saveInLocalStorage(name)` will cause all changes in the panel to be continuously synced to local storage and restored when the panel is restarted. See details below, and demo project.
 
 - Removed:
