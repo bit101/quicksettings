@@ -266,7 +266,7 @@ settings.bindBoolean(title, value, object);
 settings.bindColor(title, color, object);
 settings.bindDate(title, date, object);
 settings.bindDropDown(title, [items], object);
-settings.bindNumber(title, value, object);
+settings.bindNumber(title, min, max, value, step, object);
 settings.bindPassword(title, text, object);
 settings.bindRange(title, min, max, value, step, object);
 settings.bindText(title, text, object);
