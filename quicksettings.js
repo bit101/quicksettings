@@ -124,7 +124,7 @@
          * @param x            {Number}        x position of panel (default 0)
          * @param y            {Number}        y position of panel (default 0)
          * @param title        {String}        title of panel (default "QuickSettings")
-         * @param parent    {HTMLElement}    parent element (default document.body)
+         * @param [parent]    {HTMLElement}    parent element (default document.body)
          * @returns {module:QuickSettings}    New QuickSettings Panel
          * @static
          */
@@ -595,7 +595,7 @@
          * Changes a specific style on the given component.
          * @param title {String} The title of the control.
          * @param style {String} The name of the style.
-         * @param value {Various} The new value of the style.
+         * @param value {String} The new value of the style.
          * @returns {module:QuickSettings}
          */
         overrideStyle: function (title, style, value) {
