@@ -3,7 +3,7 @@
   "version": "3.0.1",
   "description": "QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.",
   "main": "quicksettings.min.js",
-  "types": "quicksettings.d.ts",
+  "types": "types/quicksettings.d.ts",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^2.1.0",
-    "jsdoc": "^3.4.3"
+    "jsdoc": "^3.4.3",
+    "tsd": "^0.11.0"
   }
 }
