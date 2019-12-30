@@ -1,5 +1,10 @@
 import QuickSettings, { QuickSettingsPanel, AnyModel, DropDownSelection } from "quicksettings";
 
+/**
+ * QuickSettings module tests
+ * Verify validity of typings for the exported module
+ */
+
 // QuickSettings.create
 QuickSettings.create(); // $ExpectType QuickSettingsPanel<Record<string, any>>
 QuickSettings.create(100); // $ExpectType QuickSettingsPanel<Record<string, any>>
@@ -26,6 +31,99 @@ const testModelFull: TestModel = {
 
 const qsAnyModel = QuickSettings.create();
 const qsTestModel = QuickSettings.create<TestModel>();
+
+/**
+ * QuickSettingsPanel - Model independent methods
+ * Verified the typings of methods that are independent of the model of a panel
+ * e.g., saveInLocalStorage('name'), show(), hide() etc.
+ *
+ * Each method is tested with the `qsAnyModel` and `qsTestModel` and the return type
+ * is asserted to be the concrete type of the QuickSettingsPane
+ */
+
+// QuickSettingsPanel.saveInLocalStorage
+qsAnyModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.saveInLocalStorage
+qsAnyModel.clearLocalStorage("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.clearLocalStorage("foo"); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setPosition
+qsAnyModel.setPosition(100, 100); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setPosition(100, 100); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setSize
+qsAnyModel.setSize(100, 100); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setSize(100, 100); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setWidth
+qsAnyModel.setWidth(100); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setWidth(100); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setHeight
+qsAnyModel.setHeight(100); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setHeight(100); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setDraggable
+qsAnyModel.setDraggable(true); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setDraggable(true); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.show
+qsAnyModel.show(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.show(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.hide
+qsAnyModel.hide(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.hide(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.toggleVisibility
+qsAnyModel.toggleVisibility(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.toggleVisibility(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setCollapsible
+qsAnyModel.setCollapsible(true); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setCollapsible(true); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.collapse
+qsAnyModel.collapse(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.collapse(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.expand
+qsAnyModel.expand(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.expand(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.toggleCollapsed
+qsAnyModel.toggleCollapsed(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.toggleCollapsed(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.setKey
+qsAnyModel.setKey("h"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setKey("h"); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.showAllTitle
+qsAnyModel.showAllTitles(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.showAllTitles(); // $ExpectType QuickSettingsPanel<TestModel>
+
+// QuickSettingsPanel.showAllTitled
+qsAnyModel.hideAllTitles(); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.hideAllTitles(); // $ExpectType QuickSettingsPanel<TestModel>
+
+/**
+ * QuickSettingsPanel – Model mutation / retrieval / save methods
+ * Verified the typings of methods related to settings / retrieving / saving
+ * the model of a panel.
+ *
+ * All calls are performed on `qsAnyModel` and `qsTestModel` and the validity of
+ * the passed in model data or properties is made sure.
+ */
+
+// QuickSettingsPanel.setGlobalChangeHandler
+qsAnyModel.setGlobalChangeHandler((model: AnyModel) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.setGlobalChangeHandler((model: string) => {}); // $ExpectError
+qsTestModel.setGlobalChangeHandler((model: TestModel) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.setGlobalChangeHandler((model: { testNumber: number; testBoolean: boolean; testDate: string | Date }) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.setGlobalChangeHandler((model: { foo: string }) => {}); // $ExpectError
 
 // QuickSettingsPanel.getValue
 qsAnyModel.getValue("testString"); // $ExpectType any
@@ -54,17 +152,50 @@ qsTestModel.setValuesFromJSON('{ "foo": "bar" }'); // $ExpectType QuickSettingsP
 qsTestModel.setValuesFromJSON({ foo: "bar" }); // $ExpectError
 qsTestModel.setValuesFromJSON(testModelFull); // $ExpectType QuickSettingsPanel<TestModel>
 
-// QuickSettingsPanel.setGlobalChangeHandler
-qsAnyModel.setGlobalChangeHandler((model: AnyModel) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
-qsAnyModel.setGlobalChangeHandler((model: string) => {}); // $ExpectError
-qsTestModel.setGlobalChangeHandler((model: TestModel) => {}); // $ExpectType QuickSettingsPanel<TestModel>
-qsTestModel.setGlobalChangeHandler((model: { testNumber: number; testBoolean: boolean; testDate: string | Date }) => {}); // $ExpectType QuickSettingsPanel<TestModel>
-qsTestModel.setGlobalChangeHandler((model: { foo: string }) => {}); // $ExpectError
+/**
+ * QuickSettingsPanel – Field modification methods
+ * Verifies the typings of methods relating to modifying fields like `enableControl('foo')`,
+ * `hideTitle('foo')` or `overrideStyle('foo', 'color', '#fff')`. These methods typically
+ * receive the name of a field.
+ *
+ * The methods are called on `qsAnyModel` with an arbitrary name and on `qsTestModel` with a
+ * key from the model and another arbitrary key which should cause an error.
+ */
+
+// QuickSettingsPanel.removeControl
+qsAnyModel.removeControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.removeControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.removeControl("foo"); // $ExpectError
+
+// QuickSettingsPanel.enableControl
+qsAnyModel.enableControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.enableControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.enableControl("foo"); // $ExpectError
 
 // QuickSettingsPanel.disableControl
 qsAnyModel.disableControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
 qsTestModel.disableControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
 qsTestModel.disableControl("foo"); // $ExpectError
+
+// QuickSettingsPanel.hideControl
+qsAnyModel.hideControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.hideControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.hideControl("foo"); // $ExpectError
+
+// QuickSettingsPanel.showControl
+qsAnyModel.showControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.showControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.showControl("foo"); // $ExpectError
+
+// QuickSettingsPanel.hideTitle
+qsAnyModel.hideTitle("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.hideTitle("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.hideTitle("foo"); // $ExpectError
+
+// QuickSettingsPanel.showTitle
+qsAnyModel.showTitle("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.showTitle("testString"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.showTitle("foo"); // $ExpectError
 
 // QuickSettingsPanel.addText
 qsAnyModel.addText("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
