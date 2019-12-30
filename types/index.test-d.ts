@@ -43,6 +43,10 @@ const qsTestModel = QuickSettings.create<TestModel, "testStatic">();
  * is asserted to be the concrete type of the QuickSettingsPane
  */
 
+// QuickSettingsPanel.destroy
+qsAnyModel.destroy(); // $ExpectType void
+qsTestModel.destroy(); // $ExpectType void
+ 
 // QuickSettingsPanel.saveInLocalStorage
 qsAnyModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
 qsTestModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
@@ -318,6 +322,54 @@ qsTestModel.bindTextArea("testString", 10, { testString: 10 }); // $ExpectError
 qsAnyModel.setTextAreaRows("foo", 10); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
 qsTestModel.setTextAreaRows("testString", 10); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
 qsTestModel.setTextAreaRows("foo", 10); // $ExpectError
+
+// QuickSettingsPanel.addNumber
+qsAnyModel.addNumber("foo", 0, 100, 10, 1, (value: number) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsAnyModel.addNumber("foo", 0, 100, "foo", 1, (value: number) => {}); // $ExpectError
+
+qsTestModel.addNumber("testNumber", 0, 100, 10, 1, (value: number) => {}); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.addNumber("foo", 0, 100, 10, 1, (value: number) => {}); // $ExpectError
+qsTestModel.addNumber("testString", 0, 100, 10, 1, (value: number) => {}); // $ExpectError
+qsTestModel.addNumber("testNumber", 0, 100, "10", 1, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindNumber
+qsAnyModel.bindNumber("foo", 0, 100, 10, 1, { foo: 12 }); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsAnyModel.bindNumber("foo", 0, 100, 10, 1, { baz: 12 }); // $ExpectError
+qsAnyModel.bindNumber("foo", 0, 100, 10, 1, { foo: "12" }); // $ExpectError
+
+qsTestModel.bindNumber("testNumber", 0, 100, 10, 1, { testNumber: 12 }); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.bindNumber("foo", 0, 100, 10, 1, { foo: 12 }); // $ExpectError
+qsTestModel.bindNumber("testNumber", 0, 100, 10, 1, { foo: 12 }); // $ExpectError
+qsTestModel.bindNumber("testNumber", 0, 100, 10, 1, { testNumber: "12" }); // $ExpectError
+
+// QuickSettingsPanel.setNumberParameters
+qsAnyModel.setNumberParameters("foo", 0, 100, 1); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsTestModel.setNumberParameters("testNumber", 0, 100, 1); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.setNumberParameters("foo", 0, 100, 1); // $ExpectError
+
+// QuickSettingsPanel.addRange
+qsAnyModel.addRange("foo", 0, 100, 10, 1, (value: number) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsAnyModel.addRange("foo", 0, 100, "foo", 1, (value: number) => {}); // $ExpectError
+
+qsTestModel.addRange("testNumber", 0, 100, 10, 1, (value: number) => {}); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.addRange("foo", 0, 100, 10, 1, (value: number) => {}); // $ExpectError
+qsTestModel.addRange("testString", 0, 100, 10, 1, (value: number) => {}); // $ExpectError
+qsTestModel.addRange("testNumber", 0, 100, "10", 1, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindRange
+qsAnyModel.bindRange("foo", 0, 100, 10, 1, { foo: 12 }); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsAnyModel.bindRange("foo", 0, 100, 10, 1, { baz: 12 }); // $ExpectError
+qsAnyModel.bindRange("foo", 0, 100, 10, 1, { foo: "12" }); // $ExpectError
+
+qsTestModel.bindRange("testNumber", 0, 100, 10, 1, { testNumber: 12 }); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.bindRange("foo", 0, 100, 10, 1, { foo: 12 }); // $ExpectError
+qsTestModel.bindRange("testNumber", 0, 100, 10, 1, { foo: 12 }); // $ExpectError
+qsTestModel.bindRange("testNumber", 0, 100, 10, 1, { testNumber: "12" }); // $ExpectError
+
+// QuickSettingsPanel.setRangeParameters
+qsAnyModel.setRangeParameters("foo", 0, 100, 1); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsTestModel.setRangeParameters("testNumber", 0, 100, 1); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
+qsTestModel.setRangeParameters("foo", 0, 100, 1); // $ExpectError
 
 // QuickSettingsPanel.addDate
 {

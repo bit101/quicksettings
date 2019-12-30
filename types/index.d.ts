@@ -72,19 +72,19 @@ export interface QuickSettingsPanel<M = AnyModel, S = string> {
   addDropDown<K extends keyof M>(title: K, items: DropDownItems<M[K]>, callback?: ChangeHandler<DropDownSelection<M[K]>>): this;
   bindDropDown<K extends keyof M>(title: K, items: DropDownItems<M[K]>, object: Pick<M, K>): this;
 
-  addButton(title: S, callback: () => void): this; // !
+  addButton(title: S, callback: () => void): this;
   addElement(title: S, element: HTMLElement): this;
 
-  addFileChooser(title: KeyWhereType<M, File>, labelStr: string, filter: string, callback?: ChangeHandler<File>): this; // !
-  addHTML(title: KeyWhereType<M, string>, html: string): this; // !
-  addImage(title: KeyWhereType<M, string>, imageUrl: string, callback?: ChangeHandler<string>): this; // !
+  addFileChooser(title: KeyWhereType<M, File>, labelStr: string, filter: string, callback?: ChangeHandler<File>): this;
+  addHTML(title: KeyWhereType<M, string>, html: string): this;
+  addImage(title: KeyWhereType<M, string>, imageUrl: string, callback?: ChangeHandler<string>): this;
 
-  addRange(title: string, min: number, max: number, value: number, step: number, callback?: ChangeHandler<number>): this;
-  bindRange(title: string, min: number, max: number, value: number, step: number, object: object): this;
-  addNumber(title: string, min: number, max: number, value: number, step: number, callback?: ChangeHandler<number>): this;
-  bindNumber(title: string, min: number, max: number, value: number, step: number, object: object): this;
-  setRangeParameters(title: string, min: number, max: number, step: number): this;
-  setNumberParameters(title: string, min: number, max: number, step: number): this;
+  addRange(title: KeyWhereType<M, number>, min: number, max: number, value: number, step: number, callback?: ChangeHandler<number>): this;
+  bindRange<K extends KeyWhereType<M, number>>(title: K, min: number, max: number, value: number, step: number, object: Record<K, number>): this;
+  addNumber(title: KeyWhereType<M, number>, min: number, max: number, value: number, step: number, callback?: ChangeHandler<number>): this;
+  bindNumber<K extends KeyWhereType<M, number>>(title: K, min: number, max: number, value: number, step: number, object: Record<K, number>): this;
+  setRangeParameters(title: KeyWhereType<M, number>, min: number, max: number, step: number): this;
+  setNumberParameters(title: KeyWhereType<M, number>, min: number, max: number, step: number): this;
   addPassword(title: KeyWhereType<M, string>, text: string, callback?: ChangeHandler<string>): this;
   bindPassword<K extends KeyWhereType<M, string>>(title: K, text: string, object: Record<K, string>): this;
   addProgressBar(title: string, max: number, value: number, valueDisplay: string): this;
