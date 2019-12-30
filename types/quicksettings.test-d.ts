@@ -1,8 +1,10 @@
 import { expectType, expectError } from "tsd";
+
 import QuickSettings, {
   QuickSettingsPanel,
   AnyValue,
-  AnyModel
+  AnyModel,
+  ChangeHandler
 } from "./quicksettings";
 
 // QuickSettings.create
@@ -65,21 +67,18 @@ expectType<typeof qsTestModel>(qsTestModel.setValuesFromJSON(testModelFull));
 
 // QuickSettingsPanel.setGlobalChangeHandler
 expectType<typeof qsAnyModel>(
-  qsAnyModel.setGlobalChangeHandler((nextModel: AnyModel) => {})
+  qsAnyModel.setGlobalChangeHandler((model: AnyModel) => {})
 );
-expectError(qsAnyModel.setGlobalChangeHandler((nextModel: string) => {}));
+expectError(qsAnyModel.setGlobalChangeHandler((model: string) => {}));
 expectType<typeof qsTestModel>(
-  qsTestModel.setGlobalChangeHandler((nextModel: TestModel) => {})
+  qsTestModel.setGlobalChangeHandler((model: TestModel) => {})
 );
 expectType<typeof qsTestModel>(
   qsTestModel.setGlobalChangeHandler(
-    (nextModel: Omit<TestModel, "testString">) => {}
+    (model: Omit<TestModel, "testString">) => {}
   )
 );
-expectError(qsTestModel.setGlobalChangeHandler((nextModel: AnyModel) => {}));
-expectError(
-  qsTestModel.setGlobalChangeHandler((nextModel: { foo: string }) => {})
-);
+expectError(qsTestModel.setGlobalChangeHandler((model: { foo: string }) => {}));
 
 // QuickSettingsPanel.disableControl
 expectType<(title: string) => typeof qsAnyModel>(qsAnyModel.disableControl);
@@ -89,3 +88,52 @@ expectType<(title: keyof TestModel) => typeof qsTestModel>(
 expectType<typeof qsAnyModel>(qsAnyModel.disableControl("foo"));
 expectType<typeof qsTestModel>(qsTestModel.disableControl("testString"));
 expectError(qsTestModel.disableControl("foo"));
+
+// QuickSettingsPanel.addText
+expectType<
+  (
+    title: string,
+    value: string,
+    callback?: ChangeHandler<string>
+  ) => typeof qsAnyModel
+>(qsAnyModel.addText);
+expectType<typeof qsAnyModel>(
+  qsAnyModel.addText("foo", "bar", (value: string) => {})
+);
+expectError<typeof qsAnyModel>(
+  qsAnyModel.addText("foo", 10, (value: number) => {})
+);
+
+expectType<
+  (
+    title: "testString",
+    value: string,
+    callback?: ChangeHandler<string>
+  ) => typeof qsTestModel
+>(qsTestModel.addText);
+expectType<typeof qsTestModel>(
+  qsTestModel.addText("testString", "bar", (value: string) => {})
+);
+expectError<typeof qsTestModel>(
+  qsTestModel.addText("foo", "bar", (value: string) => {})
+);
+expectError<typeof qsTestModel>(
+  qsTestModel.addText("testNumber", "bar", (value: string) => {})
+);
+expectError<typeof qsTestModel>(
+  qsTestModel.addText("testString", 10, (value: number) => {})
+);
+
+// QuickSettingsPanel.bindText
+expectType<typeof qsAnyModel>(
+  qsAnyModel.bindText("foo", "bar", { foo: "bar" })
+);
+expectError(qsAnyModel.bindText("foo", "bar", { baz: "bar" }));
+expectError(qsAnyModel.bindText("foo", 10, { foo: 10 }));
+  
+expectType<typeof qsTestModel>(
+  qsTestModel.bindText("testString", "bar", { testString: 'baz' })
+);
+expectError(qsTestModel.bindText("foo", "bar", { baz: "bar" }));
+expectError(qsTestModel.bindText("testString", "bar", { foo: "bar" }));
+expectError(qsTestModel.bindText("testString", 10, { testString: 10 }));

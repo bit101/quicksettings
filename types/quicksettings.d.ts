@@ -1,8 +1,13 @@
 type AnyFunction = (...args: Array<any>) => any;
-type ChangeHandler<T> = (nextValue: T) => void;
 
-export type AnyValue = string | number | boolean | Date;
+export type ChangeHandler<T> = (value: T) => void;
+export type AnyValue = any;
+
 export type AnyModel = Record<string, AnyValue>;
+
+type KeyWhereType<M, V> = {
+  [K in keyof M]: M[K] extends V ? K : never;
+}[keyof M];
 
 export interface QuickSettingsPanel<M = AnyModel> {
   destroy(): void;
@@ -135,8 +140,15 @@ export interface QuickSettingsPanel<M = AnyModel> {
     valueDisplay: string
   ): this;
   setProgressMax(title: string, max: number): this;
-  addText(title: string, text: string, callback: ChangeHandler<string>): this;
-  bindText(title: string, text: string, object: object): this;
+
+  addText(
+    title: KeyWhereType<M, string>,
+    text: string,
+    callback?: ChangeHandler<string>
+  ): this;
+
+  bindText<K extends KeyWhereType<M, string>>(title: K, text: string, object: Record<K, string>): this;
+
   addTextArea(
     title: string,
     text: string,
