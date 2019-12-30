@@ -21,6 +21,8 @@ export interface DropDownSelection<T> {
   value: T;
 }
 
+export type DropDownItems<T> = Array<(T & (string | number)) | DropDownOption<T>>;
+
 type NonLiteral<T> = T extends number ? T | number : T extends string ? T | string : T;
 
 export interface QuickSettingsPanel<M = AnyModel> {
@@ -70,9 +72,8 @@ export interface QuickSettingsPanel<M = AnyModel> {
 
   bindDate<K extends KeyWhereType<M, string | Date>, V extends M[K]>(title: K, date: V, object: Record<K, V>): this;
 
-  addDropDown<K extends keyof M>(title: K, items: Array<(M[K] & (string | number)) | DropDownOption<M[K]>>, callback?: ChangeHandler<DropDownSelection<M[K]>>): this;
-
-  bindDropDown(title: string, items: Array<string | number | { label: string; value: string | number }>, object: object): this;
+  addDropDown<K extends keyof M>(title: K, items: DropDownItems<M[K]>, callback?: ChangeHandler<DropDownSelection<M[K]>>): this;
+  bindDropDown<K extends keyof M>(title: K, items: DropDownItems<M[K]>, object: Pick<M, K>): this;
 
   addElement(title: string, element: HTMLElement): this;
 

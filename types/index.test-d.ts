@@ -237,3 +237,92 @@ qsTestModel.bindText("testString", 10, { testString: 10 }); // $ExpectError
   // $ExpectError
   qsDropDown.addDropDown("testString", ["one", { label: "Opt 2", value: 2 }, "three"], (value: DropDownSelection<string>) => {});
 }
+
+// QuickSettingsPanel.bindDropDown
+{
+  interface TestModelDropDown {
+    testString: string;
+    testNumber: number;
+    testStringOrNumber: string | number;
+    testComplex: {
+      foo: string;
+    };
+  }
+
+  const qsDropDown = QuickSettings.create<TestModelDropDown>();
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown("testString", ["one", "two", "three"], { testString: "one" });
+  qsDropDown.bindDropDown(
+    "testString",
+    [
+      { label: "Opt 1", value: "one" },
+      { label: "Opt 2", value: "two" },
+      { label: "Opt 3", value: "3" }
+    ],
+    {
+      testString: "one"
+    }
+  );
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown("testNumber", [1, 2, 3], { testNumber: 10 });
+
+  // $ExpectError
+  qsDropDown.bindDropDown("testNumber", [1, 2, 3], { testNumber: "foo" });
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown(
+    "testNumber",
+    [
+      { label: "Opt 1", value: 1 },
+      { label: "Opt 2", value: 2 },
+      { label: "Opt 3", value: 3 }
+    ],
+    {
+      testNumber: 10
+    }
+  );
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown("testStringOrNumber", [1, "two", 3], { testStringOrNumber: 1 });
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown("testStringOrNumber", [1, "two", 3], { testStringOrNumber: "two" });
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown(
+    "testStringOrNumber",
+    [
+      { label: "Opt 1", value: 1 },
+      { label: "Opt 2", value: "two" },
+      { label: "Opt 3", value: 3 }
+    ],
+    { testStringOrNumber: 1 }
+  );
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown(
+    "testComplex",
+    [
+      { label: "Opt 1", value: { foo: "one" } },
+      { label: "Opt 2", value: { foo: "two" } },
+      { label: "Opt 3", value: { foo: "three" } }
+    ],
+    { testComplex: { foo: "bar" } }
+  );
+
+  // $ExpectType QuickSettingsPanel<TestModelDropDown>
+  qsDropDown.bindDropDown("testString", ["one", { label: "Opt 2", value: "two" }, "three"], { testString: "foo" });
+
+  // $ExpectError
+  qsDropDown.bindDropDown("testString", [1, 2, 3], { testString: "foo" });
+  // $ExpectError
+  qsDropDown.bindDropDown("testNumber", ["one", "two", "three"], { testNumber: 10 });
+  // $ExpectError
+  qsDropDown.bindDropDown("testString", [1, "two", 3], { testString: "foo" });
+  // $ExpectError
+  qsDropDown.bindDropDown("testComplex", [{ foo: "one" }, { foo: "two" }, { foo: "three" }], { testComplex: { foo: "bar" } });
+  // $ExpectError
+  qsDropDown.bindDropDown("testString", ["one", { label: "Opt 2", value: 2 }, "three"], { testString: "foo" });
+}
