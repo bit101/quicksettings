@@ -45,21 +45,22 @@ export interface QuickSettingsPanel<M = AnyModel> {
   getValue<K extends keyof M>(title: K): M[K];
   setValue<K extends keyof M>(title: K, value: M[K]): this;
 
-  addBoolean(
-    title: string,
-    value: boolean,
-    callback?: ChangeHandler<boolean>
-  ): this;
-  bindBoolean(title: string, value: boolean, object: object): this;
+  addBoolean(title: KeyWhereType<M, boolean>, value: boolean, callback?: ChangeHandler<boolean>): this;
+  bindBoolean<K extends KeyWhereType<M, boolean>>(title: K, value: boolean, object: Record<K, boolean>): this;
+
   addButton(title: string, callback: () => void): this;
-  addColor(title: string, color: string, callback: ChangeHandler<string>): this;
-  bindColor(title: string, color: string, object: object): this;
-  addDate(
-    title: string,
-    date: string | Date,
-    callback?: ChangeHandler<string | Date>
+
+  addColor(title: KeyWhereType<M, string>, color: string, callback: ChangeHandler<string>): this;
+  bindColor<K extends KeyWhereType<M, string>>(title: K, color: string, object: Record<K, string>): this;
+
+  addDate<K extends KeyWhereType<M, string | Date>, V extends M[K]>(
+    title: K,
+    date: V,
+    callback?: ChangeHandler<V>
   ): this;
-  bindDate(title: string, date: string | Date, object: object): this;
+
+  bindDate<K extends KeyWhereType<M, string | Date>, V extends M[K]>(title: K, date: V, object: Record<K, V>): this;
+
   addDropDown(
     title: string,
     items: Array<string | number | { label: string; value: string | number }>,
@@ -70,19 +71,12 @@ export interface QuickSettingsPanel<M = AnyModel> {
     items: Array<string | number | { label: string; value: string | number }>,
     object: object
   ): this;
+  
   addElement(title: string, element: HTMLElement): this;
-  addFileChooser(
-    title: string,
-    labelStr: string,
-    filter: string,
-    callback?: ChangeHandler<File>
-  ): this;
+  
+  addFileChooser(title: string, labelStr: string, filter: string, callback?: ChangeHandler<File>): this;
   addHTML(title: string, html: string): this;
-  addImage(
-    title: string,
-    imageUrl: string,
-    callback?: ChangeHandler<string>
-  ): this;
+  addImage(title: string, imageUrl: string, callback?: ChangeHandler<string>): this;
   addRange(
     title: string,
     min: number,
@@ -99,78 +93,27 @@ export interface QuickSettingsPanel<M = AnyModel> {
     step: number,
     callback?: ChangeHandler<number>
   ): this;
-  bindRange(
-    title: string,
-    min: number,
-    max: number,
-    value: number,
-    step: number,
-    object: object
-  ): this;
-  bindNumber(
-    title: string,
-    min: number,
-    max: number,
-    value: number,
-    step: number,
-    object: object
-  ): this;
-  setRangeParameters(
-    title: string,
-    min: number,
-    max: number,
-    step: number
-  ): this;
-  setNumberParameters(
-    title: string,
-    min: number,
-    max: number,
-    step: number
-  ): this;
-  addPassword(
-    title: string,
-    text: string,
-    callback?: ChangeHandler<string>
-  ): this;
+  bindRange(title: string, min: number, max: number, value: number, step: number, object: object): this;
+  bindNumber(title: string, min: number, max: number, value: number, step: number, object: object): this;
+  setRangeParameters(title: string, min: number, max: number, step: number): this;
+  setNumberParameters(title: string, min: number, max: number, step: number): this;
+  addPassword(title: string, text: string, callback?: ChangeHandler<string>): this;
   bindPassword(title: string, text: string, object: object): this;
-  addProgressBar(
-    title: string,
-    max: number,
-    value: number,
-    valueDisplay: string
-  ): this;
+  addProgressBar(title: string, max: number, value: number, valueDisplay: string): this;
   setProgressMax(title: string, max: number): this;
 
-  addText(
-    title: KeyWhereType<M, string>,
-    text: string,
-    callback?: ChangeHandler<string>
-  ): this;
-
+  addText(title: KeyWhereType<M, string>, text: string, callback?: ChangeHandler<string>): this;
   bindText<K extends KeyWhereType<M, string>>(title: K, text: string, object: Record<K, string>): this;
 
-  addTextArea(
-    title: string,
-    text: string,
-    callback: ChangeHandler<string>
-  ): this;
+  addTextArea(title: string, text: string, callback: ChangeHandler<string>): this;
   setTextAreaRows(title: string, rows: number): this;
   bindTextArea(title: string, text: string, object: object): this;
-  addTime(
-    title: string,
-    time: string | Date,
-    callback?: ChangeHandler<string | Date>
-  ): this;
+  addTime(title: string, time: string | Date, callback?: ChangeHandler<string | Date>): this;
   bindTime(title: string, time: string | Date, object: object): this;
 }
 
 interface QuickSettings {
-  create<M = AnyModel>(
-    x?: number,
-    y?: number,
-    panelTitle?: string,
-    parent?: HTMLElement
-  ): QuickSettingsPanel<M>;
+  create<M = AnyModel>(x?: number, y?: number, panelTitle?: string, parent?: HTMLElement): QuickSettingsPanel<M>;
   useExtStyleSheet(): void;
 }
 
