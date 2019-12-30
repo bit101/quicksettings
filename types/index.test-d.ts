@@ -187,6 +187,11 @@ qsAnyModel.showControl("foo"); // $ExpectType QuickSettingsPanel<Record<string, 
 qsTestModel.showControl("testString"); // $ExpectType QuickSettingsPanel<TestModel>
 qsTestModel.showControl("foo"); // $ExpectError
 
+// QuickSettingsPanel.overrideStyle
+qsAnyModel.overrideStyle("foo", "color", "#fff"); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.overrideStyle("testString", "color", "#fff"); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.overrideStyle("foo", "color", "#fff"); // $ExpectError
+
 // QuickSettingsPanel.hideTitle
 qsAnyModel.hideTitle("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
 qsTestModel.hideTitle("testString"); // $ExpectType QuickSettingsPanel<TestModel>
@@ -196,6 +201,40 @@ qsTestModel.hideTitle("foo"); // $ExpectError
 qsAnyModel.showTitle("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>>
 qsTestModel.showTitle("testString"); // $ExpectType QuickSettingsPanel<TestModel>
 qsTestModel.showTitle("foo"); // $ExpectError
+
+/**
+ * QuickSettingsPanel – Field creation methods
+ * Verified the typings of methods that add fields with a callback or by calling the
+ * corresponding `bind` method to attach a field to an object.
+ *
+ * These methods are called on `qsAnyModel` and `qsModelTest` with the objectives of verifying that:
+ * -  only keys from the model type are accepted whose type corresponds to
+ *    the type of the field (e.g., `addText(title)` expects a title which is mapped to a string in the model)
+ *    This does not apply to `qsAnyModel` where all keys are expected
+ * -  the callbacks passed to `add` methods have the correct argument type for `value`
+ * -  the `bind` methods expect an object to bind to which contains a property named after the `title` argument
+ *    and has the type of the respective field (e.g. `bindText('foo', 'bar')` is expected to receive an object
+ *    extending `{ foo: string; }`)
+ */
+
+// QuickSettingsPanel.addBoolean
+qsAnyModel.addBoolean("foo", true, (value: boolean) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.addBoolean("foo", 10, (value: number) => {}); // $ExpectError
+
+qsTestModel.addBoolean("testBoolean", true, (value: boolean) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.addBoolean("foo", true, (value: boolean) => {}); // $ExpectError
+qsTestModel.addBoolean("testNumber", true, (value: boolean) => {}); // $ExpectError
+qsTestModel.addBoolean("testBoolean", 10, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindBoolean
+qsAnyModel.bindBoolean("foo", true, { foo: false }); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.bindBoolean("foo", true, { baz: false }); // $ExpectError
+qsAnyModel.bindBoolean("foo", 10, { foo: 10 }); // $ExpectError
+
+qsTestModel.bindBoolean("testBoolean", true, { testBoolean: false }); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.bindBoolean("foo", true, { foo: false }); // $ExpectError
+qsTestModel.bindBoolean("testBoolean", true, { foo: false }); // $ExpectError
+qsTestModel.bindBoolean("testBoolean", 10, { testBoolean: 10 }); // $ExpectError
 
 // QuickSettingsPanel.addText
 qsAnyModel.addText("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
@@ -215,6 +254,68 @@ qsTestModel.bindText("testString", "bar", { testString: "baz" }); // $ExpectType
 qsTestModel.bindText("foo", "bar", { baz: "bar" }); // $ExpectError
 qsTestModel.bindText("testString", "bar", { foo: "bar" }); // $ExpectError
 qsTestModel.bindText("testString", 10, { testString: 10 }); // $ExpectError
+
+// QuickSettingsPanel.addColor
+qsAnyModel.addColor("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.addColor("foo", 10, (value: number) => {}); // $ExpectError
+
+qsTestModel.addColor("testString", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.addColor("foo", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addColor("testNumber", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addColor("testString", 10, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindColor
+qsAnyModel.bindColor("foo", "bar", { foo: "bar" }); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.bindColor("foo", "bar", { baz: "bar" }); // $ExpectError
+qsAnyModel.bindColor("foo", 10, { foo: 10 }); // $ExpectError
+
+qsTestModel.bindColor("testString", "bar", { testString: "baz" }); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.bindColor("foo", "bar", { baz: "bar" }); // $ExpectError
+qsTestModel.bindColor("testString", "bar", { foo: "bar" }); // $ExpectError
+qsTestModel.bindColor("testString", 10, { testString: 10 }); // $ExpectError
+
+// QuickSettingsPanel.addPassword
+qsAnyModel.addPassword("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.addPassword("foo", 10, (value: number) => {}); // $ExpectError
+
+qsTestModel.addPassword("testString", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.addPassword("foo", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addPassword("testNumber", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addPassword("testString", 10, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindPassword
+qsAnyModel.bindPassword("foo", "bar", { foo: "bar" }); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.bindPassword("foo", "bar", { baz: "bar" }); // $ExpectError
+qsAnyModel.bindPassword("foo", 10, { foo: 10 }); // $ExpectError
+
+qsTestModel.bindPassword("testString", "bar", { testString: "baz" }); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.bindPassword("foo", "bar", { baz: "bar" }); // $ExpectError
+qsTestModel.bindPassword("testString", "bar", { foo: "bar" }); // $ExpectError
+qsTestModel.bindPassword("testString", 10, { testString: 10 }); // $ExpectError
+
+// QuickSettingsPanel.addTextArea
+qsAnyModel.addTextArea("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.addTextArea("foo", 10, (value: number) => {}); // $ExpectError
+
+qsTestModel.addTextArea("testString", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.addTextArea("foo", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addTextArea("testNumber", "bar", (value: string) => {}); // $ExpectError
+qsTestModel.addTextArea("testString", 10, (value: number) => {}); // $ExpectError
+
+// QuickSettingsPanel.bindTextArea
+qsAnyModel.bindTextArea("foo", "bar", { foo: "bar" }); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsAnyModel.bindTextArea("foo", "bar", { baz: "bar" }); // $ExpectError
+qsAnyModel.bindTextArea("foo", 10, { foo: 10 }); // $ExpectError
+
+qsTestModel.bindTextArea("testString", "bar", { testString: "baz" }); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.bindTextArea("foo", "bar", { baz: "bar" }); // $ExpectError
+qsTestModel.bindTextArea("testString", "bar", { foo: "bar" }); // $ExpectError
+qsTestModel.bindTextArea("testString", 10, { testString: 10 }); // $ExpectError
+
+// QuickSettingsPanel.setTextAreaRows
+qsAnyModel.setTextAreaRows("foo", 10); // $ExpectType QuickSettingsPanel<Record<string, any>>
+qsTestModel.setTextAreaRows("testString", 10); // $ExpectType QuickSettingsPanel<TestModel>
+qsTestModel.setTextAreaRows("foo", 10); // $ExpectError
 
 // QuickSettingsPanel.addDate
 {
@@ -288,6 +389,81 @@ qsTestModel.bindText("testString", 10, { testString: 10 }); // $ExpectError
 
   // $ExpectError
   qsTestModelDate.bindDate("testDateOrString", "2019-12-31", { testDateOrString: new Date() });
+}
+
+// QuickSettingsPanel.addTime
+{
+  qsAnyModel.addTime("myDateProperty", "01:00:00", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+  qsAnyModel.addTime("myDateProperty", new Date("01:00:00"), (value: Date) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>>
+  qsAnyModel.addTime("myDateProperty", "01:00:00", (value: Date) => {}); // $ExpectError
+  qsAnyModel.addTime("myDateProperty", new Date(), (value: string) => {}); // $ExpectError
+
+  interface TestModelDate {
+    testString: string;
+    testDate: Date;
+    testDateOrString: Date | string;
+  }
+
+  const qsTestModelDate = QuickSettings.create<TestModelDate>();
+  qsTestModelDate.addTime("testString", "01:00:00", (value: string) => {}); // $ExpectType QuickSettingsPanel<TestModelDate>
+  qsTestModelDate.addTime("testString", new Date("01:00:00"), (value: Date) => {}); // $ExpectError
+  qsTestModelDate.addTime("testDate", "01:00:00", (value: string) => {}); // $ExpectError
+  qsTestModelDate.addTime("testDateOrString", "01:00:00", (value: string) => {});
+  qsTestModelDate.addTime("testDateOrString", new Date("01:00:00"), (value: Date) => {});
+  qsTestModelDate.addTime("testDateOrString", new Date("01:00:00"), (value: string) => {}); // $ExpectError
+  qsTestModelDate.addTime("testDateOrString", "02:00:00", (value: Date) => {}); // $ExpectError
+}
+
+
+// QuickSettingsPanel.bindTime
+{
+  // $ExpectType QuickSettingsPanel<Record<string, any>>
+  qsAnyModel.bindTime("myDateProperty", "01:00:00", {
+    myDateProperty: "02:00:00"
+  });
+
+  // $ExpectType QuickSettingsPanel<Record<string, any>>
+  qsAnyModel.bindTime("myDateProperty", new Date("01:00:00"), {
+    myDateProperty: new Date()
+  });
+
+  // $ExpectError
+  qsAnyModel.bindTime("myDateProperty", "01:00:00", { myDateProperty: new Date() });
+
+  // $ExpectError
+  qsAnyModel.bindTime("myDateProperty", new Date(), { myDateProperty: "02:00:00" });
+
+  // $ExpectError
+  qsAnyModel.bindTime("myDateProperty", new Date(), { foo: new Date() });
+
+  interface TestModelDate {
+    testString: string;
+    testDate: Date;
+    testDateOrString: Date | string;
+  }
+
+  const qsTestModelDate = QuickSettings.create<TestModelDate>();
+  qsTestModelDate.bindTime("testString", "01:00:00", {
+    testString: "02:00:00"
+  });
+
+  // $ExpectError
+  qsTestModelDate.bindTime("testString", new Date("01:00:00"), { testString: new Date() });
+
+  // $ExpectError
+  qsTestModelDate.bindTime("testDate", "01:00:00", { testDate: "01:00:00" });
+
+  // $ExpectType QuickSettingsPanel<TestModelDate>
+  qsTestModelDate.bindTime("testDateOrString", "01:00:00", { testDateOrString: "02:00:00" });
+
+  // $ExpectType QuickSettingsPanel<TestModelDate>
+  qsTestModelDate.bindTime("testDateOrString", new Date("01:00:00"), { testDateOrString: new Date() });
+
+  // $ExpectError
+  qsTestModelDate.bindTime("testDateOrString", new Date("01:00:00"), { testDateOrString: "02:00:00" });
+
+  // $ExpectError
+  qsTestModelDate.bindTime("testDateOrString", "02:00:00", { testDateOrString: new Date() });
 }
 
 // QuickSettingsPanel.addDropDown
