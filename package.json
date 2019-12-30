@@ -16,13 +16,13 @@
   },
   "homepage": "https://github.com/bit101/quicksettings#readme",
   "devDependencies": {
+    "dtslint": "^2.0.2",
     "grunt": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^1.4.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^2.1.0",
-    "jsdoc": "^3.4.3",
-    "tsd": "^0.11.0"
+    "jsdoc": "^3.4.3"
   }
 }
