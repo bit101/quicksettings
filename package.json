@@ -4,7 +4,9 @@
   "description": "QuickSettings is a JavaScript library for making a quick settings panel to control code parameters.",
   "main": "quicksettings.min.js",
   "types": "types/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "lint": "dtslint types"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bit101/quicksettings.git"
