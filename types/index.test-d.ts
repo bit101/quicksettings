@@ -1,4 +1,4 @@
-import QuickSettings, { QuickSettingsPanel, AnyModel, DropDownSelection } from "quicksettings";
+import QuickSettings, { AnyModel, DropDownSelection } from "quicksettings";
 
 /**
  * QuickSettings module tests
@@ -46,7 +46,7 @@ const qsTestModel = QuickSettings.create<TestModel, "testStatic">();
 // QuickSettingsPanel.destroy
 qsAnyModel.destroy(); // $ExpectType void
 qsTestModel.destroy(); // $ExpectType void
- 
+
 // QuickSettingsPanel.saveInLocalStorage
 qsAnyModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
 qsTestModel.saveInLocalStorage("foo"); // $ExpectType QuickSettingsPanel<TestModel, "testStatic">
@@ -298,6 +298,10 @@ qsTestModel.bindPassword("testString", "bar", { testString: "baz" }); // $Expect
 qsTestModel.bindPassword("foo", "bar", { baz: "bar" }); // $ExpectError
 qsTestModel.bindPassword("testString", "bar", { foo: "bar" }); // $ExpectError
 qsTestModel.bindPassword("testString", 10, { testString: 10 }); // $ExpectError
+
+// QuickSettingsPanel.addProgressBar
+qsAnyModel.addProgressBar("foo", 100, 10); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
+qsAnyModel.addProgressBar("foo", 100, 10, 'numbers'); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
 
 // QuickSettingsPanel.addTextArea
 qsAnyModel.addTextArea("foo", "bar", (value: string) => {}); // $ExpectType QuickSettingsPanel<Record<string, any>, string>
@@ -682,7 +686,9 @@ qsTestModel.setRangeParameters("foo", 0, 100, 1); // $ExpectError
   // $ExpectError
   qsDropDown.bindDropDown("testString", [1, "two", 3], { testString: "foo" });
   // $ExpectError
-  qsDropDown.bindDropDown("testComplex", [{ foo: "one" }, { foo: "two" }, { foo: "three" }], { testComplex: { foo: "bar" } });
+  qsDropDown.bindDropDown("testComplex", [{ foo: "one" }, { foo: "two" }, { foo: "three" }], {
+    testComplex: { foo: "bar" }
+  });
   // $ExpectError
   qsDropDown.bindDropDown("testString", ["one", { label: "Opt 2", value: 2 }, "three"], { testString: "foo" });
 }
