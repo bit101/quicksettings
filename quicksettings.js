@@ -246,6 +246,7 @@
         _createPanel: function (x, y, parent) {
             this._panel = createElement("div", null, "qs_main", parent || document.body);
             this._panel.style.zIndex = ++QuickSettings._topZ;
+            this._panel.addEventListener("click", function (e) { e.stopPropagation() });
             this.setPosition(x || 0, y || 0);
             this._controls = {};
         },
